@@ -15,10 +15,12 @@
     <body>
     {% block header %}
     {% block nav %}
-    {% if {{ is_granted('ROLE_ADMIN') }}%}
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    {% if  is_granted('ROLE_ADMIN') %}
     <a href="{{ path('app_admin_logout') }}">Déconnectez-vous</a>
     {% else %}
     <a href="{{ path('app_logout') }}">Déconnectez-vous</a>
+    {% endif %}
     {% endif %}
     {% endblock %}
     {% endblock %}
