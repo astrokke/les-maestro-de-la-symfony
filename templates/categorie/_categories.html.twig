@@ -1,0 +1,5 @@
+{# templates/categories/_categories.html.twig #}
+
+{% for categorie in cate %}
+    <a href="{{ path('app_categorie_show',{ 'id': categorie.id })}}"> {{ categorie.libelle }} </a> 
+{% endfor %}

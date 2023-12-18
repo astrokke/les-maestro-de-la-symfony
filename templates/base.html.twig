@@ -26,6 +26,10 @@
     {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
     <a href="{{ path('app_login') }}">Connectez-vous</a>
 {% endif %}
+            {{ render(controller(
+                'App\\Controller\\CategorieController::list'
+            )) }}
+
     {% endblock %}
     {% endblock %}
     </nav>
