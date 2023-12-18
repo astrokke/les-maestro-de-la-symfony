@@ -35,7 +35,7 @@ class AdminSecurityController extends AbstractController
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 
-    #[Route(path: '/dashboard', name: 'app_admin_dashboard')]
+    #[Route(path: '/admin/dashboard', name: 'app_admin_dashboard')]
     public function dashboard(): Response
     {
         return $this->render('admin/dashboard.html.twig');
