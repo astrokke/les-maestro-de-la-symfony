@@ -66,7 +66,7 @@ class AdminController extends AbstractController
             return $this->redirectToRoute('app_list_admin');
         }
         return $this->render('admin/new.html.twig',[
-            'title' => 'Création d\'un nouvel uadministrateur',
+            'title' => 'Création d\'un nouvel administrateur',
             'form' => $form,
         ]);
     }
