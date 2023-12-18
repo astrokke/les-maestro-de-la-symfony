@@ -17,6 +17,9 @@ class Photos
     #[ORM\JoinColumn(nullable: false)]
     private ?Produit $Produit = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $URL_photo = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -30,6 +33,18 @@ class Photos
     public function setProduit(?Produit $Produit): static
     {
         $this->Produit = $Produit;
+
+        return $this;
+    }
+
+    public function getURLPhoto(): ?string
+    {
+        return $this->URL_photo;
+    }
+
+    public function setURLPhoto(string $URL_photo): static
+    {
+        $this->URL_photo = $URL_photo;
 
         return $this;
     }

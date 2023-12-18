@@ -69,6 +69,12 @@ class Produit
         return $this->description;
     }
 
+    /*public function __toString()
+    {
+        return $this->nom.' '.$this->prenom;
+    }
+*/
+
     public function setDescription(string $description): static
     {
         $this->description = $description;
