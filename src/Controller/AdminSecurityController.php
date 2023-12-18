@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-#[Route(path:'/admin')]
+#[Route(path: '/admin')]
 class AdminSecurityController extends AbstractController
 {
     #[Route(path: '/login', name: 'app_admin_login')]
@@ -22,7 +22,14 @@ class AdminSecurityController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('login/index.html.twig', ['username' => $lastUsername, 'error' => $error]);
+        return $this->render(
+            'login/index.html.twig',
+            [
+                'username' => $lastUsername,
+                'error' => $error,
+                'action' => '{{ path=\'app_dashboard_admin\' }}',
+            ]
+        );
     }
 
     #[Route(path: '/logout', name: 'app_logout')]
