@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block main %}
+    <h2>{{ title }}</h2>
+    {% if is_granted('ROLE_ADMIN') %}
+    <h3><a href="{{ path('app_new_admin') }}">Créer</a></h3>
+    {% endif %}
+    <table>
+        <tr>
+            <td>
+            Nom
+            {% if ( trinom == 'desc') %}
+                <a href="{{ path('app_list_admin') }}?nom={{ nom }}&trinom=asc&triprenom={{ triprenom }}">></a>
+            {% else %}
+                <a href="{{ path('app_list_admin') }}?nom={{ nom }}&trinom=desc&triprenom={{ triprenom }}"><</a>
+            {% endif %}
+            </td>
+            <td>
+            Prénom
+            {% if ( triprenom == 'desc') %}
+                <a href="{{ path('app_list_admin') }}?nom={{ nom }}&triprenom=asc&trinom={{ trinom }}">></a>
+            {% else %}
+                <a href="{{ path('app_list_admin') }}?nom={{ nom }}&triprenom=desc&trinom={{ trinom }}"><</a>
+            {% endif %}
+            </td>
+            <td>Voir</td>
+            <td>Update</td>
+        </tr>
+    {% for item in admin %}
+        <tr>
+            <td>{{ item.nom }}</td>
+            <td>{{ item.prenom }}</td>
+            <td><a href="{{ path('app_show_admin', { 'id': item.id })}}">Voir</a></td>
+            {% if is_granted('ROLE_ADMIN') %}
+            <td><a href="{{ path('app_update_admin', { 'id': item.id })}}">Mettre à jour</a></td>
+            {% endif %}
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="5">Aucun enregistrement</td>
+        </tr>
+    {% endfor %}
+    </table>
+    <form>
+        <input type='text' name='nom' placeholder='recherchez par le nom' value='{{ nom }}'>
+        <input type='submit' name='submit' value='rechercher'>
+    </form>
+{% endblock %}
