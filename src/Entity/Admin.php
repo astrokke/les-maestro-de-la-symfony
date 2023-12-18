@@ -16,8 +16,8 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'json')]
-    private ?array $role = null;
+    #[ORM\Column]
+    private ?array $roles = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\Regex('/^\w+/')]
@@ -30,20 +30,16 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
     #[Assert\NotCompromisedPassword]
-    #[Assert\PasswordStrength('Votre mot de passe doit comporter au minimum 8 caracteres, un chiffre et un caractères spécial')]
     private ?string $password = null;
 
     #[ORM\Column(length: 255, unique: true)]
-    #[Assert\Email('vous devez entrer une addresse email valide')]
     #[Assert\NotBlank]
     #[Assert\NoSuspiciousCharacters]
-    #[Assert\Unique('addresse mail déja utilisé')]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
     #[Assert\Regex('/^\w+/')]
-    #[Assert\Unique('pseudonyme déja utilisé')]
     private ?string $username = null;
 
     public function getId(): ?int
@@ -75,16 +71,16 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->role;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_ADMIN';
+        $role = $this->roles;
+        // guarantee every user at least has ROLE_ADMIN
+        $role[] = 'ROLE_ADMIN';
 
-        return array_unique($roles);
+        return array_unique($role);
     }
 
-    public function setRoles(array $roles): self
+    public function setRoles(array $role): self
     {
-        $this->role = $roles;
+        $this->roles = $role;
 
         return $this;
     }

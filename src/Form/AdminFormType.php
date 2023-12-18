@@ -12,7 +12,7 @@ class AdminFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('role')
+            ->add('roles')
             ->add('nom')
             ->add('prenom')
             ->add('password')

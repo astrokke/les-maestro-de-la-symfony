@@ -87,7 +87,7 @@ class AdminController extends AbstractController
             $em->flush();
             return $this->redirectToRoute('app_list_admin');
         }
-        return $this->render('admin/new.html.twig',[
+        return $this->render('new.html.twig',[
             'title' => 'Mise à jour d\'un administrateur',
             'form' => $form,
         ]);
