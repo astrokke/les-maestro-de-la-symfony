@@ -11,7 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\SecurityBundle\Security;
 use App\Form\AdminFormType;
-
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[Route('admin/')]
 class AdminController extends AbstractController
@@ -46,17 +46,22 @@ class AdminController extends AbstractController
     }
 
     #[Route('new', name: 'app_new_admin')]
-    public function new(Request $request, EntityManagerInterface $em, Security $security): Response
+    public function new(Request $request, EntityManagerInterface $em, Security $security, UserPasswordHasherInterface $adminPasswordHasher): Response
     {
         if (!$security->isGranted('ROLE_ADMIN')) {
-            return $this->redirectToRoute('app_list_admin');
+            return $this->redirectToRoute('app_index');
         }
         $admin = new Admin();
-        var_dump($admin);
         $form = $this->createForm(AdminFormType::class, $admin);
         
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted()) { 
+            $admin->setPassword(
+                $adminPasswordHasher->hashPassword(
+                    $admin,
+                    $form->get('plainPassword')->getData()
+                )
+            );
             $em->persist($admin);
             $em->flush();
             return $this->redirectToRoute('app_list_admin');

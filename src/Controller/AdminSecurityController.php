@@ -10,7 +10,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 #[Route(path: 'admin/')]
 class AdminSecurityController extends AbstractController
 {
-    #[Route(path: '/login', name: 'app_admin_login')]
+    #[Route(path: 'login', name: 'app_admin_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
         // if ($this->getUser()) {
@@ -38,6 +38,6 @@ class AdminSecurityController extends AbstractController
     #[Route(path: 'dashboard', name: 'app_admin_dashboard')]
     public function dashboard(): Response
     {
-        return $this->render('dashboard.html.twig');
+        return $this->render('admin/dashboard.html.twig');
     }
 }

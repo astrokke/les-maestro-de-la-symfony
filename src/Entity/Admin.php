@@ -17,7 +17,7 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?array $roles = null;
+    private array $roles = [];
 
     #[ORM\Column(length: 255)]
     #[Assert\Regex('/^\w+/')]
@@ -79,12 +79,12 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
         // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_ADMIN';
 
-        return array_unique($role);
+        return array_unique($roles);
     }
 
     public function setRoles(array $role): self
     {
-        $this->roles = $roles;
+        $this->roles = $role;
 
         return $this;
     }
