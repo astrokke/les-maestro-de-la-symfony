@@ -30,6 +30,15 @@ class ProduitRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    public function findProduitsByCategorieId($categorieId)
+    {
+        return $this->createQueryBuilder('p')
+            ->join('p.categories', 'c')
+            ->where('c.id = :categorieId')
+            ->setParameter('categorieId', $categorieId)
+            ->getQuery()
+            ->getResult();
+    }
     //    /**
     //     * @return Produit[] Returns an array of Produit objects
     //     */
