@@ -25,19 +25,19 @@ class CategorieController extends AbstractController
     }
 
     #[Route('/maincategorie/id={id}', name: 'app_categorie_show')]
-    public function showCategorieParente(Categorie $cate, CategorieRepository $cateRepo)
+    public function showCategorieParente(Categorie $cate, CategorieRepository $cateRepo, PhotosRepository $photoRepo)
     {
         if ($cate === null) {
             return $this->redirectToRoute('app_index');
         }
-        $photo = $cateRepo->searchPhotoByCategorie($cate);
+        $photo = $photoRepo->searchPhotoByCategorie($cate);
         $enfants = $cateRepo->searchCategorieEnfant($cate);
 
         return $this->render('categorie/showparent.html.twig', [
             'title' => 'Catégorie',
             'cate' => $cate,
             'enfants' => $enfants,
-            'photo' => $photo
+            'photos' => $photo
         ]);
     }
 
@@ -62,7 +62,7 @@ class CategorieController extends AbstractController
         $categorie = $categorieRepo->find($categorieId);
         $produits = $produitRepo->findProduitsByCategorieId($categorieId);
         $photo = $photorepo->searchPhotoByCategorie($categories);
-        var_dump($photo);
+
 
 
         return $this->render('categorie/produit_categorie.html.twig', [
