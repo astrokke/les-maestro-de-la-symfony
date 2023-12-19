@@ -15,6 +15,7 @@
     <body>
     {% block header %}
     {% block nav %}
+    <nav>
     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
     {% if  is_granted('ROLE_ADMIN') %}
     <a href="{{ path('app_admin_logout') }}">Déconnectez-vous</a>
@@ -22,8 +23,16 @@
     <a href="{{ path('app_logout') }}">Déconnectez-vous</a>
     {% endif %}
     {% endif %}
+    {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+    <a href="{{ path('app_login') }}">Connectez-vous</a>
+{% endif %}
+            {{ render(controller(
+                'App\\Controller\\CategorieController::list'
+            )) }}
+
     {% endblock %}
     {% endblock %}
+    </nav>
         {% block main %}{% endblock %}
     </body>
 </html>

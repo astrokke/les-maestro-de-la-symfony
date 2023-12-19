@@ -13,7 +13,6 @@ class ProduitController extends AbstractController
     public function index(ProduitRepository $produitRepo): Response
     {
         $produits = $produitRepo->searchNew();
-        var_dump($produits);
         return $this->render('produit/index.html.twig', [
             'controller_name' => 'ProduitController',
             'produits' => $produits
