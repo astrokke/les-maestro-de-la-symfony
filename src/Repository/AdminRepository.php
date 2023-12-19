@@ -21,6 +21,18 @@ class AdminRepository extends ServiceEntityRepository
         parent::__construct($registry, Admin::class);
     }
 
+    
+    public function searchByName(string $name, string $trinom, string $triprenom): ?array
+    {
+        return $this->createQueryBuilder('s')
+            ->where('s.nom like :val')
+            ->setParameter('val', '%'.$name.'%')
+            ->addOrderBy('s.nom', $trinom)
+            ->addOrderBy('s.prenom', $triprenom)
+            ->getQuery()
+            ->getResult();
+    }
+    
 //    /**
 //     * @return Admin[] Returns an array of Admin objects
 //     */

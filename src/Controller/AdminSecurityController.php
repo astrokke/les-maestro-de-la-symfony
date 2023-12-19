@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-#[Route(path: '/admin')]
+#[Route(path: 'admin/')]
 class AdminSecurityController extends AbstractController
 {
     #[Route(path: '/login', name: 'app_admin_login')]
@@ -29,15 +29,15 @@ class AdminSecurityController extends AbstractController
         ]);
     }
 
-    #[Route(path: '/logout', name: 'app_admin_logout')]
+    #[Route(path: 'logout', name: 'app_admin_logout')]
     public function logout(): void
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 
-    #[Route(path: '/dashboard', name: 'app_admin_dashboard')]
+    #[Route(path: 'dashboard', name: 'app_admin_dashboard')]
     public function dashboard(): Response
     {
-        return $this->render('admin/dashboard.html.twig');
+        return $this->render('dashboard.html.twig');
     }
 }
