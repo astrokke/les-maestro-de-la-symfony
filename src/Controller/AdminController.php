@@ -12,15 +12,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\SecurityBundle\Security;
 use App\Form\AdminFormType;
 
+
+#[Route('admin/')]
 class AdminController extends AbstractController
 {
-    #[Route('/admin', name: 'app_admin')]
-    public function index(): Response
-    {
-        return $this->render('admin/index.html.twig', [
-            'controller_name' => 'AdminController',
-        ]);
-    }
     #[Route('list', name: 'app_list_admin')]
     public function list(AdminRepository $adminRepo,Request $request): Response
     {
@@ -57,8 +52,9 @@ class AdminController extends AbstractController
             return $this->redirectToRoute('app_list_admin');
         }
         $admin = new Admin();
+        var_dump($admin);
         $form = $this->createForm(AdminFormType::class, $admin);
-
+        
         $form->handleRequest($request);
         if($form->isSubmitted()) {
             $em->persist($admin);
@@ -67,7 +63,7 @@ class AdminController extends AbstractController
         }
         return $this->render('admin/new.html.twig',[
             'title' => 'Création d\'un nouvel administrateur',
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 

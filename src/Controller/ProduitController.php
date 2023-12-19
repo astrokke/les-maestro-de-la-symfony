@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Categorie;
+use App\Repository\CategorieRepository;
 use App\Repository\ProduitRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,10 +15,17 @@ class ProduitController extends AbstractController
     public function index(ProduitRepository $produitRepo): Response
     {
         $produits = $produitRepo->searchNew();
-        var_dump($produits);
+
         return $this->render('produit/index.html.twig', [
             'controller_name' => 'ProduitController',
             'produits' => $produits
         ]);
     }
+    
+
 }
+    
+    
+    
+    
+    
