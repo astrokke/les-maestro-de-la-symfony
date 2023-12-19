@@ -31,8 +31,6 @@ class Produit
     #[ORM\JoinColumn(nullable: false)]
     private ?TVA $TVA = null;
 
-    #[ORM\OneToMany(mappedBy: 'Produit', targetEntity: Photos::class)]
-    private Collection $photos;
 
     #[ORM\ManyToOne(inversedBy: 'Produit')]
     private ?Promotion $promotion = null;
@@ -40,11 +38,14 @@ class Produit
     #[ORM\ManyToMany(targetEntity: Categorie::class, mappedBy: 'Produit')]
     private Collection $categories;
 
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Photos::class)]
+    private Collection $Photos;
+
     public function __construct()
     {
         $this->Panier = new ArrayCollection();
-        $this->photos = new ArrayCollection();
         $this->categories = new ArrayCollection();
+        $this->Photos = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -68,6 +69,12 @@ class Produit
     {
         return $this->description;
     }
+
+    /*public function __toString()
+    {
+        return $this->nom.' '.$this->prenom;
+    }
+*/
 
     public function setDescription(string $description): static
     {
@@ -127,32 +134,7 @@ class Produit
     /**
      * @return Collection<int, Photos>
      */
-    public function getPhotos(): Collection
-    {
-        return $this->photos;
-    }
 
-    public function addPhoto(Photos $photo): static
-    {
-        if (!$this->photos->contains($photo)) {
-            $this->photos->add($photo);
-            $photo->setProduit($this);
-        }
-
-        return $this;
-    }
-
-    public function removePhoto(Photos $photo): static
-    {
-        if ($this->photos->removeElement($photo)) {
-            // set the owning side to null (unless already changed)
-            if ($photo->getProduit() === $this) {
-                $photo->setProduit(null);
-            }
-        }
-
-        return $this;
-    }
 
     public function getPromotion(): ?Promotion
     {
@@ -188,6 +170,36 @@ class Produit
     {
         if ($this->categories->removeElement($category)) {
             $category->removeProduit($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Photos>
+     */
+    public function getPhotos(): Collection
+    {
+        return $this->Photos;
+    }
+
+    public function addPhoto(Photos $photo): static
+    {
+        if (!$this->Photos->contains($photo)) {
+            $this->Photos->add($photo);
+            $photo->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removePhoto(Photos $photo): static
+    {
+        if ($this->Photos->removeElement($photo)) {
+            // set the owning side to null (unless already changed)
+            if ($photo->getProduit() === $this) {
+                $photo->setProduit(null);
+            }
         }
 
         return $this;

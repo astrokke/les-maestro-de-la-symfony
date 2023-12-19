@@ -9,11 +9,11 @@
 </style>
 
 <div class="example-wrapper">
-{% for categorie in categories %}
+{% for produit in produits %}
 <ul>
-   <li> {{ categorie.libelle }}</li>
-    <li>{{ categorie.description }}</li>
-    
+   <li><a href = "{{ path('app_show_produit', { 'id': produit.id })}}"> {{ produit.libelle }}</a></li>
+    <li>{{ produit.description }}</li>
+    <li>{{ produit.prixHt }}</li>
     </ul>
     {% endfor %}
 </div>

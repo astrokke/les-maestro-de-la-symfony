@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{title}}
+{% endblock %}
+
+{% block main %}
+    <h2>
+        {{ title }} {{ cate.libelle }} 
+    </h2>
+    <h3> {{ cate.description }}</h3>
+
+<div class='card'>
+{% for enfant in enfants %}
+<a href='{{path('app_produit_categorie',{ 'id':enfant.id })}}'>{{ enfant.libelle }}</a><br>
+{{ enfant.description }}
+{% endfor %}
+</div>
+
+        
+{% endblock %}

@@ -11,29 +11,24 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\SecurityBundle\Security;
 use App\Form\AdminFormType;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
+#[Route('admin/')]
 class AdminController extends AbstractController
 {
-    #[Route('/admin', name: 'app_admin')]
-    public function index(): Response
-    {
-        return $this->render('admin/index.html.twig', [
-            'controller_name' => 'AdminController',
-        ]);
-    }
     #[Route('list', name: 'app_list_admin')]
-    public function list(AdminRepository $adminRepo,Request $request): Response
+    public function list(AdminRepository $adminRepo, Request $request): Response
     {
-        $trinom = $request->query->get('trinom','asc');
-        $triprenom = $request->query->get('triprenom','asc');
-        $admin = $adminRepo->searchByName($request->query->get('nom',''), $trinom, $triprenom);
+        $trinom = $request->query->get('trinom', 'asc');
+        $triprenom = $request->query->get('triprenom', 'asc');
+        $admin = $adminRepo->searchByName($request->query->get('nom', ''), $trinom, $triprenom);
 
         return $this->render('admin/list.html.twig', [
             'title' => 'Liste des administrateurs',
             'administrateur' => $admin,
             'trinom' => $trinom,
             'triprenom' => $triprenom,
-            'nom' => $request->query->get('nom',''),
+            'nom' => $request->query->get('nom', ''),
         ]);
     }
 
@@ -51,33 +46,39 @@ class AdminController extends AbstractController
     }
 
     #[Route('new', name: 'app_new_admin')]
-    public function new(Request $request, EntityManagerInterface $em, Security $security):Response
+    public function new(Request $request, EntityManagerInterface $em, Security $security, UserPasswordHasherInterface $adminPasswordHasher): Response
     {
         if (!$security->isGranted('ROLE_ADMIN')) {
-            return $this->redirectToRoute('app_list_admin');
+            return $this->redirectToRoute('app_index');
         }
         $admin = new Admin();
         $form = $this->createForm(AdminFormType::class, $admin);
-
+        
         $form->handleRequest($request);
-        if($form->isSubmitted()) {
+        if ($form->isSubmitted()) { 
+            $admin->setPassword(
+                $adminPasswordHasher->hashPassword(
+                    $admin,
+                    $form->get('plainPassword')->getData()
+                )
+            );
             $em->persist($admin);
             $em->flush();
             return $this->redirectToRoute('app_list_admin');
         }
-        return $this->render('admin/new.html.twig',[
-            'title' => 'Création d\'un nouvel uadministrateur',
-            'form' => $form,
+        return $this->render('admin/new.html.twig', [
+            'title' => 'Création d\'un nouvel administrateur',
+            'form' => $form->createView(),
         ]);
     }
 
     #[Route('update/{id}', name: 'app_update_admin')]
     public function update(
-        Request $request, 
-        EntityManagerInterface $em, 
+        Request $request,
+        EntityManagerInterface $em,
         ?Admin $admin,
-        Security $security)
-    {
+        Security $security
+    ) {
         if (!$security->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('app_list_admin');
         }
@@ -88,12 +89,12 @@ class AdminController extends AbstractController
         $form = $this->createForm(AdminFormType::class, $admin);
 
         $form->handleRequest($request);
-        if($form->isSubmitted()) {
+        if ($form->isSubmitted()) {
             $em->persist($admin);
             $em->flush();
             return $this->redirectToRoute('app_list_admin');
         }
-        return $this->render('admin/new.html.twig',[
+        return $this->render('admin/new.html.twig', [
             'title' => 'Mise à jour d\'un administrateur',
             'form' => $form,
         ]);
