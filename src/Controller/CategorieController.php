@@ -22,8 +22,9 @@ class CategorieController extends AbstractController
             'categories' => $categories
         ]);
     }
+    
     #[Route('/categorie/id={id}', name: 'app_categorie_show')]
-    public function showCategorieParente(Categorie $cate, CategorieRepository $cateRepo, Request $request)
+    public function showCategorieParente(Categorie $cate, CategorieRepository $cateRepo)
     {
         if ($cate === null) {
             return $this->redirectToRoute('app_index');
@@ -31,16 +32,15 @@ class CategorieController extends AbstractController
 
         $enfants = $cateRepo->searchCategorieEnfant($cate);
 
-
-
         return $this->render('categorie/showparent.html.twig', [
             'title' => 'Catégorie',
             'cate' => $cate,
             'enfants' => $enfants
         ]);
     }
+
     #[Route('/enfant{id}', name: 'app_categorie_show_enfant')]
-    public function showCategorie(Categorie $cate, CategorieRepository $cateRepo, Request $request)
+    public function showCategorie(Categorie $cate)
     {
         if ($cate === null) {
             return $this->redirectToRoute('app_index');
