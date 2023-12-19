@@ -39,7 +39,7 @@ class CategorieController extends AbstractController
         ]);
     }
     #[Route('/enfant{id}', name: 'app_categorie_show_enfant')]
-    public function showCategorie(Categorie $cate, CategorieRepository $cateRepo, Request $request)
+    public function showCategorie(Categorie $cate)
     {
         if ($cate === null) {
             return $this->redirectToRoute('app_index');
