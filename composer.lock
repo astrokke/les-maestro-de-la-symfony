@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e5bd71724f5c5c2df1d0bc1fe9675eaa",
+    "content-hash": "d04dc2a1c1b040fcd1879dd8aa2fbdf8",
     "packages": [
         {
             "name": "composer/semver",
@@ -1749,17 +1749,13 @@
         {
             "name": "phpstan/phpdoc-parser",
             "version": "1.24.5",
-            "version": "1.24.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phpstan/phpdoc-parser.git",
                 "reference": "fedf211ff14ec8381c9bf5714e33a7a552dd1acc"
-                "reference": "fedf211ff14ec8381c9bf5714e33a7a552dd1acc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/fedf211ff14ec8381c9bf5714e33a7a552dd1acc",
-                "reference": "fedf211ff14ec8381c9bf5714e33a7a552dd1acc",
                 "url": "https://api.github.com/repos/phpstan/phpdoc-parser/zipball/fedf211ff14ec8381c9bf5714e33a7a552dd1acc",
                 "reference": "fedf211ff14ec8381c9bf5714e33a7a552dd1acc",
                 "shasum": ""
@@ -1794,9 +1790,7 @@
             "support": {
                 "issues": "https://github.com/phpstan/phpdoc-parser/issues",
                 "source": "https://github.com/phpstan/phpdoc-parser/tree/1.24.5"
-                "source": "https://github.com/phpstan/phpdoc-parser/tree/1.24.5"
             },
-            "time": "2023-12-16T09:33:33+00:00"
             "time": "2023-12-16T09:33:33+00:00"
         },
         {

@@ -2,19 +2,36 @@
 
 {% block title %}Hello UserController!{% endblock %}
 
-{% block body %}
+{% block main %}
 <style>
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+  
+    <h1>Formulaire d'inscription</h1>
+    Veuillez remplir les champs:
+    <a href="{{ path("app_index") }}">index/index</a>
 
-    This friendly message is coming from:
+    <form action="{{ path("app_register") }}" method="post">
     <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/peiro/Documents/Symfony/ProjetSymfony/src/Controller/UserController.php'|file_link(0) }}">src/Controller/UserController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/peiro/Documents/Symfony/ProjetSymfony/templates/user/index.html.twig'|file_link(0) }}">templates/user/index.html.twig</a></code></li>
+        <li><label for="nom">Nom</label>
+            <input type="text" name="nom" placeholder="Nom" id="nom">
+        <li><label for="prenom">Prenom</label>
+            <input type="text" name="prenom" placeholder="prenom" id="prenom">
+        <li><label for="email">Email</label>
+            <input type="email" name="email" placeholder="email" id="email">
+        <li><label for="role">Role</label>
+            <input type="text" name="role" placeholder="role" id="role">
+        <li><label for="password">Password</label>
+            <input type="password" name="password" placeholder="Mot de passe" id="password">
+            <input type="submit" value="envoyer">
     </ul>
-</div>
+
+    </form>
+    
+    <p>{{ message }}</p>
+</div>    
+    
 {% endblock %}

@@ -1,20 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello IndexController!{% endblock %}
+{% block title %}Hello HomePage!{% endblock %}
 
-{% block body %}
+{% block main %}
 <style>
     .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
     .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
 </style>
 
 <div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+    <h1>Bonjour ✅</h1>
 
-    This friendly message is coming from:
+    Bienvenue dans la page Home
     <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/antho/Documents/Symfony/Les-Maestros/src/Controller/IndexController.php'|file_link(0) }}">src/Controller/IndexController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/antho/Documents/Symfony/Les-Maestros/templates/index/index.html.twig'|file_link(0) }}">templates/index/index.html.twig</a></code></li>
+        <li>Produit <code><a href="{{ path('app_produit') }}">Vers mes produits</a></code></li>
+        <li>Crée un produit <code><a href="{{ path("app_createProduit") }}"></a></code></li>
     </ul>
 </div>
 {% endblock %}
