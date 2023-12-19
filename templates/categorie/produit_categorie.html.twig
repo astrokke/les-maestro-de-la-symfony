@@ -6,7 +6,7 @@
     <h1>Produits de la catégorie {{ categorie.libelle }}</h1>
     <div class='banner'>
     {% for photo in photos %}
-    <img src='{{ asset(photo.URLPhoto) }}' alt='test' class='banner-item'/>
+    <img src="{{ photo.URLPhoto }}"  alt='test'/>
     {% endfor %}
     </div>
     {% if produits is empty %}
