@@ -31,10 +31,9 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $prenom = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\Email('vous devez entrer une addresse email valide')]
     #[Assert\NotBlank]
     #[Assert\NoSuspiciousCharacters]
-    #[Assert\Unique('addresse mail déja utilisé')]
+    
     private ?string $email = null;
 
     #[ORM\Column]
@@ -42,8 +41,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
-    #[Assert\NotCompromisedPassword]
-    #[Assert\PasswordStrength('Votre mot de passe doit comporter au minimum 8 caracteres, un chiffre et un caractères spécial')]
     private ?string $password = null;
 
     #[ORM\ManyToOne(inversedBy: 'users')]

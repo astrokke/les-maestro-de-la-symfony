@@ -4,9 +4,11 @@
 
 {% block main %}
     <h1>Produits de la catégorie {{ categorie.libelle }}</h1>
+    <div class='banner'>
     {% for photo in photos %}
-    <img src='{{ photo.URLPhoto }}' alt='test'/>
+    <img src="{{ photo.URLPhoto }}"  alt='test'/>
     {% endfor %}
+    </div>
     {% if produits is empty %}
         <p>Aucun produit trouvé pour cette catégorie.</p>
     {% else %}

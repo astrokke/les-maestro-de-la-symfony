@@ -6,6 +6,7 @@ use App\Entity\Categorie;
 use App\Repository\CategorieRepository;
 use App\Repository\PhotosRepository;
 use App\Repository\ProduitRepository;
+use ContainerMVcjxsa\getPhotosRepositoryService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,19 +26,21 @@ class CategorieController extends AbstractController
     }
 
     #[Route('/maincategorie/id={id}', name: 'app_categorie_show')]
-    public function showCategorieParente(Categorie $cate, CategorieRepository $cateRepo)
+    public function showCategorieParente(Categorie $cate, CategorieRepository $cateRepo, PhotosRepository $photoRepo)
+    
     {
         if ($cate === null) {
             return $this->redirectToRoute('app_index');
         }
-        $photo = $cateRepo->searchPhotoByCategorie($cate);
+        $photo = $photoRepo->searchPhotoByCategorie($cate);
+
         $enfants = $cateRepo->searchCategorieEnfant($cate);
 
         return $this->render('categorie/showparent.html.twig', [
             'title' => 'Catégorie',
             'cate' => $cate,
             'enfants' => $enfants,
-            'photo' => $photo
+            'photos' => $photo
         ]);
     }
 
@@ -55,20 +58,20 @@ class CategorieController extends AbstractController
 
         ]);
     }
-    #[Route('/categorie/{id}', name: 'app_produit_categorie')]
-    public function afficherProduitParCategorie(Categorie $categories, ProduitRepository $produitRepo, CategorieRepository $categorieRepo, PhotosRepository $photorepo): Response
+    #[Route('/produit_categorie/{id}', name: 'app_produit_categorie')]
+    public function afficherProduitParCategorie(Categorie $categories, ProduitRepository $produitRepo, CategorieRepository $categorieRepo, PhotosRepository $photoRepo): Response
     {
         $categorieId = $categories->getId();
         $categorie = $categorieRepo->find($categorieId);
         $produits = $produitRepo->findProduitsByCategorieId($categorieId);
-        $photo = $photorepo->searchPhotoByCategorie($categories);
-        var_dump($photo);
+        $photos = $photoRepo->searchPhotoByCategorie($categories);
+        
 
 
         return $this->render('categorie/produit_categorie.html.twig', [
             'produits' => $produits,
             'categorie' => $categorie,
-            'photos' => $photo,
+            'photos' => $photos,
         ]);
     }
     public function list(CategorieRepository $cateRepo, Request $request): Response
