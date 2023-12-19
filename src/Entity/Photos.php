@@ -14,7 +14,6 @@ class Photos
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'photos')]
-    #[ORM\JoinColumn(nullable: false)]
     private ?Produit $Produit = null;
 
     #[ORM\Column(length: 255)]

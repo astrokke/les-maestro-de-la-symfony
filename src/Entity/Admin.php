@@ -17,7 +17,7 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?array $roles = null;
+    private array $roles = [];
 
     #[ORM\Column(length: 255)]
     #[Assert\Regex('/^\w+/')]

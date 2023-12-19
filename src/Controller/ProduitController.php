@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Categorie;
+use App\Entity\Produit;
 use App\Repository\CategorieRepository;
 use App\Repository\ProduitRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -21,7 +22,18 @@ class ProduitController extends AbstractController
         ]);
     }
     
+#[Route('/produit/{id}', name:'app_show_produit')]
+public function showProducts(?Produit $produit): Response
+{
+    if ($produit === null) {
+        return $this->redirectToRoute('app_admin_index');
+    }
 
+    return $this->render('admin/show.html.twig', [
+        'title' => 'Fiche d\'un produit',
+        'produit' => $produit,
+    ]);
+}
 }
     
     

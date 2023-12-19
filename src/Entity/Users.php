@@ -38,7 +38,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $email = null;
 
     #[ORM\Column]
-    private array $role = [];
+    private array $roles = [];
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
@@ -105,12 +105,12 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getRole(): ?array
     {
-        return $this->role;
+        return $this->roles;
     }
 
-    public function setRole(string $role): static
+    public function setRole(string $roles): static
     {
-        $this->role = $role;
+        $this->roles = $roles;
 
         return $this;
     }
@@ -209,7 +209,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getRoles(): array
     {
-        $roles = $this->role;
+        $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
 
@@ -218,7 +218,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function setRoles(array $roles): static
     {
-        $this->role = $roles;
+        $this->roles = $roles;
 
         return $this;
     }
