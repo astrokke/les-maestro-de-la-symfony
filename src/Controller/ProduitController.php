@@ -21,22 +21,17 @@ class ProduitController extends AbstractController
             'produits' => $produits
         ]);
     }
-    
-#[Route('/produit/{id}', name:'app_show_produit')]
-public function showProducts(?Produit $produit): Response
-{
-    if ($produit === null) {
-        return $this->redirectToRoute('app_admin_index');
-    }
 
-    return $this->render('admin/show.html.twig', [
-        'title' => 'Fiche d\'un produit',
-        'produit' => $produit,
-    ]);
+    #[Route('/produit/{id}', name: 'app_show_produit')]
+    public function showProducts(?Produit $produit): Response
+    {
+        if ($produit === null) {
+            return $this->redirectToRoute('app_produit');
+        }
+
+        return $this->render('produit/show.html.twig', [
+            'title' => 'Fiche d\'un produit',
+            'produit' => $produit,
+        ]);
+    }
 }
-}
-    
-    
-    
-    
-    
