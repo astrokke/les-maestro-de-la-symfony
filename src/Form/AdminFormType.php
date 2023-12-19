@@ -20,8 +20,8 @@ class AdminFormType extends AbstractType
         $builder
             ->add('roles', ChoiceType::class, [
                 'choices' => [
-                    'Admin' => 'ROLE_ADMIN',
-                    'User' => 'ROLE_USER',
+                    'Administrateur' => "ROLE_ADMIN",
+                    'User' => "ROLE_USER",
 
                 ],
                 'multiple' => true,  // Pour permettre la sélection multiple

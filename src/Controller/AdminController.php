@@ -3,14 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Admin;
+use App\Form\AdminFormType;
 use App\Repository\AdminRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\SecurityBundle\Security;
-use App\Form\AdminFormType;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 #[Route('admin/')]
@@ -46,16 +46,21 @@ class AdminController extends AbstractController
     }
 
     #[Route('new', name: 'app_new_admin')]
-    public function new(Request $request, EntityManagerInterface $em, Security $security, UserPasswordHasherInterface $adminPasswordHasher): Response
+    public function new(Request $request,
+     EntityManagerInterface $em,
+     Security $security,
+      UserPasswordHasherInterface $adminPasswordHasher): Response
     {
         if (!$security->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('app_index');
         }
         $admin = new Admin();
         $form = $this->createForm(AdminFormType::class, $admin);
-        
+
         $form->handleRequest($request);
-        if ($form->isSubmitted()) { 
+        if ($form->isSubmitted()) {
+            $selectedRoles = $form->get('roles')->getData();
+            $admin->setRoles($selectedRoles);
             $admin->setPassword(
                 $adminPasswordHasher->hashPassword(
                     $admin,
@@ -65,6 +70,7 @@ class AdminController extends AbstractController
             $em->persist($admin);
             $em->flush();
             return $this->redirectToRoute('app_list_admin');
+            var_dump($admin);
         }
         return $this->render('admin/new.html.twig', [
             'title' => 'Création d\'un nouvel administrateur',
@@ -98,5 +104,18 @@ class AdminController extends AbstractController
             'title' => 'Mise à jour d\'un administrateur',
             'form' => $form,
         ]);
+    }
+
+    #[Route('delete/{id}', name: 'app_delete_admin', methods: ['POST'])]
+    public function delete(Request $request,
+     Admin $admin,
+      EntityManagerInterface $entityManager): Response
+    {
+        if ($this->isCsrfTokenValid('delete'.$admin->getId(), $request->request->get('_token'))) {
+            $entityManager->remove($admin);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_list_admin', [], Response::HTTP_SEE_OTHER);
     }
 }
