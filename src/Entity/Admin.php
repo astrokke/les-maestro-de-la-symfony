@@ -17,7 +17,7 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column]
-    private ?array $roles = null;
+    private array $roles = [];
 
     #[ORM\Column(length: 255)]
     #[Assert\Regex('/^\w+/')]
@@ -30,20 +30,20 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
     #[Assert\NotCompromisedPassword]
-    
+
     private ?string $password = null;
 
     #[ORM\Column(length: 255, unique: true)]
-    
+
     #[Assert\NotBlank]
     #[Assert\NoSuspiciousCharacters]
-    
+
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
     #[Assert\Regex('/^\w+/')]
-    
+
     private ?string $username = null;
 
     public function getId(): ?int

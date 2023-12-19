@@ -12,7 +12,7 @@
 
 <div class='card'>
 {% for enfant in enfants %}
-<a href='{{path('app_categorie_show_enfant',{ 'id':enfant.id })}}'>{{ enfant.libelle }}</a><br>
+<a href='{{path('app_produit_categorie',{ 'id':enfant.id })}}'>{{ enfant.libelle }}</a><br>
 {{ enfant.description }}
 {% endfor %}
 </div>
