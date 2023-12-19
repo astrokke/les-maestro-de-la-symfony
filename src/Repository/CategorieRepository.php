@@ -44,6 +44,7 @@ class CategorieRepository extends ServiceEntityRepository
         }
         return $enfants;
     }
+
     //    /**
     //     * @return Categorie[] Returns an array of Categorie objects
     //     */
