@@ -148,4 +148,24 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    /**
+     * Get the value of roles
+     */ 
+    public function getRole()
+    {
+        return $this->roles;
+    }
+
+    /**
+     * Set the value of roles
+     *
+     * @return  self
+     */ 
+    public function setRole($roles)
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
 }

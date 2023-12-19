@@ -11,7 +11,7 @@
 <div class="example-wrapper">
 {% for produit in produits %}
 <ul>
-   <li> {{ produit.libelle }}</li>
+   <li><a href = "{{ path('app_show_produit', { 'id': produit.id })}}"> {{ produit.libelle }}</a></li>
     <li>{{ produit.description }}</li>
     <li>{{ produit.prixHt }}</li>
     </ul>
