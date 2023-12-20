@@ -42,6 +42,13 @@ class PhotosRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function insertPhotoWithCategorie($id, $path)
+    {
+        $sql = "INSERT INTO `photos`(`categorie_id`, `url_photo`) VALUES ('" . $id . "','" . $path . "')";
+        $this->getEntityManager()->getConnection()
+            ->executeQuery($sql);
+    }
     //    /**
     //     * @return Photos[] Returns an array of Photos objects
     //     */
