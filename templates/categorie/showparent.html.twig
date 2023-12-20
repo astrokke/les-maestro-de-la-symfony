@@ -9,9 +9,11 @@
         {{ title }} {{ cate.libelle }} 
     </h2>
     <h3> {{ cate.description }}</h3>
+    <div class='banner'>
     {% for photo in photos %}
-    <img src='{{ asset(photo.URLPhoto) }}' alt='test' style='width: 100%;'/>
+    <img src='{{ asset(photo.URLPhoto) }}' alt='test' class='banner-item'/>
     {% endfor %} 
+    </div>
 
 <div class='card'>
 {% for enfant in enfants %}
