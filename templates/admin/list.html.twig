@@ -35,7 +35,7 @@
             <td><a href="{{ path('app_show_admin', { 'id': item.id })}}">Voir</a></td>
             {% if is_granted('ROLE_ADMIN') %}
             <td><a href="{{ path('app_update_admin', { 'id': item.id })}}">Mettre à jour</a></td>
-             <td>{{ include('admin/delete.html.twig', { 'id': item.id })}}</td>
+             <td>{{ include('admin/admin_delete.html.twig', { 'id': item.id })}}</td>
             {% endif %}
         </tr>
     {% else %}

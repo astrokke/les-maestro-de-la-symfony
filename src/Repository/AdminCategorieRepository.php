@@ -5,7 +5,6 @@ namespace App\Repository;
 use App\Entity\Categorie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Bundle\SecurityBundle\Security;
 
 /**
  * @extends ServiceEntityRepository<Categorie>
@@ -15,7 +14,7 @@ use Symfony\Bundle\SecurityBundle\Security;
  * @method Categorie[]    findAll()
  * @method Categorie[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class CategorieRepository extends ServiceEntityRepository
+class AdminCategorieRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -54,7 +53,6 @@ class CategorieRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
     //    /**
     //     * @return Categorie[] Returns an array of Categorie objects
     //     */

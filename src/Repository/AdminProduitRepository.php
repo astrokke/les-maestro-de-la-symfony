@@ -14,7 +14,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Produit[]    findAll()
  * @method Produit[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class ProduitRepository extends ServiceEntityRepository
+class AdminProduitRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
@@ -48,6 +48,7 @@ class ProduitRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    
     //    /**
     //     * @return Produit[] Returns an array of Produit objects
     //     */

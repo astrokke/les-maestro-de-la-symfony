@@ -3,7 +3,8 @@
 {% block main %}
 Bienvenue
 
- 
+ <a href='{{ path('app_categorie_list_admin')}}'>Gestion des catégories</a>
+ <a href='{{ path('app_produit_list_admin')}}'>Gestion des produits</a>
  <a href='{{ path('app_list_admin')}}'>Gestion des administrateurs</a>
  
 {% endblock %}
