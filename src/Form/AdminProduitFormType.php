@@ -3,31 +3,33 @@
 namespace App\Form;
 
 use App\Entity\Categorie;
-use App\Entity\Photos;
+use App\Entity\Panier;
 use App\Entity\Produit;
+use App\Entity\Promotion;
+use App\Entity\TVA;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-
-class CategorieType extends AbstractType
+class AdminProduitFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('libelle')
             ->add('description')
-            ->add('Photo',EntityType::class, [
-                'class' => PHOTOS::class,
+            ->add('prix_ht')
+            ->add('TVA', EntityType::class, [
+                'class' => TVA::class,
 'choice_label' => 'id',
             ])
-            ->add('categorie_enfant', EntityType::class, [
+            ->add('promotion', EntityType::class, [
+                'class' => Promotion::class,
+'choice_label' => 'id',
+            ])
+            ->add('categories', EntityType::class, [
                 'class' => Categorie::class,
-'choice_label' => 'id',
-            ])
-            ->add('Produit', EntityType::class, [
-                'class' => Produit::class,
 'choice_label' => 'id',
 'multiple' => true,
             ])
@@ -37,7 +39,7 @@ class CategorieType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Categorie::class,
+            'data_class' => Produit::class,
         ]);
     }
 }

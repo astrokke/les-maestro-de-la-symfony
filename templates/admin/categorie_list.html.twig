@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block main %}
+    <h2>{{ title }}</h2>
+    {% if is_granted('ROLE_ADMIN') %}
+    <h3><a href="{{ path('app_new_categorie') }}">Créer</a></h3>
+    {% endif %}
+    <table>
+        <tr>
+            <td>
+            libelle
+                <a href="{{ path('app_categorie_list_admin') }}?libelle={{ libelle }}">></a>
+
+            </td>
+        </tr>
+    {% for item in categorie %}
+        <tr>
+            <td>{{ item.libelle }}</td>
+            <td>{{ item.description }}</td>
+            <td><a href="{{ path('app_categorie_show_admin', { 'id': item.id })}}">Voir</a></td>
+            {% if is_granted('ROLE_ADMIN') %}
+            <td><a href="{{ path('app_update_categorie', { 'id': item.id })}}">Mettre à jour</a></td>
+            <td>{{ include('admin/categorie_delete.html.twig', { 'id': item.id })}}</td>
+            {% endif %}
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="5">Aucun enregistrement</td>
+        </tr>
+    {% endfor %}
+    </table>
+    <form>
+        <input type='text' name='nom' placeholder='recherchez par libelle' value='{{ libelle }}'>
+        <input type='submit' name='submit' value='rechercher'>
+    </form>
+{% endblock %}
