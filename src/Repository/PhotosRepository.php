@@ -33,6 +33,15 @@ class PhotosRepository extends ServiceEntityRepository
         }
         return $photos;
     }
+    public function searchPhotoByProduit($idProduit)
+    {
+
+        return $this->createQueryBuilder('p')
+            ->where('p.Produit = :id')
+            ->setParameter('id',   $idProduit)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
     //    /**
     //     * @return Photos[] Returns an array of Photos objects
     //     */
