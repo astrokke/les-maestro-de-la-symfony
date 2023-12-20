@@ -151,6 +151,9 @@ class AdminCategorieController extends AbstractController
             return $this->redirectToRoute('app_index');
         }
         if ($this->isCsrfTokenValid('delete'.$categorie->getId(), $request->request->get('_token'))) {
+            $categorie->setCategorieParente(null);
+            $entityManager->persist($categorie);
+            $entityManager->flush();
             $entityManager->remove($categorie);
             $entityManager->flush();
         }
