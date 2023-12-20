@@ -2,11 +2,8 @@
 <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
 <h1 class="test">Liste des Promotions</h1>
 
-<!-- Formulaire de création de promotion -->
-{{ form_start(form) }}
-{{ form_widget(form) }}
-<button type="submit" class="btn-promo">Ajouter Promotion</button>
-{{ form_end(form) }}
+
+<a href="{{ path('promotion_create') }}">Ajouter une nouvelle promotion</a>
 
 <!-- Tableau affichant les promotions existantes -->
 <table>
@@ -25,6 +22,9 @@
             <td>{{ promotion.libelle }}</td>
             <td>{{ promotion.tauxPromotion }}%</td>
             <td>{{ promotion.codePromotion }}</td>
+            <td><a href="{{ path('promotion_edit', {'id': promotion.id}) }}">Modifier</a>
+            <a href="{{ path('promotion_delete', {'id': promotion.id}) }}" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette promotion ?');">Supprimer</a>
+            </td>
         </tr>
         {% else %}
         <tr>

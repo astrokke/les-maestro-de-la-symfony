@@ -1,0 +1,15 @@
+
+
+{% block title %}Créer une nouvelle Promotion{% endblock %}
+
+
+<h1>Créer une nouvelle Promotion</h1>
+
+<!-- Formulaire de création de promotion -->
+{{ form_start(form) }}
+{{ form_widget(form) }}
+<button type="submit" class="btn-promo">Ajouter Promotion</button>
+{{ form_end(form) }}
+
+<a href="{{ path('promotion') }}">Retour à la liste des promotions</a>
+
