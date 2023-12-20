@@ -1,0 +1,43 @@
+
+<link rel="stylesheet" href="{{ asset('styles/app.css') }}">
+<h1 class="test">Liste des Promotions</h1>
+
+<!-- Formulaire de création de promotion -->
+{{ form_start(form) }}
+{{ form_widget(form) }}
+<button type="submit" class="btn-promo">Ajouter Promotion</button>
+{{ form_end(form) }}
+
+<!-- Tableau affichant les promotions existantes -->
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Libellé</th>
+            <th>Taux de Promotion</th>
+            <th>Code de Promotion</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for promotion in promotions %}
+        <tr>
+            <td>{{ promotion.id }}</td>
+            <td>{{ promotion.libelle }}</td>
+            <td>{{ promotion.tauxPromotion }}%</td>
+            <td>{{ promotion.codePromotion }}</td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="4">Aucune promotion trouvée</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
+
+
+
+
+
+   
