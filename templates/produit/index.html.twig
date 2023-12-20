@@ -1,31 +1,22 @@
+{% extends 'base.html.twig' %}
 
-<h2>Détails du Produit</h2>
+{% block title %}Hello ProduitController!{% endblock %}
 
-<div class="produit-details">
-    <h3>{{ produit.libelle }}</h3>
-    <p>Description: {{ produit.description }}</p>
-    <p>Prix HT: {{ produit.prix_ht }} €</p>
-    <p>TVA: {{ produit.TVA.taux }}%</p>
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
 
-    {% if produit.promotion is not null %}
-        <div class="promotion-details">
-            <h4>Promotion: {{ produit.promotion.libelle }}</h4>
-            <p>Taux de promotion: {{ produit.promotion.tauxPromotion }}%</p>
-            <p>Code de promotion: {{ produit.promotion.codePromotion }}</p>
-        </div>
-    {% else %}
-        <p>Pas de promotion actuellement</p>
-    {% endif %}
+<div class="example-wrapper">
+    <h1>Hello {{ controller_name }}! ✅</h1>
 
-    <h4>Catégories :</h4>
+    This friendly message is coming from:
     <ul>
-        {% for categorie in produit.categories %}
-            <li>{{ categorie.nom }}</li>
-        {% endfor %}
+        <li>Your controller at <code><a href="{{ 'C:/Users/peiro/Documents/Symfony/ProjetSymfony/src/Controller/ProduitController.php'|file_link(0) }}">src/Controller/ProduitController.php</a></code></li>
+        <li>Your template at <code><a href="{{ 'C:/Users/peiro/Documents/Symfony/ProjetSymfony/templates/produit/index.html.twig'|file_link(0) }}">templates/produit/index.html.twig</a></code></li>
     </ul>
-
-    <h4>Photos :</h4>
-    
+    {% endfor %}
 </div>
 
 <a href="{{ path('app_produit') }}">Retour à la liste des produits</a>

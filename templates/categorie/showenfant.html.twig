@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{title}}
+{% endblock %}
+
+{% block main %}
+    <h2>
+        {{ title }} {{ cate.libelle }} 
+    </h2>
+    <h3> {{ cate.description }}</h3>
+{% endblock %}

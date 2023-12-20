@@ -14,25 +14,32 @@ class Photos
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'photos')]
-    #[ORM\JoinColumn(nullable: false)]
     private ?Produit $Produit = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $URL_photo = null;
 
     #[ORM\ManyToOne(inversedBy: 'photos')]
     private ?Categorie $categorie = null;
+
+    #[ORM\ManyToOne(inversedBy: 'Photos')]
+    private ?Produit $produit = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getProduit(): ?Produit
+
+
+    public function getURLPhoto(): ?string
     {
-        return $this->Produit;
+        return $this->URL_photo;
     }
 
-    public function setProduit(?Produit $Produit): static
+    public function setURLPhoto(string $URL_photo): static
     {
-        $this->Produit = $Produit;
+        $this->URL_photo = $URL_photo;
 
         return $this;
     }
@@ -45,6 +52,18 @@ class Photos
     public function setCategorie(?Categorie $categorie): static
     {
         $this->categorie = $categorie;
+
+        return $this;
+    }
+
+    public function getProduit(): ?Produit
+    {
+        return $this->produit;
+    }
+
+    public function setProduit(?Produit $produit): static
+    {
+        $this->produit = $produit;
 
         return $this;
     }
