@@ -19,7 +19,7 @@ class Departement
     private ?string $nom = null;
 
     #[ORM\Column]
-    private ?int $numero_departement = null;
+    private ?string $numero_departement = null;
 
     #[ORM\OneToMany(mappedBy: 'Departement', targetEntity: Ville::class)]
     private Collection $Ville;
@@ -50,7 +50,7 @@ class Departement
         return $this;
     }
 
-    public function getNumeroDepartement(): ?int
+    public function getNumeroDepartement(): ?string
     {
         return $this->numero_departement;
     }
