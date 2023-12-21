@@ -6,7 +6,10 @@
 
 {% block main %}
     <h2>{{ title }}</h2>
-        <p>
-            {{ produit.id }}-{{ produit.libelle }}-{{ produit.description }}-{{ produit.prixHt }}
+    {% for photo in photos %}
+        <img src='{{ photo.URLPhoto }}' alt='test' class='banner-item'/>
+    {% endfor %} 
+    <p>
+         {{ produit.id }}-{{ produit.libelle }}-{{ produit.description }}-{{ prixTTC }} 
         </p>
 {% endblock %}

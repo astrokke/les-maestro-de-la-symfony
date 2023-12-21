@@ -12,7 +12,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\SecurityBundle\Security;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\AdminProduitFormType;
-
+use App\Repository\PhotosRepository;
+use App\Service\FileUploader;
 
 #[Route('admin/')]
 class AdminProduitController extends AbstractController
@@ -28,9 +29,10 @@ class AdminProduitController extends AbstractController
     }
 
     #[Route('produit/{id}', name: 'app_produit_show_admin')]
-    public function showProducts(?Produit $produit,
-    Security $security,): Response
-    {
+    public function showProducts(
+        ?Produit $produit,
+        Security $security,
+    ): Response {
         if (!$security->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('app_index');
         }
@@ -42,16 +44,17 @@ class AdminProduitController extends AbstractController
     }
 
     #[Route('produit_list', name: 'app_produit_list_admin')]
-    public function list(AdminProduitRepository $produitRepo,
-    Security $security,
-    ?Produit $produit,
-     Request $request): Response
-    {
-        
+    public function list(
+        AdminProduitRepository $produitRepo,
+        Security $security,
+        ?Produit $produit,
+        Request $request
+    ): Response {
+
         if (!$security->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('app_index');
         }
-    
+
         $produit = $produitRepo->searchByName($request->query->get('libelle', ''));
 
         return $this->render('admin/produit_list.html.twig', [
@@ -62,11 +65,14 @@ class AdminProduitController extends AbstractController
     }
 
     #[Route('new_produit', name: 'app_new_produit')]
-    public function new(Request $request,
-     EntityManagerInterface $em,
-     Security $security,
-    ): Response
-    {
+    public function new(
+        Request $request,
+        EntityManagerInterface $em,
+        Security $security,
+        FileUploader $upload,
+        PhotosRepository $photo,
+        ProduitRepository $produitrepo,
+    ): Response {
         if (!$security->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('app_index');
         }
@@ -75,10 +81,26 @@ class AdminProduitController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
+            $file = $form['upload_file']->getData();
+            if ($file) {
+                $file_name = $upload->uploadProduit($file);
+                if (null !== $file_name) // for example
+                {
+                    $directory = $upload->getTargetDirectoryProduit();
+                    $full_path = $directory . '/' . $file_name;
+                } else {
+                    $error = 'une erreur est survenue';
+                }
+            }
+
+
             $em->persist($produit);
+
             $em->flush();
+
+            $photo->insertPhotoWithProduit($produitrepo->getLastId()->getId(), '/upload/photo_produit/' . $file_name);
+
             return $this->redirectToRoute('app_produit_list_admin');
-    
         }
         return $this->render('admin/produit_new.html.twig', [
             'title' => 'Création d\'un nouveau produit',
@@ -114,20 +136,21 @@ class AdminProduitController extends AbstractController
         ]);
     }
 
-    
+
     #[Route('delete_produit/{id}', name: 'app_delete_produit', methods: ['POST'])]
-    public function delete(Request $request,
-     Produit $produit,
-     Security $security,
-      EntityManagerInterface $entityManager): Response
-    {
+    public function delete(
+        Request $request,
+        Produit $produit,
+        Security $security,
+        EntityManagerInterface $entityManager
+    ): Response {
         if (!$security->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('app_index');
         }
         if ($produit === null) {
             return $this->redirectToRoute('app_admin_dashboard');
         }
-        if ($this->isCsrfTokenValid('delete'.$produit->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $produit->getId(), $request->request->get('_token'))) {
             $entityManager->remove($produit);
             $entityManager->flush();
         }

@@ -50,9 +50,17 @@ class CategorieRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('s')
             ->where('s.libelle like :val')
-            ->setParameter('val', '%'.$libelle.'%')
+            ->setParameter('val', '%' . $libelle . '%')
             ->getQuery()
             ->getResult();
+    }
+    public function getLastId()
+    {
+        return $this->createQueryBuilder('c')
+            ->setMaxResults(1)
+            ->orderBy('c.id', 'DESC')
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
     //    /**
