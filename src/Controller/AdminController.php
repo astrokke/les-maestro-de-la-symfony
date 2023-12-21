@@ -46,11 +46,12 @@ class AdminController extends AbstractController
     }
 
     #[Route('new', name: 'app_new_admin')]
-    public function new(Request $request,
-     EntityManagerInterface $em,
-     Security $security,
-      UserPasswordHasherInterface $adminPasswordHasher): Response
-    {
+    public function new(
+        Request $request,
+        EntityManagerInterface $em,
+        Security $security,
+        UserPasswordHasherInterface $adminPasswordHasher
+    ): Response {
         if (!$security->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('app_index');
         }
@@ -107,11 +108,12 @@ class AdminController extends AbstractController
     }
 
     #[Route('delete/{id}', name: 'app_delete_admin', methods: ['POST'])]
-    public function delete(Request $request,
-     Admin $admin,
-      EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$admin->getId(), $request->request->get('_token'))) {
+    public function delete(
+        Request $request,
+        Admin $admin,
+        EntityManagerInterface $entityManager
+    ): Response {
+        if ($this->isCsrfTokenValid('delete' . $admin->getId(), $request->request->get('_token'))) {
             $entityManager->remove($admin);
             $entityManager->flush();
         }

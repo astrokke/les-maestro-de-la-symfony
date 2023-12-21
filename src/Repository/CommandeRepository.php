@@ -22,6 +22,15 @@ class CommandeRepository extends ServiceEntityRepository
         parent::__construct($registry, Commande::class);
     }
 
+    public function searchByName(string $id): ?array
+    {
+        return $this->createQueryBuilder('s')
+            ->where('s.id like :val')
+            ->setParameter('val', '%' . $id . '%')
+
+            ->getQuery()
+            ->getResult();
+    }
     public function insertCommande($date, $total, $livraison, $paiement, $user, $panier)
     {
         $sql = "INSERT INTO `commande`(`date_commande`, `prix_ttc_commande`, `livraison_id`, `paiement_id`, `etat_id`, `users_id`, `panier_id`) 

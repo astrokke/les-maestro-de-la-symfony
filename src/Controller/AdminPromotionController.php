@@ -26,9 +26,10 @@ class AdminPromotionController extends AbstractController
     }
 
     #[Route('promotion_show/{id}', name: 'app_promotion_show')]
-    public function showPromotion(?Promotion $promotion,
-    Security $security,): Response
-    {
+    public function showPromotion(
+        ?Promotion $promotion,
+        Security $security,
+    ): Response {
         if (!$security->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('app_index');
         }
@@ -40,16 +41,17 @@ class AdminPromotionController extends AbstractController
     }
 
     #[Route('promotion_list', name: 'app_promotion_list')]
-    public function list(PromotionRepository $promotionRepo,
-    Security $security,
-    ?Promotion $promotion,
-     Request $request): Response
-    {
-        
+    public function list(
+        PromotionRepository $promotionRepo,
+        Security $security,
+        ?Promotion $promotion,
+        Request $request
+    ): Response {
+
         if (!$security->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('app_index');
         }
-    
+
         $promotion = $promotionRepo->searchByName($request->query->get('libelle', ''));
 
         return $this->render('promotion/promotion_list.html.twig', [
@@ -60,11 +62,11 @@ class AdminPromotionController extends AbstractController
     }
 
     #[Route('new_promotion', name: 'app_new_promotion')]
-    public function new(Request $request,
-     EntityManagerInterface $em,
-     Security $security,
-    ): Response
-    {
+    public function new(
+        Request $request,
+        EntityManagerInterface $em,
+        Security $security,
+    ): Response {
         if (!$security->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('app_index');
         }
@@ -76,7 +78,6 @@ class AdminPromotionController extends AbstractController
             $em->persist($promotion);
             $em->flush();
             return $this->redirectToRoute('app_promotion_list');
-    
         }
         return $this->render('promotion/promotion_new.html.twig', [
             'title' => 'Création d\'une nouvelle promotion',
@@ -112,20 +113,21 @@ class AdminPromotionController extends AbstractController
         ]);
     }
 
-    
+
     #[Route('delete_promotion/{id}', name: 'app_delete_promotion', methods: ['POST'])]
-    public function delete(Request $request,
-     Promotion $promotion,
-     Security $security,
-      EntityManagerInterface $entityManager): Response
-    {
+    public function delete(
+        Request $request,
+        Promotion $promotion,
+        Security $security,
+        EntityManagerInterface $entityManager
+    ): Response {
         if (!$security->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('app_index');
         }
         if ($promotion === null) {
             return $this->redirectToRoute('app_admin_dashboard');
         }
-        if ($this->isCsrfTokenValid('delete'.$promotion->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $promotion->getId(), $request->request->get('_token'))) {
             $entityManager->remove($promotion);
             $entityManager->flush();
         }

@@ -21,7 +21,7 @@ class AdminCategorieFormType extends AbstractType
             ->add('description')
             ->add('categorie_parente', EntityType::class, [
                 'class' => Categorie::class,
-                'choice_label' => 'id',
+                'choice_label' => 'libelle',
             ])->add('upload_file', FileType::class, [
                 'label' => false,
                 'mapped' => false, // Tell that there is no Entity to link

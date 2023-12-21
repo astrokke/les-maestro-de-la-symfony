@@ -38,6 +38,7 @@ class AdminCategorieController extends AbstractController
         CategorieRepository $categorieRepo,
         PhotosRepository $photorepo
     ): Response {
+
         $categorieId = $categories->getId();
         $categorie = $categorieRepo->find($categorieId);
         $produits = $produitRepo->findProduitsByCategorieId($categorieId);
@@ -57,6 +58,7 @@ class AdminCategorieController extends AbstractController
         ?Categorie $categorie,
         Security $security,
     ): Response {
+
         if (!$security->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('app_index');
         }
@@ -77,6 +79,7 @@ class AdminCategorieController extends AbstractController
         Security $security,
         Request $request
     ): Response {
+
         if (!$security->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('app_index');
         }
@@ -179,13 +182,15 @@ class AdminCategorieController extends AbstractController
             return $this->redirectToRoute('app_index');
         }
         if ($this->isCsrfTokenValid('delete' . $categorie->getId(), $request->request->get('_token'))) {
-            $categorie->setCategorieParente(null);
-            $entityManager->persist($categorie);
-            $entityManager->flush();
-            $entityManager->remove($categorie);
-            $entityManager->flush();
-        }
+            if ($this->isCsrfTokenValid('delete' . $categorie->getId(), $request->request->get('_token'))) {
+                $categorie->setCategorieParente(null);
+                $entityManager->persist($categorie);
+                $entityManager->flush();
+                $entityManager->remove($categorie);
+                $entityManager->flush();
+            }
 
-        return $this->redirectToRoute('app_categorie_list_admin', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_categorie_list_admin', [], Response::HTTP_SEE_OTHER);
+        }
     }
 }
