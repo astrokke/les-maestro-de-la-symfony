@@ -37,6 +37,7 @@
     {% block header %}
     {% block nav %}
     <nav>
+    <a href='{{path('app_index')}}'>Accueil</a>
     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
     
     {% if  is_granted('ROLE_ADMIN') %}
@@ -47,6 +48,7 @@
            <a href="{{ path('app_user') }}"> {{ app.user.userIdentifier }}</a>
     {% endif %}
     {% endif %}
+    <a href='{{ path('app_panier') }}'><button class='cart'>Panier</button></a>
     {% endif %}
     {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
     <a href="{{ path('app_login') }}">Connectez-vous</a>
