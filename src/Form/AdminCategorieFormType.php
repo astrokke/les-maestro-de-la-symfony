@@ -18,9 +18,8 @@ class AdminCategorieFormType extends AbstractType
             ->add('description')
             ->add('categorie_parente', EntityType::class, [
                 'class' => Categorie::class,
-'choice_label' => 'libelle',
-            ])
-        ;
+                'choice_label' => 'libelle',
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

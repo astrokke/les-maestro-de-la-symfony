@@ -31,11 +31,12 @@ class AdminCategorieController extends AbstractController
 
 
     #[Route('categorie/{id}', name: 'app_produit_categorie')]
-    public function afficherProduitParCategorie(Categorie $categories,
-     ProduitRepository $produitRepo,
-      CategorieRepository $categorieRepo,
-       PhotosRepository $photorepo): Response
-    {
+    public function afficherProduitParCategorie(
+        Categorie $categories,
+        ProduitRepository $produitRepo,
+        CategorieRepository $categorieRepo,
+        PhotosRepository $photorepo
+    ): Response {
         $categorieId = $categories->getId();
         $categorie = $categorieRepo->find($categorieId);
         $produits = $produitRepo->findProduitsByCategorieId($categorieId);
@@ -51,9 +52,10 @@ class AdminCategorieController extends AbstractController
     }
 
     #[Route('categorie_show/{id}', name: 'app_categorie_show_admin')]
-    public function show(?Categorie $categorie,
-    Security $security,): Response
-    {
+    public function show(
+        ?Categorie $categorie,
+        Security $security,
+    ): Response {
         if (!$security->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('app_index');
         }
@@ -68,11 +70,12 @@ class AdminCategorieController extends AbstractController
     }
 
     #[Route('categorie_list', name: 'app_categorie_list_admin')]
-    public function list(CategorieRepository $categorieRepo,
-    ?Categorie $categorie,
-    Security $security,
-     Request $request): Response
-    {
+    public function list(
+        CategorieRepository $categorieRepo,
+        ?Categorie $categorie,
+        Security $security,
+        Request $request
+    ): Response {
         if (!$security->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('app_index');
         }
@@ -86,11 +89,11 @@ class AdminCategorieController extends AbstractController
     }
 
     #[Route('new_categorie', name: 'app_new_categorie')]
-    public function new(Request $request,
-     EntityManagerInterface $em,
-     Security $security,
-    ): Response
-    {
+    public function new(
+        Request $request,
+        EntityManagerInterface $em,
+        Security $security,
+    ): Response {
         if (!$security->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('app_index');
         }
@@ -102,7 +105,6 @@ class AdminCategorieController extends AbstractController
             $em->persist($categorie);
             $em->flush();
             return $this->redirectToRoute('app_categorie_list_admin');
-    
         }
         return $this->render('admin/categorie_new.html.twig', [
             'title' => 'Création d\'une nouvelle catégorie',
@@ -139,18 +141,19 @@ class AdminCategorieController extends AbstractController
     }
 
     #[Route('delete_categorie/{id}', name: 'app_delete_categorie', methods: ['POST'])]
-    public function delete(Request $request,
-     Categorie $categorie,
-     Security $security,
-      EntityManagerInterface $entityManager): Response
-    {
+    public function delete(
+        Request $request,
+        Categorie $categorie,
+        Security $security,
+        EntityManagerInterface $entityManager
+    ): Response {
         if (!$security->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('app_index');
         }
         if ($categorie === null) {
             return $this->redirectToRoute('app_index');
         }
-        if ($this->isCsrfTokenValid('delete'.$categorie->getId(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $categorie->getId(), $request->request->get('_token'))) {
             $categorie->setCategorieParente(null);
             $entityManager->persist($categorie);
             $entityManager->flush();
@@ -161,5 +164,3 @@ class AdminCategorieController extends AbstractController
         return $this->redirectToRoute('app_categorie_list_admin', [], Response::HTTP_SEE_OTHER);
     }
 }
-
-

@@ -14,13 +14,14 @@ use Doctrine\ORM\EntityManagerInterface;
 #[Route('admin/')]
 class AdminUsersController extends AbstractController
 {
-    
+
     #[Route('user_list', name: 'app_user_list_admin')]
-    public function list(AdminUsersRepository $usersRepo,
-    ?Users $users,
-    Security $security,
-     Request $request): Response
-    {
+    public function list(
+        AdminUsersRepository $usersRepo,
+        ?Users $users,
+        Security $security,
+        Request $request
+    ): Response {
         if (!$security->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('app_index');
         }
@@ -41,9 +42,10 @@ class AdminUsersController extends AbstractController
     }
 
     #[Route('show_user/{id}', name: 'app_user_show_admin')]
-    public function show(?Users $users,
-    Security $security,): Response
-    {
+    public function show(
+        ?Users $users,
+        Security $security,
+    ): Response {
         if (!$security->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('app_index');
         }
@@ -56,13 +58,14 @@ class AdminUsersController extends AbstractController
             'users' => $users,
         ]);
     }
-   
+
     #[Route('delete_user/{id}', name: 'app_delete_user', methods: ['POST'])]
-    public function delete(Request $request,
-     Users $users,
-      EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$users->getId(), $request->request->get('_token'))) {
+    public function delete(
+        Request $request,
+        Users $users,
+        EntityManagerInterface $entityManager
+    ): Response {
+        if ($this->isCsrfTokenValid('delete' . $users->getId(), $request->request->get('_token'))) {
             $entityManager->remove($users);
             $entityManager->flush();
         }

@@ -49,7 +49,7 @@ class AdminCategorieRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('s')
             ->where('s.libelle like :val')
-            ->setParameter('val', '%'.$libelle.'%')
+            ->setParameter('val', '%' . $libelle . '%')
             ->getQuery()
             ->getResult();
     }

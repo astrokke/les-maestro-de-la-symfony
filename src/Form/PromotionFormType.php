@@ -14,8 +14,7 @@ class PromotionFormType extends AbstractType
         $builder
             ->add('libelle')
             ->add('Taux_promotion')
-            ->add('code_promotion')
-        ;
+            ->add('code_promotion');
     }
 
     public function configureOptions(OptionsResolver $resolver): void
