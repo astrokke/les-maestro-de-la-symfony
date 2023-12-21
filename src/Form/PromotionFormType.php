@@ -2,31 +2,26 @@
 
 namespace App\Form;
 
-use App\Entity\Categorie;
-use App\Entity\Produit;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use App\Entity\Promotion;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class AdminCategorieFormType extends AbstractType
+class PromotionFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('libelle')
-            ->add('description')
-            ->add('categorie_parente', EntityType::class, [
-                'class' => Categorie::class,
-'choice_label' => 'libelle',
-            ])
+            ->add('Taux_promotion')
+            ->add('code_promotion')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Categorie::class,
+            'data_class' => Promotion::class,
         ]);
     }
 }

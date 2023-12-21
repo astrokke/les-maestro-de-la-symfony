@@ -97,7 +97,7 @@ class AdminProduitController extends AbstractController
             return $this->redirectToRoute('app_index');
         }
         if ($produit === null) {
-            return $this->redirectToRoute('app_index');
+            return $this->redirectToRoute('app_admin_dashboard');
         }
 
         $form = $this->createForm(AdminProduitFormType::class, $produit);
@@ -125,7 +125,7 @@ class AdminProduitController extends AbstractController
             return $this->redirectToRoute('app_index');
         }
         if ($produit === null) {
-            return $this->redirectToRoute('app_index');
+            return $this->redirectToRoute('app_admin_dashboard');
         }
         if ($this->isCsrfTokenValid('delete'.$produit->getId(), $request->request->get('_token'))) {
             $entityManager->remove($produit);

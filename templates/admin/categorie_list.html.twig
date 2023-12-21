@@ -11,12 +11,11 @@
     {% endif %}
     <table>
         <tr>
-            <td>
-            libelle
-                <a href="{{ path('app_categorie_list_admin') }}?libelle={{ libelle }}">></a>
-
-            </td>
+            <th>Id</th>
+            <th>Libellé</th>
+            <th>Description</th>
         </tr>
+
     {% for item in categorie %}
         <tr>
             <td>{{ item.libelle }}</td>

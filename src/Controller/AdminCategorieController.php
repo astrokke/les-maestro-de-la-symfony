@@ -101,7 +101,7 @@ class AdminCategorieController extends AbstractController
         if ($form->isSubmitted()) {
             $em->persist($categorie);
             $em->flush();
-            return $this->redirectToRoute('app_list_admin');
+            return $this->redirectToRoute('app_categorie_list_admin');
     
         }
         return $this->render('admin/categorie_new.html.twig', [
@@ -130,7 +130,7 @@ class AdminCategorieController extends AbstractController
         if ($form->isSubmitted()) {
             $em->persist($categorie);
             $em->flush();
-            return $this->redirectToRoute('app_list_admin');
+            return $this->redirectToRoute('app_categorie_list_admin');
         }
         return $this->render('admin/new.html.twig', [
             'title' => 'Mise à jour d\'une catégorie',
