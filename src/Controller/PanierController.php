@@ -23,17 +23,21 @@ class PanierController extends AbstractController
         $id = $user->getId();
         $panier = $panierRepo->getLastPanier($id);
         $produits = [];
+        $total = 0;
         foreach ($panier->getPanierProduits() as $lignePanier) {
+
             $produits[] = [
                 'produit' => $lignePanier->getProduit(),
                 'qte' => $lignePanier->getQuantite(),
-                'photo' => $photos->searchPhotoByProduit($lignePanier->getProduit()->getId()),
+                'photo' => $photos->searchOnePhotoByProduit($lignePanier->getProduit()->getId()),
                 'prixTTC' => $lignePanier->getProduit()->getPrixHT() + ($lignePanier->getProduit()->getPrixHT() * $lignePanier->getProduit()->getTVA()->getTauxTva() / 100),
             ];
+            $total += ($lignePanier->getProduit()->getPrixHT() + ($lignePanier->getProduit()->getPrixHT() * $lignePanier->getProduit()->getTVA()->getTauxTva() / 100)) * $lignePanier->getQuantite();
         }
         return $this->render('panier/index.html.twig', [
             'controller_name' => 'PanierController',
             'produits' => $produits,
+            'total' => $total
 
         ]);
     }

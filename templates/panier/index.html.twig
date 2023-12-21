@@ -7,7 +7,6 @@
 
     
     {% for ligneProduit in produits %}
-    
     <img src='{{ ligneProduit.photo.URLPhoto }}' alt='' class='img-panier'/>
         
         {{ ligneProduit.produit.libelle }}
@@ -16,5 +15,7 @@
         {{ ligneProduit.prixTTC }}
 
     {% endfor %}
+    total = {{ total }}
+    <a href='{{ path('app_commande') }}'><button>Valider votre panier</button></a>
 </div>
 {% endblock %}

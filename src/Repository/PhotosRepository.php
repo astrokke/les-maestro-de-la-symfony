@@ -33,7 +33,7 @@ class PhotosRepository extends ServiceEntityRepository
         }
         return $photos;
     }
-    public function searchPhotoByProduit($idProduit)
+    public function searchOnePhotoByProduit($idProduit)
     {
 
         return $this->createQueryBuilder('p')
@@ -41,6 +41,15 @@ class PhotosRepository extends ServiceEntityRepository
             ->setParameter('id',   $idProduit)
             ->getQuery()
             ->getOneOrNullResult();
+    }
+    public function searchPhotoByProduit($idProduit)
+    {
+
+        return $this->createQueryBuilder('p')
+            ->where('p.Produit = :id')
+            ->setParameter('id',   $idProduit)
+            ->getQuery()
+            ->getResult();
     }
 
     public function insertPhotoWithCategorie($id, $path)
