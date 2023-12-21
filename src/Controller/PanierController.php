@@ -16,12 +16,20 @@ class PanierController extends AbstractController
     #[Route('/panier', name: 'app_panier')]
     public function index(PanierRepository $panierRepo, Security $security, PhotosRepository $photos): Response
     {
+        if (!$security->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirectToRoute('app_index');
+        }
         $user = $security->getUser();
         $id = $user->getId();
         $panier = $panierRepo->getLastPanier($id);
         $produits = [];
         foreach ($panier->getPanierProduits() as $lignePanier) {
-            $produits[] = ['produit' => $lignePanier->getProduit(), 'qte' => $lignePanier->getQuantite(), 'photo' => $photos->searchPhotoByProduit($lignePanier->getProduit()->getId())];
+            $produits[] = [
+                'produit' => $lignePanier->getProduit(),
+                'qte' => $lignePanier->getQuantite(),
+                'photo' => $photos->searchPhotoByProduit($lignePanier->getProduit()->getId()),
+                'prixTTC' => $lignePanier->getProduit()->getPrixHT() + ($lignePanier->getProduit()->getPrixHT() * $lignePanier->getProduit()->getTVA()->getTauxTva() / 100),
+            ];
         }
         return $this->render('panier/index.html.twig', [
             'controller_name' => 'PanierController',

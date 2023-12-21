@@ -20,11 +20,9 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
-    App\Service\FileUploaderProduit:
+    App\Service\FileUploader:
         arguments:
-            $targetDirectory: '%upload_directory_produit%'
-    App\Service\FileUploaderCategorie:
-        arguments:
+            $targetDirectoryProduit: '%upload_directory_produit%'
             $targetDirectory: '%upload_directory_categorie%'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

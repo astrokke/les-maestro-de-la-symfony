@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use App\Form\AdminCategorieFormType;
-use App\Service\FileUploaderCategorie;
+use App\Service\FileUploader;
 
 #[Route('admin/')]
 class AdminCategorieController extends AbstractController
@@ -94,7 +94,7 @@ class AdminCategorieController extends AbstractController
         Request $request,
         EntityManagerInterface $em,
         Security $security,
-        FileUploaderCategorie $upload,
+        FileUploader $upload,
         PhotosRepository $photo,
         CategorieRepository $caterepo,
     ): Response {
@@ -108,7 +108,7 @@ class AdminCategorieController extends AbstractController
         if ($form->isSubmitted()) {
             $file = $form['upload_file']->getData();
             if ($file) {
-                $file_name = $upload->upload($file);
+                $file_name = $upload->uploadCategorie($file);
                 if (null !== $file_name) // for example
                 {
                     $directory = $upload->getTargetDirectory();
