@@ -54,8 +54,4 @@ class RegistrationFormType extends AbstractType
             'data_class' => Users::class,
         ]);
     }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> main

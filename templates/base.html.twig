@@ -4,9 +4,12 @@
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        
         {% block stylesheets %}
             {{ encore_entry_link_tags('app') }}
             {{ ux_controller_link_tags() }}
+
         {% endblock %}
 
         {% block javascripts %}
@@ -14,36 +17,194 @@
 
             <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
         {% endblock %}
-
-        {% block javascripts %}
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-        {% endblock %}
     </head>
-    <body>
-    {% block header %}
-    {% block nav %}
-    <nav>
-    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-    
-    {% if  is_granted('ROLE_ADMIN') %}
-    <a href="{{ path('app_admin_logout') }}">Déconnectez-vous</a>
-    {% else %}
-    <a href="{{ path('app_logout') }}">Déconnectez-vous</a>
-    {% if app.user %}
-           <a href="{{ path('app_user') }}"> {{ app.user.userIdentifier }}</a>
-    {% endif %}
-    {% endif %}
-    {% endif %}
-    {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
-    <a href="{{ path('app_login') }}">Connectez-vous</a>
-{% endif %}
-            {{ render(controller(
-                'App\\Controller\\CategorieController::list'
-            )) }}
 
-    {% endblock %}
-    {% endblock %}
+<body>
+    {% block header %}
+        {% block nav %}
+<body>
+  <a href=""{{ path('app_index') }}"" class="btn bg-primary text-white position-fixed mt-3 ms-3" data-bs-toggle="tooltip"
+     data-bs-placement="right" title="Ne pas inclure dans l'intégration">Retour</a>
+  <header>
+    <nav class="navbar navbar-expand-md bg-light navbar-light fixed-top">
+      <div class="container">
+        <a class="navbar-brand text-uppercase fw-bold" href=""{{ path('app_index') }}"">
+          <span class="bg-primary bg-gradient p-1 rounded-3 text-light">S</span> F
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <ul class="navbar-nav">
+          <li class="nav-item active">
+                <a class="nav-link" href="{{ path('app_index') }}">Accueil <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+                <a class="nav-link" href="{{ path('app_categorie') }}"> {{ render(controller('App\\Controller\\CategorieController::list')) }}  </a>
+          </li>
+
+       
+          <li class="nav-item">
+      
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+    
+            {% if  is_granted('ROLE_ADMIN') %}
+                <a class="nav-link" tabindex="-1" aria-disabled="true" href="{{ path('app_admin_logout') }}">Déconnectez-vous</a>
+            {% else %}
+                <a class="nav-link" tabindex="-1" aria-disabled="true" href="{{ path('app_logout') }}">Déconnectez-vous</a>
+          </li>     
+          <li class="nav-item">  
+            {% if app.user %}
+                <a class="nav-link" tabindex="-1" aria-disabled="true" href="{{ path('app_user') }}"> User : {{ app.user.userIdentifier }}</a>
+            {% endif %}
+            {% endif %}
+            {% endif %}
+           </li> 
+           <li class="nav-item">
+            {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+                <a class="nav-link" tabindex="-1" aria-disabled="true" href="{{ path('app_login') }}">Connectez-vous</a>
+            {% endif %}
+           </li>
+
+            {% endblock %}
+            {% endblock %}
+
+      </ul>
+      </div>
     </nav>
+  </header>
+
+<header>    
+   
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    {# <nav> #}
+
+    <div class="logo"> 
+        <a class="navbar-brand" href="{{ path('app_index') }}"></a>
+    </div>
+
+    <button class="navbar-toggler" class="btn active" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+        
+            {# <a class="navbar-toggler-icon" href="{{ path('app_index') }}">Accueil <span class="sr-only">(current)</span></a>
+            <a class="navbar-toggler-icon" href="{{ path('app_categorie') }}"> {{ render(controller('App\\Controller\\CategorieController::list')) }} </a>
+             #}
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ path('app_index') }}">Accueil <span class="sr-only">(current)</span></a>
+            </li>
+            
+            
+      
+            
+        </ul>
+    </div>
+</nav>
+
+
+            
+</header>
         {% block main %}{% endblock %}
-    </body>
+
+
+
+
+</body>
+
+
+<footer class="border-top h-10 w-10">
+     <div class="row gy-4 container py-5"> 
+            <div class="col-12 col-md-4">
+            
+            <p> Un Problème? Contactez <span class="nous"> Nous</span></p>
+                    <div class="col-6 gy-2">
+                          <h6>Prénom</h6>
+                          <input type="text" class="form-control" placeholder="Prénom" aria-label="First name">
+                    </div>
+                    <div class="col-6 gy-2">
+                          <h6>Nom</h6>
+                          <input type="text" class="form-control" placeholder="Nom" aria-label="Last name">
+                    </div>
+                          
+                    
+                    <div class="col-6 gy-2">
+                             <label for="colFormLabel" class="col-sm-6 col-form-label">Email</label>
+                            <input type="email" class="form-control" id="colFormLabel" placeholder="email valid">
+                    </div>
+                    <div class="col-6 mb-3 gy-2">
+                            <label for="exampleFormControlTextarea1" class="form-label">Message</label>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    </div>
+                    <div class="col-6 d-grid gap-2 gy-1">
+                            <button class="btn btn-primary" type="button">Envoyer</button>
+                    </div>
+            </div>
+                      
+
+
+           <div class="col-12 col-md-4 ">  
+              <div class="list-footer">  
+                <ul>
+                    <li><a>Accueil</a>
+                     <li><a>Instruments à cordes</a>
+                      <li><a>Instruments à percussions</a>
+                       <li><a>Instruments à vent</a>
+                        <li><a>Accessoires</a>
+                </ul>
+              </div>                      
+            </div>
+           
+       
+    
+    
+       <div class="col-12 col-md-4 text-md-center">
+                <div class="col-4 col-md-12 h-50 w-100 py-5">
+                    <ul id="reseaux" class="list-inline ">
+                        <li class="list-inline-item"><i class="bi bi-facebook"></i><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 48 48" fill="none">
+                                    <g clip-path="url(#clip0_52_170)">
+                                        <path d="M48 24C48 10.7452 37.2548 0 24 0C10.7452 0 0 10.7452 0 24C0 35.9789 8.77641 45.908 20.25 47.7084V30.9375H14.1562V24H20.25V18.7125C20.25 12.6975 23.8331 9.375 29.3152 9.375C31.9402 9.375 34.6875 9.84375 34.6875 9.84375V15.75H31.6613C28.68 15.75 27.75 17.6002 27.75 19.5V24H34.4062L33.3422 30.9375H27.75V47.7084C39.2236 45.908 48 35.9789 48 24Z" fill="#1877F2"/>
+                                        <path d="M33.3422 30.9375L34.4062 24H27.75V19.5C27.75 17.602 28.68 15.75 31.6613 15.75H34.6875V9.84375C34.6875 9.84375 31.9411 9.375 29.3152 9.375C23.8331 9.375 20.25 12.6975 20.25 18.7125V24H14.1562V30.9375H20.25V47.7084C22.7349 48.0972 25.2651 48.0972 27.75 47.7084V30.9375H33.3422Z" fill="white"/>
+                                    </g>
+                                        <defs><clipPath id="clip0_52_170"><rect width="48" height="48" fill="white"/></clipPath>
+                                        </defs>
+                                    </svg>
+                            </li>
+                        <li class="list-inline-item"><i class="bi bi-instagram"></i><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 48 48" fill="none">
+                                                                                    <g clip-path="url(#clip0_52_164)">
+                                                                                        <path d="M24 4.32187C30.4125 4.32187 31.1719 4.35 33.6938 4.4625C36.0375 4.56562 37.3031 4.95938 38.1469 5.2875C39.2625 5.71875 40.0688 6.24375 40.9031 7.07812C41.7469 7.92188 42.2625 8.71875 42.6938 9.83438C43.0219 10.6781 43.4156 11.9531 43.5188 14.2875C43.6313 16.8187 43.6594 17.5781 43.6594 23.9813C43.6594 30.3938 43.6313 31.1531 43.5188 33.675C43.4156 36.0188 43.0219 37.2844 42.6938 38.1281C42.2625 39.2438 41.7375 40.05 40.9031 40.8844C40.0594 41.7281 39.2625 42.2438 38.1469 42.675C37.3031 43.0031 36.0281 43.3969 33.6938 43.5C31.1625 43.6125 30.4031 43.6406 24 43.6406C17.5875 43.6406 16.8281 43.6125 14.3063 43.5C11.9625 43.3969 10.6969 43.0031 9.85313 42.675C8.7375 42.2438 7.93125 41.7188 7.09688 40.8844C6.25313 40.0406 5.7375 39.2438 5.30625 38.1281C4.97813 37.2844 4.58438 36.0094 4.48125 33.675C4.36875 31.1438 4.34063 30.3844 4.34063 23.9813C4.34063 17.5688 4.36875 16.8094 4.48125 14.2875C4.58438 11.9437 4.97813 10.6781 5.30625 9.83438C5.7375 8.71875 6.2625 7.9125 7.09688 7.07812C7.94063 6.23438 8.7375 5.71875 9.85313 5.2875C10.6969 4.95938 11.9719 4.56562 14.3063 4.4625C16.8281 4.35 17.5875 4.32187 24 4.32187ZM24 0C17.4844 0 16.6688 0.028125 14.1094 0.140625C11.5594 0.253125 9.80625 0.665625 8.2875 1.25625C6.70312 1.875 5.3625 2.69062 4.03125 4.03125C2.69063 5.3625 1.875 6.70313 1.25625 8.27813C0.665625 9.80625 0.253125 11.55 0.140625 14.1C0.028125 16.6687 0 17.4844 0 24C0 30.5156 0.028125 31.3312 0.140625 33.8906C0.253125 36.4406 0.665625 38.1938 1.25625 39.7125C1.875 41.2969 2.69063 42.6375 4.03125 43.9688C5.3625 45.3 6.70313 46.125 8.27813 46.7344C9.80625 47.325 11.55 47.7375 14.1 47.85C16.6594 47.9625 17.475 47.9906 23.9906 47.9906C30.5063 47.9906 31.3219 47.9625 33.8813 47.85C36.4313 47.7375 38.1844 47.325 39.7031 46.7344C41.2781 46.125 42.6188 45.3 43.95 43.9688C45.2812 42.6375 46.1063 41.2969 46.7156 39.7219C47.3063 38.1938 47.7188 36.45 47.8313 33.9C47.9438 31.3406 47.9719 30.525 47.9719 24.0094C47.9719 17.4938 47.9438 16.6781 47.8313 14.1188C47.7188 11.5688 47.3063 9.81563 46.7156 8.29688C46.125 6.70312 45.3094 5.3625 43.9688 4.03125C42.6375 2.7 41.2969 1.875 39.7219 1.26562C38.1938 0.675 36.45 0.2625 33.9 0.15C31.3313 0.028125 30.5156 0 24 0Z" fill="#000100"/>
+                                                                                        <path d="M24 11.6719C17.1938 11.6719 11.6719 17.1938 11.6719 24C11.6719 30.8062 17.1938 36.3281 24 36.3281C30.8062 36.3281 36.3281 30.8062 36.3281 24C36.3281 17.1938 30.8062 11.6719 24 11.6719ZM24 31.9969C19.5844 31.9969 16.0031 28.4156 16.0031 24C16.0031 19.5844 19.5844 16.0031 24 16.0031C28.4156 16.0031 31.9969 19.5844 31.9969 24C31.9969 28.4156 28.4156 31.9969 24 31.9969Z" fill="#000100"/>
+                                                                                        <path d="M39.6937 11.1843C39.6937 12.778 38.4 14.0624 36.8156 14.0624C35.2219 14.0624 33.9375 12.7687 33.9375 11.1843C33.9375 9.59053 35.2313 8.30615 36.8156 8.30615C38.4 8.30615 39.6937 9.5999 39.6937 11.1843Z" fill="#000100"/>
+                                                                                    </g>
+                                                                                        <defs>
+                                                                                            <clipPath id="clip0_52_164">
+                                                                                            <rect width="48" height="48" fill="white"/>
+                                                                                            </clipPath>
+                                                                                        </defs>
+                                                                                    </svg></li>
+                        <li class="list-inline-item"><i class="bi bi-whatsapp"></i><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 60 64" fill="none">
+                                                                                        <path d="M0 63.4118L4.21749 47.2792C1.615 42.557 0.247499 37.2039 0.249999 31.7147C0.257499 14.5534 13.595 0.588242 29.9824 0.588242C37.9349 0.590859 45.3999 3.83412 51.0149 9.71859C56.6274 15.6031 59.7174 23.4246 59.7149 31.7435C59.7074 48.9074 46.3699 62.8725 29.9824 62.8725C25.0074 62.8699 20.105 61.5637 15.7625 59.0822L0 63.4118ZM16.4925 53.4464C20.6825 56.0509 24.6824 57.6111 29.9724 57.6137C43.5924 57.6137 54.6874 46.007 54.6949 31.7382C54.6999 17.4407 43.6574 5.84971 29.9924 5.84448C16.3625 5.84448 5.27499 17.4511 5.26999 31.7173C5.26749 37.5416 6.89749 41.9026 9.63498 46.4651L7.13748 56.0143L16.4925 53.4464ZM44.9599 39.1436C44.7749 38.819 44.2799 38.6253 43.5349 38.2352C42.7924 37.8452 39.1399 35.9631 38.4574 35.704C37.7774 35.4448 37.2824 35.3139 36.7849 36.094C36.2899 36.8714 34.8649 38.6253 34.4324 39.1436C33.9999 39.6619 33.5649 39.7273 32.8224 39.3373C32.0799 38.9472 29.6849 38.1279 26.8474 35.4762C24.6399 33.4135 23.1474 30.8666 22.7149 30.0865C22.2824 29.3091 22.6699 28.8876 23.0399 28.5002C23.3749 28.1521 23.7824 27.5919 24.1549 27.1364C24.5324 26.6862 24.6549 26.3616 24.9049 25.8407C25.1524 25.3224 25.0299 24.8669 24.8424 24.4769C24.6549 24.0895 23.1699 20.2599 22.5525 18.7024C21.9475 17.1867 21.335 17.3909 20.88 17.3674L19.455 17.3412C18.96 17.3412 18.155 17.5349 17.475 18.3149C16.795 19.095 14.875 20.9745 14.875 24.8041C14.875 28.6337 17.5375 32.3324 17.9075 32.8507C18.28 33.369 23.1449 41.2272 30.5974 44.5961C32.3699 45.3971 33.7549 45.8762 34.8324 46.2348C36.6124 46.8264 38.2324 46.7426 39.5124 46.5437C40.9399 46.3212 43.9074 44.6616 44.5274 42.8449C45.1474 41.0257 45.1474 39.4682 44.9599 39.1436Z" fill="#25D366"/>
+                                                                                   </svg></li>
+                        <li class="list-inline-item"><i class="bi bi-twitter"></i><svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 60 64" fill="none">
+                                                                                        <path d="M45.8157 5.57199H54.2494L35.8243 27.6217L57.5 57.6264H40.5281L27.2351 39.4287L12.0249 57.6264H3.58608L23.2936 34.0418L2.5 5.57199H19.9028L31.9185 22.2054L45.8157 5.57199ZM42.8558 52.3409H47.529L17.3635 10.5799H12.3487L42.8558 52.3409Z" fill="black"/>
+                                                                                  </svg></li>
+                    </ul>
+                  
+                </div>                          
+    
+                <div class="col-4 col-md-12 text-md-center">
+                    <div class=" h-100 w-100 py-5">
+                      
+                        <a id="logo"class="navbar-brand text-uppercase fw-bold" href=""{{ path('app_index') }}"">
+                            <img  src="{{ asset('images/logo.png') }}" alt="Logo" style="height: 4vw;">
+                        </a>
+
+                    </div>                      
+                </div>
+        </div>
+    </div>
+     
+</footer>
+
 </html>
