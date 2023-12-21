@@ -22,15 +22,15 @@ class AdminProduitFormType extends AbstractType
             ->add('prix_ht')
             ->add('TVA', EntityType::class, [
                 'class' => TVA::class,
-'choice_label' => 'id',
+'choice_label' => 'taux_tva',
             ])
             ->add('promotion', EntityType::class, [
                 'class' => Promotion::class,
-'choice_label' => 'id',
+'choice_label' => 'libelle',
             ])
             ->add('categories', EntityType::class, [
                 'class' => Categorie::class,
-'choice_label' => 'id',
+'choice_label' => 'libelle',
 'multiple' => true,
             ])
         ;
