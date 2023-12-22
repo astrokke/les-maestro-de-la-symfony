@@ -13,6 +13,10 @@
          <td>{{ produit.libelle }}</td>
          <td>{{ produit.description }}</td>
          <td>{{ prixTTC }}</td>
+         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
          <td><td>{{ include('produit/_addToPanier.html.twig', { 'id': produit.id })}}</td></td> 
+         {% else %}
+         <a href='{{ path('app_register') }}'<p>Veuillez créer un compte ou vous connecter pour ajouter un produit à votre panier</p>
+         {% endif %}
         </tr>
 {% endblock %}
