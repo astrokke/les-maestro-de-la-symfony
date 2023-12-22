@@ -30,14 +30,14 @@ use Symfony\Component\Routing\Annotation\Route;
 class CommandeController extends AbstractController
 {
     #[Route('/commande', name: 'app_commande')]
-    public function indexCommande(Security $security, LivraisonRepository $livraisonRepo): Response
+    public function indexCommande(Security $security,Commande $commande, LivraisonRepository $livraisonRepo): Response
     {
         if (!$security->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $this->redirectToRoute('app_index');
         }
 
         $livraison = $livraisonRepo->findAll();
-
+        
 
         return $this->render('commande/index.html.twig', [
             'controller_name' => 'CommandeController',
