@@ -31,11 +31,16 @@ class Categorie
     #[ORM\ManyToMany(targetEntity: Produit::class, inversedBy: 'categories')]
     private Collection $Produit;
 
+    #[ORM\OneToMany(mappedBy: 'categorie', targetEntity: Photos::class)]
+    private Collection $Photos;
+
     public function __construct()
     {
         $this->categorie_enfant = new ArrayCollection();
         $this->Produit = new ArrayCollection();
+        $this->Photos = new ArrayCollection();
     }
+    
 
     public function getId(): ?int
     {
@@ -128,6 +133,36 @@ class Categorie
     public function removeProduit(Produit $produit): static
     {
         $this->Produit->removeElement($produit);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Photos>
+     */
+    public function getPhotos(): Collection
+    {
+        return $this->Photos;
+    }
+
+    public function addPhoto(Photos $photo): static
+    {
+        if (!$this->Photos->contains($photo)) {
+            $this->Photos->add($photo);
+            $photo->setCategorie($this);
+        }
+
+        return $this;
+    }
+
+    public function removePhoto(Photos $photo): static
+    {
+        if ($this->Photos->removeElement($photo)) {
+            // set the owning side to null (unless already changed)
+            if ($photo->getCategorie() === $this) {
+                $photo->setCategorie(null);
+            }
+        }
 
         return $this;
     }
