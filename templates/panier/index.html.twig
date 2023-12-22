@@ -14,6 +14,8 @@
         {{ ligneProduit.qte }}
         {{ ligneProduit.prixTTC }}
 
+        {{ include('panier/delete.html.twig', { 'id': ligneProduit.id })}}
+
     {% endfor %}
     total = {{ total }}
     <a href='{{ path('app_commande') }}'><button>Valider votre panier</button></a>

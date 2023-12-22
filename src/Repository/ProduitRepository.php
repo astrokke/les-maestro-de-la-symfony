@@ -57,6 +57,8 @@ class ProduitRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+
     //    /**
     //     * @return Produit[] Returns an array of Produit objects
     //     */

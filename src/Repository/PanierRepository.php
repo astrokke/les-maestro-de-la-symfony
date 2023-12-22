@@ -33,6 +33,7 @@ class PanierRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult();
     }
+
     //    /**
     //     * @return Panier[] Returns an array of Panier objects
     //     */

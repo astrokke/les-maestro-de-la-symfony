@@ -4,6 +4,8 @@ namespace App\Repository;
 
 use App\Entity\PanierProduit;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\ORM\Query\Parameter;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -21,6 +23,32 @@ class PanierProduitRepository extends ServiceEntityRepository
         parent::__construct($registry, PanierProduit::class);
     }
 
+    public function AddProduitToPanierProduit($idProduit, $idPanier, $qte)
+    {
+        $sql = "INSERT INTO `panier_produit`(`produit_id`, `panier_id`, `quantite`) VALUES (" . $idProduit . "," . $idPanier . "," . $qte . ")";
+        $this->getEntityManager()->getConnection()
+            ->executeQuery($sql);
+    }
+    public function getPanierProduitbyId($Produit, $Panier)
+    {
+        return $this->createQueryBuilder('p')
+            ->where('p.Produit = :idproduit')
+            ->andWhere('p.Panier = :idpanier')
+            ->orderBy('p.id', 'DESC')
+            ->setMaxResults(1)
+            ->setParameters(new ArrayCollection([
+                new Parameter('idproduit', $Produit),
+                new Parameter('idpanier', $Panier),
+            ]))
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+    public function updateQuantitéInProduiPanier($qte, $idProduit, $idPanier)
+    {
+        $sql = "UPDATE `panier_produit` SET `quantite`='$qte' WHERE produit_id = $idProduit and panier_id = $idPanier ";
+        $this->getEntityManager()->getConnection()
+            ->executeQuery($sql);
+    }
 
 
     //    /**

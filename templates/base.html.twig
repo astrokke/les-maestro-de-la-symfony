@@ -39,6 +39,9 @@
     {% block nav %}
     <nav>
     <a href='{{path('app_index')}}'>Accueil</a>
+     {{ render(controller(
+                'App\\Controller\\CategorieController::list'
+            )) }}
     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
     
     {% if  is_granted('ROLE_ADMIN') %}

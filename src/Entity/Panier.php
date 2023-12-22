@@ -110,4 +110,7 @@ class Panier
 
         return $this;
     }
+    public function __toString()
+    {
+    }
 }
