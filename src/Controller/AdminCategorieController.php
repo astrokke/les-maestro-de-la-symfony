@@ -128,7 +128,7 @@ class AdminCategorieController extends AbstractController
 
             $photo->insertPhotoWithCategorie($caterepo->getLastId()->getId(), '/upload/photo_categorie/' . $file_name);
 
-            return $this->redirectToRoute('app_list_admin');
+            return $this->redirectToRoute('app_categorie_list_admin');
         }
         return $this->render('admin/categorie_new.html.twig', [
             'title' => 'Création d\'une nouvelle catégorie',
@@ -153,9 +153,9 @@ class AdminCategorieController extends AbstractController
         if ($categorie === null) {
             return $this->redirectToRoute('app_index');
         }
-
+ 
         $form = $this->createForm(AdminCategorieFormType::class, $categorie);
-
+ 
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             $file = $form['upload_file']->getData();
@@ -187,6 +187,7 @@ class AdminCategorieController extends AbstractController
         Request $request,
         Categorie $categorie,
         Security $security,
+        Photos $photo,
         EntityManagerInterface $entityManager
     ): Response {
         if (!$security->isGranted('ROLE_ADMIN')) {
@@ -197,6 +198,11 @@ class AdminCategorieController extends AbstractController
         }
         if ($this->isCsrfTokenValid('delete' . $categorie->getId(), $request->request->get('_token'))) {
             if ($this->isCsrfTokenValid('delete' . $categorie->getId(), $request->request->get('_token'))) {
+                $photo->setCategorie(null);
+                $entityManager->persist($photo);
+                $entityManager->flush();
+                $entityManager->remove($photo);
+                $entityManager->flush();
                 $categorie->setCategorieParente(null);
                 $entityManager->persist($categorie);
                 $entityManager->flush();
