@@ -27,17 +27,18 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserPanelController extends AbstractController
 {
     #[Route('/user', name: 'app_user')]
-    public function indexAccount(Security $security): Response
+    public function indexAccount(Security $security, ?Adresse $adresse): Response
     {
         $user = $security->getUser();
         return $this->render('user/index.html.twig', [
             'title' => 'Vos informations',
             'users' => $user,
+            'adresse' => $adresse,
         ]);
     }
 
     #[Route('/user/information/{id}', name: 'app_user_account')]
-    public function userAccount(?Users $users, Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $em, Security $security): Response
+    public function userAccount(?Users $users, Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $em): Response
     {
         if ($users === null) {
             return $this->redirectToRoute('app_admin_index');
@@ -63,19 +64,38 @@ class UserPanelController extends AbstractController
         ]);
     }
 
-    //Affichage Formulaire pour l'entité Adresse
-    private function formAdresse(
-        Adresse $adresse,
-        AdresseRepository $adresseRepo,
-        Request $request,
-        RegionRepository $regionRepo,
-    ) {
-        $message = '';
-        if (isset($_POST['submitAdresse'])) {
+    #[Route('/user/adresse/{id}', name: 'app_show_adresse')]
+    public function showAdresse(?Adresse $adresse)
+    {
+        if ($adresse === null) {
+            return $this->redirectToRoute('app_create_adresse');
+        }
+        $user = $this->getUser();
 
-            $ville = $regionRepo->find($_POST['regionId']);
+        return $this->render('user/showAdresse.html.twig', [
+            'title' => 'Information de l\'adresse ',
+            'adresse' => $adresse,
+            'user' => $user
+
+        ]);
+    }
+
+    //Affichage Formulaire pour l'entité Adresse
+    private function formAdresse(Adresse $adresse, AdresseRepository $adresseRepo, Request $request, Users $users, VilleRepository $villeRepo, $isUpdate = false)
+    {
+        $message = '';
+        
+        if (isset($_POST['submitAdresse'])) {
+            $adresse->setNumVoie($_POST['num_voie']);
+            $adresse->setRue($_POST['rue']);
+            $adresse->setComplement($_POST['complement']);
+            
+            $users = $this->getUser();
+            $adresse->addUser($users);
+            $ville = $villeRepo->find($_POST['villeId']);
             $adresse->setVille($ville);
             $adresseRepo->save($adresse, true);
+
             if ($request->get('id')) {
                 $message = 'L\'adresse a bien été modifiée';
                 return $this->redirectToRoute('app_user', [
@@ -93,51 +113,30 @@ class UserPanelController extends AbstractController
             }
         }
         return $this->render('user/new.html.twig', [
-            'title' => 'Creation d\'une adresse de livraison',
+            'title' => 'adresse',
             'message' => $message,
+            'flag' => $isUpdate,
+            'adresse' => $adresse 
+
         ]);
     }
 
     //Page de création d'adresse
-    #[Route('/create_adresse', name: 'createAdresse')]
-    public function createAdresse(AdresseRepository $adresseRepo, Request $request,  RegionRepository $regionRepo): Response
+    #[Route('/create_adresse', name: 'app_create_adresse')]
+    public function createAdresse(AdresseRepository $adresseRepo, Request $request, VilleRepository $villeRepo): Response
     {
-
+        $users = $this->getUser();
         $adresse = new Adresse();
-        return $this->formAdresse($adresse, $adresseRepo, $request, $regionRepo);
+        return $this->formAdresse($adresse, $adresseRepo, $request, $users, $villeRepo, false);
     }
 
-    #[Route('user/newadress/region/{name}', name: 'app_ajax_adress')]
-    public function newAdressAcount(RegionRepository $regionRepo, Request $request): Response
+    //Page de modification d'adresse
+    #[Route('/update_adresse/{id}', name: 'app_update_adresse')]
+    public function updateAdresse(Adresse $adresse, AdresseRepository $adresseRepo, Request $request, VilleRepository $villeRepo): Response
     {
-        $string = $request->get('name');
-        $regions = $regionRepo->searchByName($string);
-
-        $json = [];
-
-        foreach ($regions as $region) {
-            $json[] = ['id ' => $region->getId(), 'region' => $region->getNom()];
-        }
-
-        return new JsonResponse($json, 200);
+        $users = $this->getUser();
+        return $this->formAdresse($adresse, $adresseRepo, $request, $users,  $villeRepo, true);
     }
-    /*#[Route('user/newadress/region/{id}/departements', name: 'app_ajax_departements')]
-    public function DepartementsParRegion(DepartementRepository $departmentRepo, ?Region $region): JsonResponse
-    {
-        $regionId = $region->getId();
-        $departements = $departmentRepo->findByRegionId($regionId);
-
-        $json = [];
-
-        foreach ($departements as $departement) {
-            $json[] = [
-                'id' => $departement->getId(), 'departement' => $departement->getNom(),
-                'region_id' => $departement->getRegion()->getNom()
-            ];
-        }
-
-        return new JsonResponse($json, 200);
-    }*/
 
 
     #[Route('/adresse/ajax/ville/{name}', name: 'ajax_ville')]
@@ -146,20 +145,19 @@ class UserPanelController extends AbstractController
         $string = $request->get('name');
         $cities = $cityRepo->searchByName($string);
         $json = [];
-        dd($cities);
         foreach ($cities as $city) {
-            $codePostaux = [];
+            /*$codePostaux = [];
             
             //dd($city->getCodePostal());
             foreach($city->getCodePostal() as $codePostal)
             {
                 $codePostaux[] = $codePostal->getLibelle();
-            }
+            }*/
             $json[] = [
                 'id' => $city->getId(), 'ville' => $city->getNom(),
-                'codeDepartement' => $city->getDepartement()->getNumeroDepartement(),
+                'codeDepartement' => $city->getDepartement()->getNom(),
                 'region' => $city->getDepartement()->getRegion()->getNom(),
-                'code_postal' => $codePostaux
+                //'code_postal' => $codePostaux
             ];
         }
 
