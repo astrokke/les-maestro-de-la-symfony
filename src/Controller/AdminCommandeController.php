@@ -80,7 +80,7 @@ class AdminCommandeController extends AbstractController
         if ($form->isSubmitted()) {
             $em->persist($commande);
             $em->flush();
-            return $this->redirectToRoute('app_promotion_list');
+            return $this->redirectToRoute('app_commande_list');
         }
         return $this->render('admin/commande_update.html.twig', [
             'title' => 'Mise à jour de la commande',

@@ -36,7 +36,7 @@ class Commande
 
     #[ORM\ManyToOne(inversedBy: 'est_livre')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Adresse $est_livré = null;
+    private ?Adresse $est_livre = null;
 
     #[ORM\ManyToOne(inversedBy: 'est_facture')]
     #[ORM\JoinColumn(nullable: false)]
@@ -151,14 +151,14 @@ class Commande
         return $this;
     }
 
-    public function getEstLivré(): ?Adresse
+    public function getEstLivre(): ?Adresse
     {
-        return $this->est_livré;
+        return $this->est_livre;
     }
 
-    public function setEstLivré(?Adresse $est_livré): static
+    public function setEstLivré(?Adresse $est_livre): static
     {
-        $this->est_livré = $est_livré;
+        $this->est_livre = $est_livre;
 
         return $this;
     }

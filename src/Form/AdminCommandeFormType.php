@@ -18,26 +18,12 @@ class AdminCommandeFormType extends AbstractType
     {
         $builder
 
-            ->add('Livraison', EntityType::class, [
-                'class' => Livraison::class,
-                'choice_label' => 'id',
-            ])
-            ->add('Paiement', EntityType::class, [
-                'class' => Paiement::class,
-                'choice_label' => 'id',
-            ])
+      
             ->add('Etat', EntityType::class, [
                 'class' => Etat::class,
-                'choice_label' => 'id',
-            ])
-            ->add('est_livré', EntityType::class, [
-                'class' => Adresse::class,
-                'choice_label' => 'id',
-            ])
-            ->add('est_facture', EntityType::class, [
-                'class' => Adresse::class,
-                'choice_label' => 'id',
+                'choice_label' => 'libelle',
             ]);
+            
     }
 
     public function configureOptions(OptionsResolver $resolver): void

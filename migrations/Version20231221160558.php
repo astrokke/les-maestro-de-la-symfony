@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20231220092058 extends AbstractMigration
+final class Version20231221160558 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -26,6 +26,8 @@ final class Version20231220092058 extends AbstractMigration
         $this->addSql('ALTER TABLE produit_panier DROP FOREIGN KEY FK_D39EC6C8F347EFB');
         $this->addSql('ALTER TABLE produit_panier DROP FOREIGN KEY FK_D39EC6C8F77D927C');
         $this->addSql('DROP TABLE produit_panier');
+        $this->addSql('ALTER TABLE commande RENAME INDEX idx_6eeaa67df2efd822 TO IDX_6EEAA67DAC56B862');
+        $this->addSql('ALTER TABLE photos CHANGE produit_id produit_id INT DEFAULT NULL');
     }
 
     public function down(Schema $schema): void
@@ -37,5 +39,7 @@ final class Version20231220092058 extends AbstractMigration
         $this->addSql('ALTER TABLE panier_produit DROP FOREIGN KEY FK_D31F28A6F347EFB');
         $this->addSql('ALTER TABLE panier_produit DROP FOREIGN KEY FK_D31F28A6F77D927C');
         $this->addSql('DROP TABLE panier_produit');
+        $this->addSql('ALTER TABLE commande RENAME INDEX idx_6eeaa67dac56b862 TO IDX_6EEAA67DF2EFD822');
+        $this->addSql('ALTER TABLE photos CHANGE produit_id produit_id INT NOT NULL');
     }
 }
