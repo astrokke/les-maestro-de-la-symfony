@@ -153,9 +153,9 @@ class AdminCategorieController extends AbstractController
         if ($categorie === null) {
             return $this->redirectToRoute('app_index');
         }
- 
+
         $form = $this->createForm(AdminCategorieFormType::class, $categorie);
- 
+
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             $file = $form['upload_file']->getData();
@@ -169,10 +169,11 @@ class AdminCategorieController extends AbstractController
                     $error = 'une erreur est survenue';
                 }
             }
-
+            $photos = $photo->updatePhotoInCategorie($categorie->getId(), '/upload/photo_categorie/' . $file_name);
+            $categorie->getPhotos($photos);
             $em->persist($categorie);
             $em->flush();
-            $photo->updatePhotoInCategorie($categorie->getId(), '/upload/photo_categorie/' . $file_name);
+
             return $this->redirectToRoute('app_categorie_list_admin');
         }
         return $this->render('admin/new.html.twig', [
