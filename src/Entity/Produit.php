@@ -34,18 +34,19 @@ class Produit
     #[ORM\ManyToOne(inversedBy: 'Produit')]
     private ?Promotion $promotion = null;
 
-    #[ORM\ManyToMany(targetEntity: Categorie::class, mappedBy: 'Produit')]
-    private Collection $categories;
-
+    
     #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Photos::class)]
     private Collection $Photos;
 
     #[ORM\OneToMany(mappedBy: 'Produit', targetEntity: PanierProduit::class)]
     private Collection $panierProduits;
 
+    #[ORM\ManyToOne(inversedBy: 'produits')]
+    private ?Categorie $categorie = null;
+
     public function __construct()
     {
-        $this->categories = new ArrayCollection();
+        
         $this->Photos = new ArrayCollection();
         $this->panierProduits = new ArrayCollection();
     }
@@ -131,32 +132,7 @@ class Produit
         return $this;
     }
 
-    /**
-     * @return Collection<int, Categorie>
-     */
-    public function getCategories(): Collection
-    {
-        return $this->categories;
-    }
-
-    public function addCategory(Categorie $category): static
-    {
-        if (!$this->categories->contains($category)) {
-            $this->categories->add($category);
-            $category->addProduit($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCategory(Categorie $category): static
-    {
-        if ($this->categories->removeElement($category)) {
-            $category->removeProduit($this);
-        }
-
-        return $this;
-    }
+    
 
     /**
      * @return Collection<int, Photos>
@@ -214,6 +190,18 @@ class Produit
                 $panierProduit->setProduit(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCategorie(): ?Categorie
+    {
+        return $this->categorie;
+    }
+
+    public function setCategorie(?Categorie $categorie): static
+    {
+        $this->categorie = $categorie;
 
         return $this;
     }
