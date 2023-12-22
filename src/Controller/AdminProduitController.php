@@ -113,7 +113,9 @@ class AdminProduitController extends AbstractController
         Request $request,
         EntityManagerInterface $em,
         ?Produit $produit,
-        Security $security
+        Security $security,
+        FileUploader $upload,
+        PhotosRepository $photo,
     ) {
         if (!$security->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('app_index');
@@ -126,8 +128,21 @@ class AdminProduitController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
+            $file = $form['upload_file']->getData();
+            if ($file) {
+                $file_name = $upload->uploadCategorie($file);
+                if (null !== $file_name) // for example
+                {
+                    $directory = $upload->getTargetDirectory();
+                    $full_path = $directory . '/' . $file_name;
+                } else {
+                    $error = 'une erreur est survenue';
+                }
+            }
+
             $em->persist($produit);
             $em->flush();
+            $photo->updatePhotoInProduit($produit->getId(), '/upload/photo_produit/' . $file_name);
             return $this->redirectToRoute('app_produit_list_admin');
         }
         return $this->render('admin/produit_new.html.twig', [

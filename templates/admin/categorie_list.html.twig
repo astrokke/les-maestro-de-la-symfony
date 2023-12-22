@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_admin.html.twig' %}
 
 {% block title %}
     {{ title }}
@@ -14,7 +14,8 @@
         <tr>
             <div class="row">
     <div class="d-flex justify-content-center gap-5">
-         <div class="card border p-3 bg-light mb-4" style="width: 15rem; height: 15rem;">
+         <div class="card border p-3 bg-light d-flex align-items-center mb-4" style="width: 15rem; height: 15rem;">
+         <img src="{% for photo in item.photos %} {{ photo.urlPhoto }} {% endfor %} " class="card-img-top" alt="..." style="width: 6rem; height: 6rem;">
              <div class="card-body d-flex align-items-center">
                 <a href ="{{ path('app_categorie_show_admin', { 'id': item.id })}}" class="card-text text-decoration-none">
              <h5 class="card-title text-center">{{ item.libelle }}</h5><br>

@@ -29,6 +29,9 @@ class AdminProduitFormType extends AbstractType
             ->add('promotion', EntityType::class, [
                 'class' => Promotion::class,
                 'choice_label' => 'libelle',
+                'required' => false,
+                'placeholder' => '',
+                'empty_data' => null,
             ])
             ->add('categories', EntityType::class, [
                 'class' => Categorie::class,

@@ -13,8 +13,7 @@ class Photos
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToOne(inversedBy: 'photos')]
-    private ?Produit $Produit = null;
+
 
     #[ORM\Column(length: 255)]
     private ?string $URL_photo = null;

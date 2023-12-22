@@ -49,11 +49,14 @@ class Commande
     #[ORM\OneToOne(inversedBy: 'commande', cascade: ['persist', 'remove'])]
     private ?Panier $Panier = null;
 
+    
+
 
 
     public function __construct()
     {
         $this->ligneDeCommandes = new ArrayCollection();
+
     }
 
     public function getId(): ?int
@@ -198,4 +201,7 @@ class Commande
 
         return $this;
     }
+
+    
+
 }
