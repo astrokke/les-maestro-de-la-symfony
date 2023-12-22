@@ -28,17 +28,20 @@ class Categorie
     #[ORM\OneToMany(mappedBy: 'categorie_parente', targetEntity: self::class)]
     private Collection $categorie_enfant;
 
-    #[ORM\ManyToMany(targetEntity: Produit::class, inversedBy: 'categories')]
-    private Collection $Produit;
+    
 
     #[ORM\OneToMany(mappedBy: 'categorie', targetEntity: Photos::class)]
     private Collection $Photos;
 
+    #[ORM\OneToMany(mappedBy: 'categorie', targetEntity: Produit::class)]
+    private Collection $produits;
+
     public function __construct()
     {
         $this->categorie_enfant = new ArrayCollection();
-        $this->Produit = new ArrayCollection();
+        
         $this->Photos = new ArrayCollection();
+        $this->produits = new ArrayCollection();
     }
     
 
@@ -113,29 +116,7 @@ class Categorie
         return $this;
     }
 
-    /**
-     * @return Collection<int, Produit>
-     */
-    public function getProduit(): Collection
-    {
-        return $this->Produit;
-    }
-
-    public function addProduit(Produit $produit): static
-    {
-        if (!$this->Produit->contains($produit)) {
-            $this->Produit->add($produit);
-        }
-
-        return $this;
-    }
-
-    public function removeProduit(Produit $produit): static
-    {
-        $this->Produit->removeElement($produit);
-
-        return $this;
-    }
+  
 
     /**
      * @return Collection<int, Photos>
@@ -161,6 +142,36 @@ class Categorie
             // set the owning side to null (unless already changed)
             if ($photo->getCategorie() === $this) {
                 $photo->setCategorie(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Produit>
+     */
+    public function getProduits(): Collection
+    {
+        return $this->produits;
+    }
+
+    public function addProduit(Produit $produit): static
+    {
+        if (!$this->produits->contains($produit)) {
+            $this->produits->add($produit);
+            $produit->setCategorie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeProduit(Produit $produit): static
+    {
+        if ($this->produits->removeElement($produit)) {
+            // set the owning side to null (unless already changed)
+            if ($produit->getCategorie() === $this) {
+                $produit->setCategorie(null);
             }
         }
 

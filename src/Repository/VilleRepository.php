@@ -21,6 +21,28 @@ class VilleRepository extends ServiceEntityRepository
         parent::__construct($registry, Ville::class);
     }
 
+    public function findOneByNameWithRegion($villeName): ?Ville
+    {
+        $villeName = strtoupper($villeName); // Convertir le nom de la ville en majuscules
+
+        return $this->createQueryBuilder('v')
+            ->andWhere('v.nom = :name')
+            ->leftJoin('v.Departement', 'd')
+            ->leftJoin('d.region', 'r')
+            ->addSelect('d', 'r')
+            ->setParameter('name', $villeName)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+    public function searchByName(string $name): ?array
+    {
+        return $this->createQueryBuilder('v')
+            ->where('v.nom like :val')
+            ->setParameter('val', '%' . $name . '%')
+            ->addOrderBy('v.nom', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
     //    /**
     //     * @return Ville[] Returns an array of Ville objects
     //     */
