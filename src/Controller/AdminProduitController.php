@@ -57,10 +57,9 @@ class AdminProduitController extends AbstractController
             }
             $categorie = $form['categorie']->getData();
             $produit->setCategorie($categorie);
-            $photos=$photo->insertPhotoWithProduit($produitrepo->getLastId()->getId(), '/upload/photo_produit/' . $file_name);
-            $produit->addPhoto($photos);
             $em->persist($produit);
             $em->flush();
+            $photo->insertPhotoWithProduit($produitrepo->getLastId()->getId(), '/upload/photo_produit/' . $file_name);
             
 
             return $this->redirectToRoute('app_produit_list_admin');
