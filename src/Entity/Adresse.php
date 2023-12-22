@@ -111,7 +111,7 @@ class Adresse
     {
         if ($this->est_livre->removeElement($estLivre)) {
             // set the owning side to null (unless already changed)
-            if ($estLivre->getEstLivré() === $this) {
+            if ($estLivre->getEstLivre() === $this) {
                 $estLivre->setEstLivré(null);
             }
         }
