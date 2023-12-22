@@ -13,11 +13,11 @@
     {% for item in commande %}
    
         <tr>
-            <td>{{ item.id }}</td>
-            <td>{{ item.datecommande?item.datecommande|date('Y-m-d H:i:s') : '' }}</td>
-            <td>{{ item.users.id }} {{ item.users.nom }} {{ item.users.prenom }}</td>
-            <td>{{ item.panier.id }}</td>
-            <td>{{ item.prixttccommande}}</td>
+            <td> cde n°{{ item.id }}, </td>
+            <td>date :{{ item.datecommande?item.datecommande|date('Y-m-d H:i:s') : '' }}, </td>
+            <td>client :{{ item.users.id }} {{ item.users.nom }} {{ item.users.prenom }}, </td>
+            <td>panier n° {{ item.panier.id }}</td>
+            <td>prix de la commande :{{ item.prixttccommande}} €TTC</td>
             <td><a href="{{ path('app_commande_show', { 'id': item.id })}}">Voir</a></td>
             <td><a href="{{ path('app_update_commande', { 'id': item.id })}}">Mettre à jour</a></td>
         </tr>
