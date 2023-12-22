@@ -21,6 +21,15 @@ class PromotionRepository extends ServiceEntityRepository
         parent::__construct($registry, Promotion::class);
     }
 
+    public function searchByName(string $libelle): ?array
+    {
+        return $this->createQueryBuilder('s')
+            ->where('s.libelle like :val')
+            ->setParameter('val', '%'.$libelle.'%')
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Promotion[] Returns an array of Promotion objects
 //     */

@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Livraison;
+use App\Repository\LivraisonRepository;
 use App\Entity\Adresse;
 use App\Entity\CodePostal;
 use App\Entity\Commande;
@@ -28,15 +30,23 @@ use Symfony\Component\Routing\Annotation\Route;
 class CommandeController extends AbstractController
 {
     #[Route('/commande', name: 'app_commande')]
-    public function indexCommande(): Response
+    public function indexCommande(Security $security, LivraisonRepository $livraisonRepo): Response
     {
+        if (!$security->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirectToRoute('app_index');
+        }
+
+        $livraison = $livraisonRepo->findAll();
+
+
         return $this->render('commande/index.html.twig', [
             'controller_name' => 'CommandeController',
+            'livraisons' => $livraison,
         ]);
     }
 
     //Affichage Formulaire pour l'entité Adresse
-    private function formAdresseCommande(Adresse $adresse, AdresseRepository $adresseRepo, Request $request, Commande $commande, EntityManagerInterface $em,  VilleRepository $villeRepo, $isUpdate = false)
+    private function formAdresseCommande(Adresse $adresse,  Request $request, Commande $commande, EntityManagerInterface $em,  VilleRepository $villeRepo, $isUpdate = false)
     {
         $message = '';
 
@@ -90,16 +100,16 @@ class CommandeController extends AbstractController
 
         $adresse = new Adresse();
         $commande = new Commande();
-        return $this->formAdresseCommande($adresse, $adresseRepo, $request, $commande, $em, $villeRepo, false);
+        return $this->formAdresseCommande($adresse, $request, $commande, $em, $villeRepo, false);
     }
 
     //Page de modification d'adresse
-    #[Route('/commande/update_adresse/{id}', name: 'app_update_adresse_commande')]
+    /*#[Route('/commande/update_adresse/{id}', name: 'app_update_adresse_commande')]
     public function updateAdresseCommande(Adresse $adresse, AdresseRepository $adresseRepo, Request $request, VilleRepository $villeRepo): Response
     {
 
         return $this->formAdresseCommande($adresse, $adresseRepo, $request,  $villeRepo, true);
-    }
+    }*/
 
 
     #[Route('/adresse/ajax/ville/{name}', name: 'ajax_ville')]

@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block main %}
+    <h2>{{ title }}</h2>
+    {% if is_granted('ROLE_ADMIN') %}
+    <h3><a href="{{ path('app_new_produit') }}">Créer</a></h3>
+    {% endif %}
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>Libellé</th>
+            <th>Description</th>
+        </tr>
+    {% for item in produit %}
+        <tr>
+            <td>{{ item.id }}</td>
+            <td>{{ item.libelle }}</td>
+            <td>{{ item.description }}</td>
+            <td><a href="{{ path('app_produit_show_admin', { 'id': item.id })}}">Voir</a></td>
+            {% if is_granted('ROLE_ADMIN') %}
+            <td><a href="{{ path('app_update_produit', { 'id': item.id })}}">Mettre à jour</a></td>
+            <td>{{ include('admin/produit_delete.html.twig', { 'id': item.id })}}</td>
+            {% endif %}
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="5">Aucun enregistrement</td>
+        </tr>
+    {% endfor %}
+    </table>
+    <form>
+        <input type='text' name='nom' placeholder='recherchez par libelle' value='{{ libelle }}'>
+        <input type='submit' name='submit' value='rechercher'>
+    </form>
+{% endblock %}

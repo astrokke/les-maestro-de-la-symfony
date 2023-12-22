@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block main %}
+    <h2>{{ title }} {{ commande.id }}</h2>
+        <p>
+            <br>Commande n° {{ commande.id }}</br>
+            <br>Client n° {{ commande.users.id }}, {{ commande.users.nom }} {{ commande.users.prenom }}</br>
+            <br>Panier n° {{ commande.panier.id }}</br>
+            <br>Date de la commande : {{ commande.datecommande?commande.datecommande|date('Y-m-d') : ''  }}</br>
+            <br>Total de la commande : {{ commande.prixttccommande }}€ TTC</br>
+            <br>Addresse de livraison :  {{ commande.estLivre.numVoie }}  {{ commande.estLivre.rue }},  {{ commande.estLivre.ville.nom }}</br>
+            <br>Addresse de facturation : {{ commande.estFacture.numVoie}} {{ commande.estFacture.rue}}, {{ commande.estFacture.ville.nom}}</br>
+            <br>Moyen de paiement : {{ commande.paiement.libelle }}</br>
+            <br>Mode de livraison : {{ commande.livraison.libelle }}</br>
+            <br>Etat de la commande : {{ commande.etat.libelle }}</br>
+
+        </p>
+{% endblock %}

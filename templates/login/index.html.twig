@@ -11,7 +11,7 @@
     {% endif %}
     {% if app.user %}
         <div class="mb-3">
-            You are logged in as {{ app.user.userIdentifier }}
+            Vous êtes connecté en tant que {{ app.user.userIdentifier }}
         </div>
     {% endif %}
     <form action={{ path('app_login') }} method='post'>
@@ -22,7 +22,7 @@
         <input type='password' id='password' name='_password'>
 
         {# redirection vers une route valide #}
-        <input type='hidden' name='_target_path' value='/'>
+        <input type='hidden' name='_target_path' value='/index'>
         <input type='hidden' name='_csrf_token' value="{{ csrf_token('authenticate') }}">
 
         <button type='submit'>login</button>

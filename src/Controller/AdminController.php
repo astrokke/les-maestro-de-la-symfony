@@ -16,7 +16,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 #[Route('admin/')]
 class AdminController extends AbstractController
 {
-    #[Route('list', name: 'app_list_admin')]
+    #[Route('list_admin', name: 'app_list_admin')]
     public function list(AdminRepository $adminRepo, Request $request): Response
     {
         $trinom = $request->query->get('trinom', 'asc');
@@ -36,7 +36,7 @@ class AdminController extends AbstractController
     public function show(?Admin $admin): Response
     {
         if ($admin === null) {
-            return $this->redirectToRoute('app_admin_index');
+            return $this->redirectToRoute('app_admin_dashboard');
         }
 
         return $this->render('admin/show.html.twig', [
@@ -87,7 +87,7 @@ class AdminController extends AbstractController
         Security $security
     ) {
         if (!$security->isGranted('ROLE_ADMIN')) {
-            return $this->redirectToRoute('app_list_admin');
+            return $this->redirectToRoute('app_index');
         }
         if ($admin === null) {
             return $this->redirectToRoute('app_list_admin');

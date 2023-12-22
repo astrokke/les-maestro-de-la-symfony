@@ -39,6 +39,26 @@ class ProduitRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function searchByName(string $libelle): ?array
+    {
+        return $this->createQueryBuilder('s')
+            ->where('s.libelle like :val')
+            ->setParameter('val', '%' . $libelle . '%')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function getLastId()
+    {
+        return $this->createQueryBuilder('p')
+            ->setMaxResults(1)
+            ->orderBy('p.id', 'DESC')
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+
     //    /**
     //     * @return Produit[] Returns an array of Produit objects
     //     */

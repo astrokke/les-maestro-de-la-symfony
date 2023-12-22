@@ -33,6 +33,37 @@ class PhotosRepository extends ServiceEntityRepository
         }
         return $photos;
     }
+    public function searchOnePhotoByProduit($idProduit)
+    {
+
+        return $this->createQueryBuilder('p')
+            ->where('p.Produit = :id')
+            ->setParameter('id',   $idProduit)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+    public function searchPhotoByProduit($idProduit)
+    {
+
+        return $this->createQueryBuilder('p')
+            ->where('p.Produit = :id')
+            ->setParameter('id',   $idProduit)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function insertPhotoWithCategorie($id, $path)
+    {
+        $sql = "INSERT INTO `photos`(`categorie_id`, `url_photo`) VALUES ('" . $id . "','" . $path . "')";
+        $this->getEntityManager()->getConnection()
+            ->executeQuery($sql);
+    }
+    public function insertPhotoWithProduit($id, $path)
+    {
+        $sql = "INSERT INTO `photos`(`produit_id`, `url_photo`) VALUES ('" . $id . "','" . $path . "')";
+        $this->getEntityManager()->getConnection()
+            ->executeQuery($sql);
+    }
     //    /**
     //     * @return Photos[] Returns an array of Photos objects
     //     */
