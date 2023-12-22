@@ -37,7 +37,7 @@ class PhotosRepository extends ServiceEntityRepository
     {
 
         return $this->createQueryBuilder('p')
-            ->where('p.Produit = :id')
+            ->where('p.produit = :id')
             ->setParameter('id',   $idProduit)
             ->getQuery()
             ->getOneOrNullResult();
@@ -46,7 +46,7 @@ class PhotosRepository extends ServiceEntityRepository
     {
 
         return $this->createQueryBuilder('p')
-            ->where('p.Produit = :id')
+            ->where('p.produit = :id')
             ->setParameter('id',   $idProduit)
             ->getQuery()
             ->getResult();
@@ -61,6 +61,22 @@ class PhotosRepository extends ServiceEntityRepository
     public function insertPhotoWithProduit($id, $path)
     {
         $sql = "INSERT INTO `photos`(`produit_id`, `url_photo`) VALUES ('" . $id . "','" . $path . "')";
+        $this->getEntityManager()->getConnection()
+            ->executeQuery($sql);
+    }
+
+    public function updatePhotoInCategorie($id, $path)
+    {
+        $sql = "UPDATE `photos` SET url_photo = '$path' WHERE categorie_id =  $id ";
+        var_dump($sql);
+        $this->getEntityManager()->getConnection()
+            ->executeQuery($sql);
+    }
+
+    public function updatePhotoInProduit($id, $path)
+    {
+        $sql = "UPDATE `photos` SET url_photo = '$path' WHERE produit_id =  $id ";
+        var_dump($sql);
         $this->getEntityManager()->getConnection()
             ->executeQuery($sql);
     }

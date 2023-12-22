@@ -143,7 +143,9 @@ class AdminCategorieController extends AbstractController
         EntityManagerInterface $em,
         ?Categorie $categorie,
         Security $security,
-        Photos $photo,
+        FileUploader $upload,
+        CategorieRepository $caterepo,
+        PhotosRepository $photo,
     ) {
         if (!$security->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('app_index');
@@ -156,10 +158,22 @@ class AdminCategorieController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
-            $em->persist($photo);
-            $em->flush();
+            $file = $form['upload_file']->getData();
+            if ($file) {
+                $file_name = $upload->uploadCategorie($file);
+                if (null !== $file_name) // for example
+                {
+                    $directory = $upload->getTargetDirectory();
+                    $full_path = $directory . '/' . $file_name;
+                } else {
+                    $error = 'une erreur est survenue';
+                }
+            }
+
             $em->persist($categorie);
             $em->flush();
+            var_dump($categorie->getId());
+            $photo->updatePhotoInCategorie($categorie->getId(), '/upload/photo_categorie/' . $file_name);
             return $this->redirectToRoute('app_categorie_list_admin');
         }
         return $this->render('admin/new.html.twig', [
