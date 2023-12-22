@@ -4,7 +4,9 @@ namespace App\Controller;
 
 use App\Entity\Panier;
 use App\Entity\PanierProduit;
+use App\Entity\Produit;
 use App\Entity\Users;
+use App\Repository\PanierProduitRepository;
 use App\Repository\PanierRepository;
 use App\Repository\PhotosRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -66,7 +68,61 @@ class PanierController extends AbstractController
                 $entityManager->flush();
             }
 
-            return $this->redirectToRoute('app_categorie_list_admin', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_panier', [], Response::HTTP_SEE_OTHER);
+        }
+    }
+    #[Route('remove_produit_panier/{id}', name: 'app_remove_produit_panier', methods: ['POST'])]
+    public function remove(
+        Security $security,
+        Produit $produit,
+        PanierRepository $panierRepo,
+        PanierProduitRepository $panierProduitRepo,
+        Request $request,
+    ) {
+        if (!$security->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirectToRoute('app_index');
+        }
+        if ($produit === null) {
+            return $this->redirectToRoute('app_index');
+        }
+        $idProduit = $produit->getId();
+        $Panier = $panierRepo->getLastPanier($security->getUser()->getId());
+        $idPanier = $Panier->getId();
+        $produitInPanier = $panierProduitRepo->getPanierProduitbyId($produit, $Panier);
+        if ($this->isCsrfTokenValid('removeToPanier' . $produit->getId(), $request->request->get('_token'))) {
+            if ($this->isCsrfTokenValid('removeToPanier' . $produit->getId(), $request->request->get('_token'))) {
+                $qte = $produitInPanier->getQuantite();
+                $qte--;
+                $panierProduitRepo->updateQuantitéInProduiPanier($qte, $idProduit, $idPanier);
+            }
+            return $this->redirectToRoute('app_panier', [], Response::HTTP_SEE_OTHER);
+        }
+    }
+    #[Route('add_qte_produit_panier/{id}', name: 'app_add_qte_produit_panier', methods: ['POST'])]
+    public function addQuantite(
+        Security $security,
+        Produit $produit,
+        PanierRepository $panierRepo,
+        PanierProduitRepository $panierProduitRepo,
+        Request $request,
+    ) {
+        if (!$security->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirectToRoute('app_index');
+        }
+        if ($produit === null) {
+            return $this->redirectToRoute('app_index');
+        }
+        $idProduit = $produit->getId();
+        $Panier = $panierRepo->getLastPanier($security->getUser()->getId());
+        $idPanier = $Panier->getId();
+        $produitInPanier = $panierProduitRepo->getPanierProduitbyId($produit, $Panier);
+        if ($this->isCsrfTokenValid('addQteToPanier' . $produit->getId(), $request->request->get('_token'))) {
+            if ($this->isCsrfTokenValid('addQteToPanier' . $produit->getId(), $request->request->get('_token'))) {
+                $qte = $produitInPanier->getQuantite();
+                $qte++;
+                $panierProduitRepo->updateQuantitéInProduiPanier($qte, $idProduit, $idPanier);
+            }
+            return $this->redirectToRoute('app_panier', [], Response::HTTP_SEE_OTHER);
         }
     }
 }

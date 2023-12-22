@@ -11,7 +11,10 @@
         
         {{ ligneProduit.produit.libelle }}
         {{ ligneProduit.produit.description }}
+        {{ include('panier/remove_to_panier.html.twig',{'id' : ligneProduit.produit.id})}}
         {{ ligneProduit.qte }}
+        {{ include('panier/addqte.html.twig',{'id' : ligneProduit.produit.id})}}
+
         {{ ligneProduit.prixTTC }}
 
         {{ include('panier/delete.html.twig', { 'id': ligneProduit.id })}}
