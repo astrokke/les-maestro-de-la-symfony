@@ -7,6 +7,8 @@ use App\Entity\Photos;
 use App\Entity\Produit;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\ChoiceList\ChoiceList;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -22,7 +24,11 @@ class AdminCategorieFormType extends AbstractType
             ->add('categorie_parente', EntityType::class, [
                 'class' => Categorie::class,
                 'choice_label' => 'libelle',
-            ])->add('upload_file', FileType::class, [
+                'required' => false,
+                'placeholder' => '',
+                'empty_data' => null,
+            ])
+            ->add('upload_file', FileType::class, [
                 'label' => false,
                 'mapped' => false, // Tell that there is no Entity to link
                 'required' => true,

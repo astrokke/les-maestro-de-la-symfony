@@ -9,7 +9,7 @@
     <img src="{{ photo.URLPhoto }}"  alt='test'/>
     {% endfor %}
     </div>
-    {% if produits is empty %}
+    {% if produits is null %}
         <p>Aucun produit trouvé pour cette catégorie.</p>
     {% else %}
         <ul>
