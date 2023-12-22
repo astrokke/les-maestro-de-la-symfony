@@ -33,8 +33,7 @@ class ProduitRepository extends ServiceEntityRepository
     public function findProduitsByCategorieId($categorieId)
     {
         return $this->createQueryBuilder('p')
-            ->join('p.categories', 'c')
-            ->where('c.id = :categorieId')
+            ->where('p.categorie = :categorieId')
             ->setParameter('categorieId', $categorieId)
             ->getQuery()
             ->getResult();

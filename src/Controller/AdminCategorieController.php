@@ -172,7 +172,6 @@ class AdminCategorieController extends AbstractController
 
             $em->persist($categorie);
             $em->flush();
-            var_dump($categorie->getId());
             $photo->updatePhotoInCategorie($categorie->getId(), '/upload/photo_categorie/' . $file_name);
             return $this->redirectToRoute('app_categorie_list_admin');
         }

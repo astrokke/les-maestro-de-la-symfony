@@ -34,7 +34,7 @@ class Produit
     #[ORM\ManyToOne(inversedBy: 'Produit')]
     private ?Promotion $promotion = null;
 
-    
+
     #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Photos::class)]
     private Collection $Photos;
 
@@ -46,7 +46,7 @@ class Produit
 
     public function __construct()
     {
-        
+
         $this->Photos = new ArrayCollection();
         $this->panierProduits = new ArrayCollection();
     }
@@ -75,9 +75,9 @@ class Produit
 
     /*public function __toString()
     {
-        return $this->nom.' '.$this->prenom;
+        return $this->nom . ' ' . $this->prenom;
     }
-*/
+    */
 
     public function setDescription(string $description): static
     {
@@ -132,7 +132,7 @@ class Produit
         return $this;
     }
 
-    
+
 
     /**
      * @return Collection<int, Photos>

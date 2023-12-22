@@ -48,7 +48,7 @@
     {% if app.user %}
            <a href="{{ path('app_user') }}"> {{ app.user.userIdentifier }}</a>
     {% endif %}
-    {% endif %}
+
     <a href='{{ path('app_panier') }}'><button class='cart'>Panier</button></a>
     {% endif %}
     {% if not is_granted('IS_AUTHENTICATED_FULLY') %}

@@ -3,16 +3,15 @@
 namespace App\Form;
 
 use App\Entity\Categorie;
-use App\Entity\Panier;
 use App\Entity\Produit;
 use App\Entity\Promotion;
 use App\Entity\TVA;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class AdminProduitFormType extends AbstractType
 {
@@ -33,11 +32,11 @@ class AdminProduitFormType extends AbstractType
                 'placeholder' => '',
                 'empty_data' => null,
             ])
-            ->add('categories', EntityType::class, [
+            ->add('categorie', EntityType::class, [
                 'class' => Categorie::class,
                 'choice_label' => 'libelle',
-                'multiple' => true,
-            ])->add('upload_file', FileType::class, [
+            ])
+            ->add('upload_file', FileType::class, [
                 'label' => false,
                 'mapped' => false, // Tell that there is no Entity to link
                 'required' => true,
@@ -53,6 +52,7 @@ class AdminProduitFormType extends AbstractType
                     ])
                 ],
             ]);
+
     }
 
     public function configureOptions(OptionsResolver $resolver): void
