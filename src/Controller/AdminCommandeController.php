@@ -16,8 +16,11 @@ use App\Form\AdminCommandeFormType;
 class AdminCommandeController extends AbstractController
 {
     #[Route('commande', name: 'app_commande_admin')]
-    public function index(): Response
+    public function index( Security $security): Response
     {
+        if (!$security->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_index');
+        }
         return $this->render('commande/index.html.twig', [
             'controller_name' => 'CommandeController',
         ]);

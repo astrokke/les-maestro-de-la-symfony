@@ -27,19 +27,47 @@ class AdminProduitController extends AbstractController
             'produits' => $produits
         ]);
     }
-
-    #[Route('produit/{id}', name: 'app_produit_show_admin')]
-    public function showProducts(
-        ?Produit $produit,
+    #[Route('new_produit', name: 'app_new_produit')]
+    public function new(
+        Request $request,
+        EntityManagerInterface $em,
         Security $security,
+        FileUploader $upload,
+        PhotosRepository $photo,
+        ProduitRepository $produitrepo,
     ): Response {
         if (!$security->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('app_index');
         }
+        $produit = new Produit();
+        $form = $this->createForm(AdminProduitFormType::class, $produit);
 
-        return $this->render('admin/produit_show.html.twig', [
-            'title' => 'Fiche d\'un produit',
-            'produit' => $produit,
+        $form->handleRequest($request);
+        if ($form->isSubmitted()) {
+            $file = $form['upload_file']->getData();
+            if ($file) {
+                $file_name = $upload->uploadProduit($file);
+                if (null !== $file_name) // for example
+                {
+                    $directory = $upload->getTargetDirectory();
+                    $full_path = $directory . '/' . $file_name;
+                } else {
+                    $error = 'une erreur est survenue';
+                } 
+            }
+            $categorie = $form['categorie']->getData();
+            $produit->setCategorie($categorie);
+            $photos=$photo->insertPhotoWithProduit($produitrepo->getLastId()->getId(), '/upload/photo_produit/' . $file_name);
+            $produit->addPhoto($photos);
+            $em->persist($produit);
+            $em->flush();
+            
+
+            return $this->redirectToRoute('app_produit_list_admin');
+        }
+        return $this->render('admin/produit_new.html.twig', [
+            'title' => 'Création d\'un nouveau produit',
+            'form' => $form->createView(),
         ]);
     }
 
@@ -64,47 +92,18 @@ class AdminProduitController extends AbstractController
         ]);
     }
 
-    #[Route('new_produit', name: 'app_new_produit')]
-    public function new(
-        Request $request,
-        EntityManagerInterface $em,
+    #[Route('produit_show/{id}', name: 'app_produit_show_admin')]
+    public function showProducts(
+        ?Produit $produit,
         Security $security,
-        FileUploader $upload,
-        PhotosRepository $photo,
-        ProduitRepository $produitrepo,
     ): Response {
         if (!$security->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('app_index');
         }
-        $produit = new Produit();
-        $form = $this->createForm(AdminProduitFormType::class, $produit);
 
-        $form->handleRequest($request);
-        if ($form->isSubmitted()) {
-            $file = $form['upload_file']->getData();
-            if ($file) {
-                $file_name = $upload->uploadProduit($file);
-                if (null !== $file_name) // for example
-                {
-                    $directory = $upload->getTargetDirectoryProduit();
-                    $full_path = $directory . '/' . $file_name;
-                } else {
-                    $error = 'une erreur est survenue';
-                }
-            }
-
-
-            $em->persist($produit);
-
-            $em->flush();
-
-            $photo->insertPhotoWithProduit($produitrepo->getLastId()->getId(), '/upload/photo_produit/' . $file_name);
-
-            return $this->redirectToRoute('app_produit_list_admin');
-        }
-        return $this->render('admin/produit_new.html.twig', [
-            'title' => 'Création d\'un nouveau produit',
-            'form' => $form->createView(),
+        return $this->render('admin/produit_show.html.twig', [
+            'title' => 'Fiche d\'un produit',
+            'produit' => $produit,
         ]);
     }
 
@@ -130,7 +129,7 @@ class AdminProduitController extends AbstractController
         if ($form->isSubmitted()) {
             $file = $form['upload_file']->getData();
             if ($file) {
-                $file_name = $upload->uploadCategorie($file);
+                $file_name = $upload->uploadProduit($file);
                 if (null !== $file_name) // for example
                 {
                     $directory = $upload->getTargetDirectory();
@@ -139,18 +138,21 @@ class AdminProduitController extends AbstractController
                     $error = 'une erreur est survenue';
                 }
             }
-
+            $categorie = $form['categorie']->getData();
+            $produit->getCategorie($categorie);
+            $photos=$photo->updatePhotoInProduit($produit->getId(), '/upload/photo_produit/' . $file_name);
+            $produit->getPhotos($photos);
             $em->persist($produit);
             $em->flush();
-            $photo->updatePhotoInProduit($produit->getId(), '/upload/photo_produit/' . $file_name);
             return $this->redirectToRoute('app_produit_list_admin');
+           
+            
         }
         return $this->render('admin/produit_new.html.twig', [
             'title' => 'Mise à jour d\'un produit',
             'form' => $form,
         ]);
     }
-
 
     #[Route('delete_produit/{id}', name: 'app_delete_produit', methods: ['POST'])]
     public function delete(
@@ -173,3 +175,13 @@ class AdminProduitController extends AbstractController
         return $this->redirectToRoute('app_produit_list_admin', [], Response::HTTP_SEE_OTHER);
     }
 }
+    
+   
+
+   
+   
+    
+   
+
+
+    

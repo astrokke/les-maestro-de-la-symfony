@@ -10,15 +10,15 @@
     </h2>
     <h3> {{ cate.description }}</h3>
     <div class='banner'>
-    {% for photo in photos %}
-    <img src='{{ photo.URLPhoto }}' alt='test' class='banner-item'/>
+    {% for item in photos %}
+    <img src='{{ item.URLPhoto }}' alt='test' class='banner-item'/>
     {% endfor %} 
     </div>
 
 <div class='card'>
-{% for enfant in enfants %}
-<a href='{{path('app_produit_categorie',{ 'id':enfant.id })}}'>{{ enfant.libelle }}</a><br>
-{{ enfant.description }}
+{% for item in enfants %}
+<a href='{{path('app_produit_categorie',{ 'id':item.id })}}'>{{ item.libelle }}</a><br>
+{{ item.description }}
 {% endfor %}
 </div>
 

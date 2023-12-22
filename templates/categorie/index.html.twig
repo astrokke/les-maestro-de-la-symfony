@@ -9,10 +9,10 @@
 </style>
 
 <div class="example-wrapper">
-{% for categorie in categories %}
+{% for item in categories %}
 <ul>
-   <li> {{ categorie.libelle }}</li>
-    <li>{{ categorie.description }}</li>
+   <li> {{ item.libelle }}</li>
+    <li>{{ item.description }}</li>
     
     </ul>
     {% endfor %}

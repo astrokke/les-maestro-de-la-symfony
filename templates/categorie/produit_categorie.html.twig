@@ -13,8 +13,8 @@
         <p>Aucun produit trouvé pour cette catégorie.</p>
     {% else %}
         <ul>
-            {% for produit in produits %}
-                <li><a href='{{ path('app_show_produit', {'id':produit.id})}}'>{{ produit.libelle }} - {{ produit.prixHt }}</li>
+            {% for item in produits %}
+                <li><a href='{{ path('app_show_produit', {'id':item.id})}}'>{{ item.libelle }} - {{ item.prixHt }}</li>
             {% endfor %}
         </ul>
     {% endif %}

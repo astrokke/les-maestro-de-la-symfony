@@ -44,15 +44,11 @@
             )) }}
     {% if is_granted('IS_AUTHENTICATED_FULLY') %}
     
-    {% if  is_granted('ROLE_ADMIN') %}
-    <a href="{{ path('app_admin_dashboard') }}">Dashboard</a>
-    <a href="{{ path('app_admin_logout') }}">Déconnectez-vous</a>
-    {% else %}
     <a href="{{ path('app_logout') }}">Déconnectez-vous</a>
     {% if app.user %}
            <a href="{{ path('app_user') }}"> {{ app.user.userIdentifier }}</a>
     {% endif %}
-    {% endif %}
+
     <a href='{{ path('app_panier') }}'><button class='cart'>Panier</button></a>
     {% endif %}
     {% if not is_granted('IS_AUTHENTICATED_FULLY') %}

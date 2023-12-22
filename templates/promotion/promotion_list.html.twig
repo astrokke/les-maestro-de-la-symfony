@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{% extends 'base_admin.html.twig' %}
 
 {% block title %}
     {{ title }}
@@ -7,22 +7,16 @@
 {% block main %}
     <h2>{{ title }}</h2>
     {% if is_granted('ROLE_ADMIN') %}
-    <h3><a href="{{ path('app_new_promotion') }}">Créer</a></h3>
+    <h3><a href="{{ path('app_new_promotion') }}">Ajouter une promotion</a></h3>
     {% endif %}
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>Libellé</th>
-            <th>Taux de Promotion</th>
-            <th>Code de Promotion</th>
-        </tr>
+
     {% for item in promotion %}
         <tr>
              
-            <td>{{ item.id }}</td>
-            <td>{{ item.libelle }}</td>
-            <td>{{ item.tauxPromotion }}%</td>
-            <td>{{ item.codePromotion }}</td>
+            <td>ID: {{ item.id }}</td>
+            <td>Libellé :{{ item.libelle }}</td>
+            <td>Taux de Promotion :{{ item.tauxPromotion }}%</td>
+            <td>Code de Promotion :{{ item.codePromotion }}</td>
             <td><a href="{{ path('app_promotion_show', { 'id': item.id })}}">Voir</a></td>
             <td><a href="{{ path('app_update_promotion', { 'id': item.id })}}">Mettre à jour</a></td>
             <td>{{ include('promotion/delete.html.twig', { 'id': item.id })}}</td>
@@ -32,7 +26,7 @@
             <td colspan="5">Aucun enregistrement</td>
         </tr>
     {% endfor %}
-    </table>
+
     <form>
         <input type='text' name='nom' placeholder='recherchez par libelle' value='{{ libelle }}'>
         <input type='submit' name='submit' value='rechercher'>
