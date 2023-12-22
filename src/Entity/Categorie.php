@@ -28,7 +28,7 @@ class Categorie
     #[ORM\OneToMany(mappedBy: 'categorie_parente', targetEntity: self::class)]
     private Collection $categorie_enfant;
 
-    #[ORM\ManyToMany(targetEntity: Produit::class, inversedBy: 'categories')]
+    #[ORM\ManyToMany(targetEntity: Produit::class, inversedBy: 'categories' , cascade: ['persist', 'remove'])]
     private Collection $Produit;
 
     #[ORM\OneToMany(mappedBy: 'categorie', targetEntity: Photos::class)]

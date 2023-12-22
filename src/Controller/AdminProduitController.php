@@ -93,7 +93,11 @@ class AdminProduitController extends AbstractController
                 }
             }
 
-
+            $categories = $form['categories']->getData();
+            foreach ($categories as $categorie){
+                $produit->addCategory($categorie);
+                $em->persist($categorie);
+            }
             $em->persist($produit);
 
             $em->flush();

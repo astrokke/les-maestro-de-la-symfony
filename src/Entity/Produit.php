@@ -34,7 +34,7 @@ class Produit
     #[ORM\ManyToOne(inversedBy: 'Produit')]
     private ?Promotion $promotion = null;
 
-    #[ORM\ManyToMany(targetEntity: Categorie::class, mappedBy: 'Produit')]
+    #[ORM\ManyToMany(targetEntity: Categorie::class, mappedBy: 'Produit', cascade: ['persist', 'remove'])]
     private Collection $categories;
 
     #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Photos::class)]

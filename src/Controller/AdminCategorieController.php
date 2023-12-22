@@ -198,11 +198,6 @@ class AdminCategorieController extends AbstractController
         }
         if ($this->isCsrfTokenValid('delete' . $categorie->getId(), $request->request->get('_token'))) {
             if ($this->isCsrfTokenValid('delete' . $categorie->getId(), $request->request->get('_token'))) {
-                $photo->setCategorie(null);
-                $entityManager->persist($photo);
-                $entityManager->flush();
-                $entityManager->remove($photo);
-                $entityManager->flush();
                 $categorie->setCategorieParente(null);
                 $entityManager->persist($categorie);
                 $entityManager->flush();

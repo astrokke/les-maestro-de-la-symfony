@@ -6,8 +6,8 @@
 
 {% block main %}
     <h2>{{ title }}</h2>
-    {% for photo in photos %}
-        <img src='{{ photo.URLPhoto }}' alt='test' class='banner-item'/>
+    {% for item in photos %}
+        <img src='{{ item.URLPhoto }}' alt='test' class='banner-item'/>
     {% endfor %} 
     <tr>
          <td>{{ produit.libelle }}</td>

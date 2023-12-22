@@ -9,11 +9,11 @@
 </style>
 
 <div class="example-wrapper">
-{% for produit in produits %}
+{% for item in produits %}
 <ul>
-   <li><a href = "{{ path('app_show_produit', { 'id': produit.id })}}"> {{ produit.libelle }}</a></li>
-    <li>{{ produit.description }}</li>
-    <li>{{ produit.prixHt }}</li>
+   <li><a href = "{{ path('app_show_produit', { 'id': item.id })}}"> {{ item.libelle }}</a></li>
+    <li>{{ item.description }}</li>
+    <li>{{ item.prixHt }}</li>
     </ul>
     {% endfor %}
 </div>
