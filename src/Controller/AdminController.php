@@ -59,7 +59,7 @@ class AdminController extends AbstractController
         $form = $this->createForm(AdminFormType::class, $admin);
 
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $selectedRoles = $form->get('roles')->getData();
             $admin->setRoles($selectedRoles);
             $admin->setPassword(
