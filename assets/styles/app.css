@@ -1,15 +1,188 @@
-body {
-    background-color: white;
-    width: 100%;
-  margin: 0;
+/** @format */
 
+body {
+  background-color: white;
+  width: 100%;
+  margin: 0;
 }
-.banner{
-    background-color: black;
-    height: 300px;
-    width: 100%;
+a {
+  text-decoration: none !important;
+  color: #000;
 }
-.banner-item{
-    width: 20%;
+.banner {
+  background-color: black;
+  height: 300px;
+  width: 100%;
+}
+.banner-item {
+  width: 20%;
+}
+#logo {
+  position: relative;
+  right: 10vw;
+}
+.linav {
+  text-align: center;
+  font-family: Jost;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  padding-inline: 5vw;
+  padding-top: 1%;
+  display: flex;
+}
+#navbar {
+  background: #ebebeb !important;
+}
+
+#TitreSymfony {
+  color: rgba(223, 190, 49, 1);
+}
+.deco {
+  width: 3vw;
+}
+
+#rondjaune {
+  position: absolute;
+
+  top: 8%;
+  margin-inline-start: 3%;
+}
+#dropmenu {
+  position: inherit;
+}
+
+#dropmenu li {
+  text-align: center;
+}
+
+li > * {
+  padding-inline-start: 7%;
+}
+
+
+#icone a {
+    margin-inline-start: 2vw;
+}
+#dance {
+    width: 49vw;
+    display: flex;
+    margin-inline-start: 60vw;
+  }
+  #spanHome {
+    display: flex;
+  }
+  .titreHome {
+    color: #000;
+    text-align: center;
+    font-family: Libre Bodoni;
+    font-size: 36px;
+    font-style: italic;
+    font-weight: 500;
+    line-height: normal;
+    position: absolute;
+    left: 29%;
+    top: 46%;
+  }
+  .PHome {
+    color: #000;
+    text-align: center;
+    font-family: Libre Bodoni;
+    font-size: 18px;
+    font-style: italic;
+    font-weight: 500;
+    line-height: normal;
+  }
+
+/* Afficher les images sur la version de tel */
+@media (max-width: 768px) {
+
+    #dance {
+        width: 40vw;
+        display: flex;
+        margin: unset;
+      }
+      #spanHome {
+        display: flex;
+      }
+      .titreHome {
+        color: #000;
+        text-align: center;
+        font-family: Libre Bodoni;
+        font-size: 36px;
+        font-style: italic;
+        font-weight: 500;
+        line-height: normal;
+        position: inherit;
+      }
+      .PHome {
+        color: #000;
+        text-align: center;
+        font-family: Libre Bodoni;
+        font-size: 18px;
+        font-style: italic;
+      
+        font-weight: 500;
+        line-height: normal;
+      }
+  #navbar .navbar-nav {
+    margin-top: 1rem;
+  }
+
+  #logo {
+    left: 7vw;
+  }
+  #logo  img{
+    width: 27vw;
+    height: 20vw!important;
+  }
+  .linav {
+    padding: 5px;
+    text-align: left;
+    font-size: 14px;
+    padding: 8px 12px;
+    display: contents;
+  }
+  .linav a {
+    margin: 2VW auto;
+  }
+  #minipanier img {
     
+    width: 20VW;
+  }
+  
+  .navbar-nav {
+    width: 100%;
+  }
+  .desktop-icon {
+    display: none;
+  }
+  .mobile-icon {
+    display: block;
+  }
+  #panier {
+    display: none;
+  }
+  #deco {
+    display: none;
+  }
+  #user {
+    display: none;
+  }
 }
+
+/* Afficher les images sur la version de bureau */
+@media (min-width: 769px) {
+  .desktop-icon {
+    display: block;
+  }
+  .mobile-icon {
+    display: none;
+  }
+  #minipanier{
+    display: none;
+  }
+}
+
+

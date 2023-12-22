@@ -1,47 +1,186 @@
-<!DOCTYPE html>
+
 <html>
-    <head>
-        <meta charset="UTF-8">
-        <title>{% block title %}Welcome!{% endblock %}</title>
-        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
-        {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
-            {{ ux_controller_link_tags() }}
-        {% endblock %}
-
-        {% block javascripts %}
-            {{ encore_entry_script_tags('app') }}
-
-            <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
-        {% endblock %}
-
-        
-    </head>
-    <body>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Welcome!{% endblock %}</title>
+    <link rel="icon" href="data:image/svg+xml,...">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost&display=swap" rel="stylesheet">
+    {% block stylesheets %}
+        {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+</head>
+<body>
     {% block header %}
-    {% block nav %}
-    <nav>
-    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-    
-    {% if  is_granted('ROLE_ADMIN') %}
-    <a href="{{ path('app_admin_logout') }}">Déconnectez-vous</a>
-    {% else %}
-    <a href="{{ path('app_logout') }}">Déconnectez-vous</a>
-    {% if app.user %}
-           <a href="{{ path('app_user') }}"> {{ app.user.userIdentifier }}</a>
-    {% endif %}
-    {% endif %}
-    {% endif %}
-    {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
-    <a href="{{ path('app_login') }}">Connectez-vous</a>
-{% endif %}
-            {{ render(controller(
-                'App\\Controller\\CategorieController::list'
-            )) }}
+        {% block nav %}
 
-    {% endblock %}
-    {% endblock %}
-    </nav>
+ 
+     <header>
+<nav id="navbar" class="navbar navbar-expand-md bg-light navbar-light">
+    <div class="container">
+
+
+    {% if app.user %}
+    
+                        <a id="minipanier" href="{{ path('app_user') }}">
+                            <img  src="{{ asset('images/panier.png') }}" alt="Panier">
+                           
+                        </a>
+                    
+                {% endif %}
+        <!-- Logo de la navbar -->
+        <a id="logo" class="navbar-brand text-uppercase fw-bold" href="{{ path('app_index') }}">
+            <img src="{{ asset('images/logo.png') }}" alt="Logo" style="height: 4vw;">
+        </a>
+
+        <!-- Bouton burger pour les petits écrans -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Contenu de la navbar -->
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav">
+                <!-- Lien Accueil -->
+                <li class="nav-item linav active">
+                    <a style='color: rgba(223, 190, 49, 1)!important' aria-current="page" href="{{ path('app_index') }}">
+                        Accueil
+                    </a>
+                    {{ render(controller('App\\Controller\\CategorieController::list')) }}
+                    <a class='mobile-icon' href="{{ path('app_user') }}">Mon Compte</a>
+                    <a  class='mobile-icon' href="{{ path('app_logout') }}">Déconnexion</a>
+                </li>
+
+                <!-- Déconnexion et profil pour la version de bureau -->
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li class="nav-item desktop-icon ">
+                            <a class="nav-link" href="{{ path('app_admin_logout') }}">
+                                <img class="deco" src="{{ asset('images/deco.png') }}" alt="Déconnexion">
+                            </a>
+                        </li>
+                    {% else %}
+                        <li id='icone' class="nav-item desktop-icon" style="display: flex;">
+                            <a id="deco"class="nav-link "  href="{{ path('app_logout') }}">
+                                <img class="deco" src="{{ asset('images/deco.png') }}" alt="Déconnexion">
+                            </a>
+                            <!--profil-->
+                            <a  id='user' class="nav-link  " href="{{ path('app_user') }}">
+                                    <img class="deco" src="{{ asset('images/User.png') }}" alt="Profil">
+                                </a>
+                                <!-- Panier -->
+                                 <a   id ="panier"href="{{ path('app_user') }}">
+                                 <img style=" width: 4vw; " src="{{ asset('images/panier.png') }}" alt="Panier">
+                                 </a>
+                        </li>
+                      
+                        {% endif %}
+                    {% endif %}
+                
+
+                
+                
+               
+
+                <!-- Connexion pour la version mobile -->
+                {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('app_login') }}">Connectez-vous</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+
+<span id="spanHome" >
+<h1 class="titreHome" >Les Maestros de la <span id="TitreSymfony">Symfony</span>
+<p class="pHome">La musique à portée de clic</p> 
+</h1>
+
+<img id="dance"  src="{{ asset('images/mecquidance.png') }}">
+ </span>
+
+  </header>
+            {% endblock %}
+            {% endblock %}
+    
         {% block main %}{% endblock %}
-    </body>
+
+
+
+
+</body>
+
+
+<footer class="border-top h-10 w-10">
+     <div class="row gy-4 container py-5"> 
+            <div class="col-12 col-md-4">
+            
+            
+                    <div class="col-6 gy-2">
+                          <h6>Prénom</h6>
+                          <input type="text" class="form-control" placeholder="Prénom" aria-label="First name">
+                    </div>
+                    <div class="col-6 gy-2">
+                          <h6>Nom</h6>
+                          <input type="text" class="form-control" placeholder="Nom" aria-label="Last name">
+                    </div>
+                          
+                    
+                    <div class="col-6 gy-2">
+                             <label for="colFormLabel" class="col-sm-6 col-form-label">Email</label>
+                            <input type="email" class="form-control" id="colFormLabel" placeholder="email valid">
+                    </div>
+                    <div class="col-6 mb-3 gy-2">
+                            <label for="exampleFormControlTextarea1" class="form-label">Message</label>
+                            <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    </div>
+                    <div class="col-6 d-grid gap-2 gy-1">
+                            <button class="btn btn-primary" type="button">Envoyer</button>
+                    </div>
+            </div>
+                      
+
+
+           <div class="col-12 col-md-4 ">  
+              <div class="">  
+                <ul>
+                    <li><a>Accueil</a>
+                     <li><a>Instruments à cordes</a>
+                      <li><a>Instruments à percussions</a>
+                       <li><a>Instruments à vent</a>
+
+                </ul>
+              </div>                      
+            </div>
+           
+       
+    
+    
+       <div class="col-12 col-md-4 text-md-center">
+                <div class="col-4 col-md-12 h-50 w-100 py-5">
+                    <ul class="list-inline ">
+                        <li class="list-inline-item"><i class="bi bi-linkedin"></i>linkedin</li>
+                        <li class="list-inline-item"><i class="bi bi-instagram"></i>instagram</li>
+                        <li class="list-inline-item"><i class="bi bi-twitter"></i>X</li>
+                    </ul>
+                  
+                </div>                          
+    
+                <div class="col-4 col-md-12 text-md-center">
+                    <div class=" h-100 w-100 py-5">
+                        <button type="button" class="btn btn-primary" > S</button> F
+                    </div>                      
+                </div>
+        </div>
+    </div>
+     
+</footer>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
 </html>

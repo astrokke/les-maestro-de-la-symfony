@@ -1,27 +1,28 @@
 {% extends 'base.html.twig' %}
-
+ 
 {% block title %}
     {{title}}
 {% endblock %}
-
+ 
 {% block main %}
     <h2>
-        {{ title }} {{ cate.libelle }} 
+        {{ title }} {{ cate.libelle }}
     </h2>
     <h3> {{ cate.description }}</h3>
-    <div class='banner'>
     {% for photo in photos %}
-    <img src='{{ asset(photo.URLPhoto) }}' alt='test' class='banner-item'/>
-    {% endfor %} 
-    </div>
-
+    <img src='{{ asset(photo.URLPhoto) }}' alt='test' style='width: 100%;'/>
+    {% endfor %}
+ 
 <div class='card'>
 {% for enfant in enfants %}
 <a href='{{path('app_produit_categorie',{ 'id':enfant.id })}}'>{{ enfant.libelle }}</a><br>
 {{ enfant.description }}
 {% endfor %}
 </div>
-
+<a href="{{ path('app_produit_categorie',{ 'id': cate.id })}}"> Voir les produits  </a>
+ 
+       
+{% endblock %}
 
         
 {% endblock %}

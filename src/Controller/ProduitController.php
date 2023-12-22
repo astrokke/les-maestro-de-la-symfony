@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Categorie;
-use App\Entity\Produit;
 use App\Repository\CategorieRepository;
 use App\Repository\ProduitRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

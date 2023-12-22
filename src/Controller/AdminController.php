@@ -70,7 +70,7 @@ class AdminController extends AbstractController
             $em->persist($admin);
             $em->flush();
             return $this->redirectToRoute('app_list_admin');
-            var_dump($admin);
+            
         }
         return $this->render('admin/new.html.twig', [
             'title' => 'Création d\'un nouvel administrateur',
