@@ -28,7 +28,7 @@ class Admin implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $prenom = null;
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
+
     #[Assert\NotCompromisedPassword]
 
     private ?string $password = null;

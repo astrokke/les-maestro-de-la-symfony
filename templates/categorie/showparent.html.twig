@@ -9,11 +9,13 @@
         {{ title }} {{ cate.libelle }} 
     </h2>
     <h3> {{ cate.description }}</h3>
+   <div class="container-fluid">
     <div class='banner'>
-    {% for item in photos %}
-    <img src='{{ item.URLPhoto }}' alt='test' class='banner-item'/>
-    {% endfor %} 
+    {% for photo in photos %}
+    <img src="{{ photo.URLPhoto }}"  alt='test' class="h-100 d-inline-block" />
     </div>
+    </div>
+    {% endfor %} 
 
 <div class='card'>
 {% for item in enfants %}
