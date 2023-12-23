@@ -30,7 +30,7 @@ class AdminProduitRepository extends ServiceEntityRepository
             ->getResult();
     }
 
-    public function findProduitsByCategorieId($categorieId)
+    /*    public function findProduitsByCategorieId($categorieId)
     {
         return $this->createQueryBuilder('p')
             ->join('p.categories', 'c')
@@ -39,7 +39,7 @@ class AdminProduitRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
-
+ */
     public function searchByName(string $libelle): ?array
     {
         return $this->createQueryBuilder('s')

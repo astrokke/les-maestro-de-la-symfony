@@ -110,7 +110,6 @@ class Adresse
         if ($this->est_livre->removeElement($estLivre)) {
             // set the owning side to null (unless already changed)
             if ($estLivre->getEstLivre() === $this) {
-            if ($estLivre->getEstLivre() === $this) {
                 $estLivre->setEstLivré(null);
             }
         }
@@ -149,36 +148,6 @@ class Adresse
     }
 
 
-
-    /**
-     * @return Collection<int, Users>
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    public function addUser(Users $user): static
-    {
-        if (!$this->users->contains($user)) {
-            $this->users->add($user);
-            $user->setAdresse($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(Users $user): static
-    {
-        if ($this->users->removeElement($user)) {
-            // set the owning side to null (unless already changed)
-            if ($user->getAdresse() === $this) {
-                $user->setAdresse(null);
-            }
-        }
-
-        return $this;
-    }
 
 
     public function getVille(): ?Ville
