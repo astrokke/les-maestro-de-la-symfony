@@ -31,21 +31,20 @@ class Adresse
     #[ORM\OneToMany(mappedBy: 'est_facture', targetEntity: Commande::class)]
     private Collection $est_facture;
 
-
-
-    #[ORM\OneToMany(mappedBy: 'Adresse', targetEntity: Users::class)]
-    private Collection $users;
-
     #[ORM\ManyToOne(inversedBy: 'adresse')]
     private ?Ville $Ville = null;
 
+    #[ORM\ManyToOne(inversedBy: 'adresses')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Users $users = null;
+
+    
 
 
     public function __construct()
     {
         $this->est_livre = new ArrayCollection();
         $this->est_facture = new ArrayCollection();
-        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -101,7 +100,7 @@ class Adresse
     {
         if (!$this->est_livre->contains($estLivre)) {
             $this->est_livre->add($estLivre);
-            $estLivre->setEstLivré($this);
+            $estLivre->setEstLivre($this);
         }
 
         return $this;
@@ -112,7 +111,7 @@ class Adresse
         if ($this->est_livre->removeElement($estLivre)) {
             // set the owning side to null (unless already changed)
             if ($estLivre->getEstLivre() === $this) {
-                $estLivre->setEstLivré(null);
+                $estLivre->setEstLivre(null);
             }
         }
 
@@ -151,36 +150,7 @@ class Adresse
 
 
 
-    /**
-     * @return Collection<int, Users>
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    public function addUser(Users $user): static
-    {
-        if (!$this->users->contains($user)) {
-            $this->users->add($user);
-            $user->setAdresse($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(Users $user): static
-    {
-        if ($this->users->removeElement($user)) {
-            // set the owning side to null (unless already changed)
-            if ($user->getAdresse() === $this) {
-                $user->setAdresse(null);
-            }
-        }
-
-        return $this;
-    }
-
+   
 
     public function getVille(): ?Ville
     {
@@ -193,4 +163,18 @@ class Adresse
 
         return $this;
     }
+
+    public function getUsers(): ?Users
+    {
+        return $this->users;
+    }
+
+    public function setUsers(?Users $users): static
+    {
+        $this->users = $users;
+
+        return $this;
+    }
+
+   
 }

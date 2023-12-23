@@ -4,9 +4,18 @@
 
 {% block main %}
 
-<h2>Votre mode de livraison</h2>
-{% for livraison in livraisons %}
-<label for='livraison{{livraison.id}}'>{{livraison.libelle}}</label>
-<input type="radio" name="livraison{{livraison.id}}" id="livraison{{livraison.id}}" ">
-{% endfor %}
+
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <label for='prix-ttc'>Total de la commande</label> 
+        <input type='text' name='prix-ttc' value='{{ totalttc }} € TTC ' disabled>
+        <a href="{{ path('app_create_adresse_commande') }}">Ajouter/Choisir une adresse de livraison</a>
+        <input type='submit' name='créer' value='valider votre commande'>
+    {{ form_end(form) }}
+    
+    
+    
+
+
 {% endblock %}

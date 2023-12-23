@@ -18,7 +18,7 @@ class Photos
     #[ORM\Column(length: 255)]
     private ?string $URL_photo = null;
 
-    #[ORM\ManyToOne(inversedBy: 'photos')]
+    #[ORM\ManyToOne(inversedBy: 'Photos')]
     private ?Categorie $categorie = null;
 
     #[ORM\ManyToOne(inversedBy: 'Photos')]
