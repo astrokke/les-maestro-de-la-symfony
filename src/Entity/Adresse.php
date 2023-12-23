@@ -31,13 +31,12 @@ class Adresse
     #[ORM\OneToMany(mappedBy: 'est_facture', targetEntity: Commande::class)]
     private Collection $est_facture;
 
-
-
-    #[ORM\OneToMany(mappedBy: 'Adresse', targetEntity: Users::class)]
-    private Collection $users;
-
     #[ORM\ManyToOne(inversedBy: 'adresse')]
     private ?Ville $Ville = null;
+
+    #[ORM\ManyToOne(inversedBy: 'adresses')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Users $Users = null;
 
 
 
@@ -45,7 +44,6 @@ class Adresse
     {
         $this->est_livre = new ArrayCollection();
         $this->est_facture = new ArrayCollection();
-        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -111,7 +109,7 @@ class Adresse
     {
         if ($this->est_livre->removeElement($estLivre)) {
             // set the owning side to null (unless already changed)
-            if ($estLivre->getEstLivré() === $this) {
+            if ($estLivre->getEstLivre() === $this) {
                 $estLivre->setEstLivré(null);
             }
         }
@@ -151,36 +149,6 @@ class Adresse
 
 
 
-    /**
-     * @return Collection<int, Users>
-     */
-    public function getUsers(): Collection
-    {
-        return $this->users;
-    }
-
-    public function addUser(Users $user): static
-    {
-        if (!$this->users->contains($user)) {
-            $this->users->add($user);
-            $user->setAdresse($this);
-        }
-
-        return $this;
-    }
-
-    public function removeUser(Users $user): static
-    {
-        if ($this->users->removeElement($user)) {
-            // set the owning side to null (unless already changed)
-            if ($user->getAdresse() === $this) {
-                $user->setAdresse(null);
-            }
-        }
-
-        return $this;
-    }
-
     public function getVille(): ?Ville
     {
         return $this->Ville;
@@ -189,6 +157,18 @@ class Adresse
     public function setVille(?Ville $Ville): static
     {
         $this->Ville = $Ville;
+
+        return $this;
+    }
+
+    public function getUsers(): ?Users
+    {
+        return $this->Users;
+    }
+
+    public function setUsers(?Users $Users): static
+    {
+        $this->Users = $Users;
 
         return $this;
     }
