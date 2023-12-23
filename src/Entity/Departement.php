@@ -18,7 +18,7 @@ class Departement
     #[ORM\Column(length: 255)]
     private ?string $nom = null;
 
-    #[ORM\Column]
+    #[ORM\Column(length: 255)]
     private ?string $numero_departement = null;
 
     #[ORM\OneToMany(mappedBy: 'Departement', targetEntity: Ville::class)]

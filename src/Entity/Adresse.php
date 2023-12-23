@@ -31,13 +31,12 @@ class Adresse
     #[ORM\OneToMany(mappedBy: 'est_facture', targetEntity: Commande::class)]
     private Collection $est_facture;
 
-
-
-    #[ORM\OneToMany(mappedBy: 'Adresse', targetEntity: Users::class)]
-    private Collection $users;
-
     #[ORM\ManyToOne(inversedBy: 'adresse')]
     private ?Ville $Ville = null;
+
+    #[ORM\ManyToOne(inversedBy: 'adresses')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Users $Users = null;
 
 
 
@@ -45,7 +44,6 @@ class Adresse
     {
         $this->est_livre = new ArrayCollection();
         $this->est_facture = new ArrayCollection();
-        $this->users = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -111,6 +109,7 @@ class Adresse
     {
         if ($this->est_livre->removeElement($estLivre)) {
             // set the owning side to null (unless already changed)
+            if ($estLivre->getEstLivre() === $this) {
             if ($estLivre->getEstLivre() === $this) {
                 $estLivre->setEstLivré(null);
             }
@@ -190,6 +189,18 @@ class Adresse
     public function setVille(?Ville $Ville): static
     {
         $this->Ville = $Ville;
+
+        return $this;
+    }
+
+    public function getUsers(): ?Users
+    {
+        return $this->Users;
+    }
+
+    public function setUsers(?Users $Users): static
+    {
+        $this->Users = $Users;
 
         return $this;
     }

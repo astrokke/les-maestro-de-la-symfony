@@ -33,18 +33,15 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     #[Assert\NotBlank]
     #[Assert\NoSuspiciousCharacters]
-    
+
     private ?string $email = null;
 
     #[ORM\Column]
     private array $roles = [];
 
     #[ORM\Column(length: 255)]
-    #[Assert\NotBlank]
     private ?string $password = null;
 
-    #[ORM\ManyToOne(inversedBy: 'users')]
-    private ?Adresse $Adresse = null;
 
     #[ORM\OneToMany(mappedBy: 'users', targetEntity: Commande::class)]
     private Collection $Commande;
@@ -52,11 +49,15 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'Users', targetEntity: Panier::class)]
     private Collection $paniers;
 
+    #[ORM\OneToMany(mappedBy: 'Users', targetEntity: Adresse::class)]
+    private Collection $adresses;
+
 
     public function __construct()
     {
         $this->Commande = new ArrayCollection();
         $this->paniers = new ArrayCollection();
+        $this->adresses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -124,17 +125,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getAdresse(): ?Adresse
-    {
-        return $this->Adresse;
-    }
-
-    public function setAdresse(?Adresse $Adresse): static
-    {
-        $this->Adresse = $Adresse;
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Commande>
@@ -227,5 +217,35 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection<int, Adresse>
+     */
+    public function getAdresses(): Collection
+    {
+        return $this->adresses;
+    }
+
+    public function addAdress(Adresse $adress): static
+    {
+        if (!$this->adresses->contains($adress)) {
+            $this->adresses->add($adress);
+            $adress->setUsers($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdress(Adresse $adress): static
+    {
+        if ($this->adresses->removeElement($adress)) {
+            // set the owning side to null (unless already changed)
+            if ($adress->getUsers() === $this) {
+                $adress->setUsers(null);
+            }
+        }
+
+        return $this;
     }
 }
