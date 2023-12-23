@@ -2,12 +2,14 @@
 
 namespace App\Controller;
 
+use App\Entity\Panier;
 use App\Entity\Produit;
 use App\Repository\CategorieRepository;
 use App\Repository\PanierProduitRepository;
 use App\Repository\PanierRepository;
 use App\Repository\PhotosRepository;
 use App\Repository\ProduitRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -49,7 +51,8 @@ class ProduitController extends AbstractController
         Produit $produit,
         PanierRepository $panierRepo,
         Request $request,
-        PanierProduitRepository $panierProduitRepo
+        PanierProduitRepository $panierProduitRepo,
+        EntityManagerInterface $em
     ) {
         if (!$security->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $this->redirectToRoute('app_index');
@@ -57,6 +60,17 @@ class ProduitController extends AbstractController
         if ($produit === null) {
             return $this->redirectToRoute('app_produit');
         }
+        
+        $panier = $panierRepo->getLastPanier($security->getUser()->getId());
+
+        
+        if (!$panier) {
+            $panier = new Panier();
+            $panier->setUsers($security->getUser());
+            $em->persist($panier);
+            $em->flush(); // Enregistrer le panier en base de données
+        }
+
         $idProduit = $produit->getId();
         $Panier = $panierRepo->getLastPanier($security->getUser()->getId());
         $idPanier = $Panier->getId();

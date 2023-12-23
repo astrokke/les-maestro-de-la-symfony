@@ -159,7 +159,7 @@ class Commande
         return $this->est_livre;
     }
 
-    public function setEstLivré(?Adresse $est_livre): static
+    public function setEstLivre(?Adresse $est_livre): static
     {
         $this->est_livre = $est_livre;
 

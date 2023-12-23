@@ -10,10 +10,14 @@ use App\Entity\Commande;
 use App\Entity\Region;
 use App\Entity\Users;
 use App\Form\AdresseFormType;
+use App\Form\CommandeFormType;
 use App\Form\UserFormType;
 use App\Repository\AdresseRepository;
 use App\Repository\CodePostalRepository;
 use App\Repository\DepartementRepository;
+use App\Repository\EtatRepository;
+use App\Repository\PanierRepository;
+use App\Repository\PhotosRepository;
 use App\Repository\RegionRepository;
 use App\Repository\UsersRepository;
 use App\Repository\VilleRepository;
@@ -30,23 +34,68 @@ use Symfony\Component\Routing\Annotation\Route;
 class CommandeController extends AbstractController
 {
     #[Route('/commande', name: 'app_commande')]
-    public function indexCommande(Security $security,Commande $commande, LivraisonRepository $livraisonRepo): Response
+    public function NewCommande(Security $security, Request $request, EntityManagerInterface $em, EtatRepository $etatRepo, PanierRepository $panierRepo, PhotosRepository $photoRepo): Response
     {
         if (!$security->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $this->redirectToRoute('app_index');
         }
 
-        $livraison = $livraisonRepo->findAll();
+        $commande = new Commande();
+
+        $form = $this->createForm(CommandeFormType::class, $commande);
+        $user = $security->getUser();
+        $id = $user->getId();
+        $panier = $panierRepo->getLastPanier($id);
         
+        $total = 0;
+        foreach ($panier->getPanierProduits() as $lignePanier) {
+            
+            $produits[] = [
+                'id' => $lignePanier->getId(),
+                'produit' => $lignePanier->getProduit(),
+                'qte' => $lignePanier->getQuantite(),
+                'photo' => $photoRepo->searchOnePhotoByProduit($lignePanier->getProduit()->getId()),
+                'prixTTC' => $lignePanier->getProduit()->getPrixHT() + ($lignePanier->getProduit()->getPrixHT() * $lignePanier->getProduit()->getTVA()->getTauxTva() / 100),
+            ];
+            $total += ($lignePanier->getProduit()->getPrixHT() + ($lignePanier->getProduit()->getPrixHT() * $lignePanier->getProduit()->getTVA()->getTauxTva() / 100)) * $lignePanier->getQuantite();
+            
+        }
+      
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+
+            $data = $form->getData();
+            $est_livre =  $form['est_livre']->getData();
+            $est_facture = $form['est_facture']->getData();
+           
+            $commande->setLivraison($data->getLivraison());
+            $commande->setPaiement($data->getPaiement());
+            $etatUnique = $etatRepo->find(['id' => 1]);
+            $commande->setEstFacture($est_facture);
+            $commande->setEstLivre($est_livre);
+            $commande->setEtat($etatUnique);
+            $commande->setUsers($security->getUser());
+            $commande->setPanier($panier);
+            $commande->setDateCommande(new \DateTimeImmutable());
+            $commande->setPrixTtcCommande($total);
+            // Sauvegardez la commande en base de données
+            
+            $em->persist($commande);
+         
+            $em->flush();
+            return $this->redirectToRoute('app_index'); 
+        }
 
         return $this->render('commande/index.html.twig', [
             'controller_name' => 'CommandeController',
-            'livraisons' => $livraison,
+            'form' => $form,
+            'totalttc' => $total,
         ]);
     }
 
     //Affichage Formulaire pour l'entité Adresse
-    private function formAdresseCommande(Adresse $adresse,  Request $request, Commande $commande, EntityManagerInterface $em,  VilleRepository $villeRepo, $isUpdate = false)
+    private function formAdresseCommande(Adresse $adresse,  Request $request, EntityManagerInterface $em,  VilleRepository $villeRepo, $isUpdate = false)
     {
         $message = '';
 
@@ -57,16 +106,12 @@ class CommandeController extends AbstractController
             if (isset($_POST['mainAdress'])) {
                 $users = $this->getUser();
                 $adresse->addUser($users);
-                $adresse->addEstFacture($commande);
             }
-            $adresse->addEstLivre($commande);
             $ville = $villeRepo->find($_POST['villeId']);
             $adresse->setVille($ville);
-            // Persist both the Adresse and Commande entities
-            $em->persist($adresse);
-            $em->persist($commande);
 
-            // Flush to persist and make the changes permanent
+            $em->persist($adresse);
+
             $em->flush();
             if ($request->get('id')) {
                 $message = 'L\'adresse a bien été modifiée';
@@ -88,7 +133,7 @@ class CommandeController extends AbstractController
             'title' => 'adresse',
             'message' => $message,
             'flag' => $isUpdate,
-            'adresse' => $adresse
+            'adresse' => $adresse,
 
         ]);
     }
@@ -99,8 +144,7 @@ class CommandeController extends AbstractController
     {
 
         $adresse = new Adresse();
-        $commande = new Commande();
-        return $this->formAdresseCommande($adresse, $request, $commande, $em, $villeRepo, false);
+        return $this->formAdresseCommande($adresse, $request, $em, $villeRepo, false);
     }
 
     //Page de modification d'adresse

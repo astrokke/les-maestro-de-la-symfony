@@ -36,8 +36,9 @@ class Adresse
 
     #[ORM\ManyToOne(inversedBy: 'adresses')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Users $Users = null;
+    private ?Users $users = null;
 
+    
 
 
     public function __construct()
@@ -99,7 +100,7 @@ class Adresse
     {
         if (!$this->est_livre->contains($estLivre)) {
             $this->est_livre->add($estLivre);
-            $estLivre->setEstLivré($this);
+            $estLivre->setEstLivre($this);
         }
 
         return $this;
@@ -110,7 +111,7 @@ class Adresse
         if ($this->est_livre->removeElement($estLivre)) {
             // set the owning side to null (unless already changed)
             if ($estLivre->getEstLivre() === $this) {
-                $estLivre->setEstLivré(null);
+                $estLivre->setEstLivre(null);
             }
         }
 
@@ -149,6 +150,7 @@ class Adresse
 
 
 
+   
 
     public function getVille(): ?Ville
     {
@@ -164,13 +166,15 @@ class Adresse
 
     public function getUsers(): ?Users
     {
-        return $this->Users;
+        return $this->users;
     }
 
-    public function setUsers(?Users $Users): static
+    public function setUsers(?Users $users): static
     {
-        $this->Users = $Users;
+        $this->users = $users;
 
         return $this;
     }
+
+   
 }

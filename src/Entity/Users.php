@@ -42,6 +42,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $password = null;
 
+   
 
     #[ORM\OneToMany(mappedBy: 'users', targetEntity: Commande::class)]
     private Collection $Commande;
@@ -49,15 +50,17 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'Users', targetEntity: Panier::class)]
     private Collection $paniers;
 
-    #[ORM\OneToMany(mappedBy: 'Users', targetEntity: Adresse::class)]
+    #[ORM\OneToMany(mappedBy: 'users', targetEntity: Adresse::class)]
     private Collection $adresses;
 
+   
 
     public function __construct()
     {
         $this->Commande = new ArrayCollection();
         $this->paniers = new ArrayCollection();
         $this->adresses = new ArrayCollection();
+        
     }
 
     public function getId(): ?int
@@ -125,6 +128,7 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    
 
     /**
      * @return Collection<int, Commande>
@@ -248,4 +252,6 @@ class Users implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+    
 }
