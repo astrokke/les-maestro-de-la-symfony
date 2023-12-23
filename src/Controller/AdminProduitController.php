@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Photos;
 use App\Entity\Produit;
 use App\Repository\AdminProduitRepository;
 use App\Repository\ProduitRepository;
@@ -155,10 +156,9 @@ class AdminProduitController extends AbstractController
 
     #[Route('delete_produit/{id}', name: 'app_delete_produit', methods: ['POST'])]
     public function delete(
-        Request $request,
         Produit $produit,
         Security $security,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $em
     ): Response {
         if (!$security->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('app_index');
@@ -166,13 +166,12 @@ class AdminProduitController extends AbstractController
         if ($produit === null) {
             return $this->redirectToRoute('app_admin_dashboard');
         }
-        if ($this->isCsrfTokenValid('delete' . $produit->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($produit);
-            $entityManager->flush();
+            $em->remove($produit);
+            $em->flush();
+            return $this->redirectToRoute('app_produit_list_admin');
         }
 
-        return $this->redirectToRoute('app_produit_list_admin', [], Response::HTTP_SEE_OTHER);
-    }
+    
 }
     
    

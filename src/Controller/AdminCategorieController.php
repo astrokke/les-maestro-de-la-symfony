@@ -184,11 +184,9 @@ class AdminCategorieController extends AbstractController
 
     #[Route('delete_categorie/{id}', name: 'app_delete_categorie', methods: ['POST'])]
     public function delete(
-        Request $request,
         Categorie $categorie,
         Security $security,
-        Photos $photo,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $em
     ): Response {
         if (!$security->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('app_index');
@@ -196,20 +194,8 @@ class AdminCategorieController extends AbstractController
         if ($categorie === null) {
             return $this->redirectToRoute('app_index');
         }
-        if ($this->isCsrfTokenValid('delete' . $categorie->getId(), $request->request->get('_token'))) {
-            if ($this->isCsrfTokenValid('delete' . $categorie->getId(), $request->request->get('_token'))) {
-                $categorie->setCategorieParente(null);
-                $photos = $photo->getCategorie();
-                $categorie->getPhotos($photos);
-                $entityManager->persist($categorie);
-                $entityManager->flush();
-                $categorie->removePhoto($photo);
-                $entityManager->remove($categorie);
-                $entityManager->flush();
-
-            }
-
-            return $this->redirectToRoute('app_categorie_list_admin', [], Response::HTTP_SEE_OTHER);
-        }
+            $em->remove($categorie);
+            $em->flush();
+            return $this->redirectToRoute('app_categorie_list_admin');
     }
 }

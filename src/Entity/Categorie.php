@@ -30,7 +30,7 @@ class Categorie
 
     
 
-    #[ORM\OneToMany(mappedBy: 'categorie', targetEntity: Photos::class)]
+    #[ORM\OneToMany(mappedBy: 'categorie', targetEntity: Photos::class, orphanRemoval:true, cascade:["persist"])]
     private Collection $Photos;
 
     #[ORM\OneToMany(mappedBy: 'categorie', targetEntity: Produit::class)]

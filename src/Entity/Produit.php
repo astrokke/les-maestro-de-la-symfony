@@ -6,6 +6,7 @@ use App\Repository\ProduitRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\EntityManagerInterface;
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
 class Produit
@@ -35,7 +36,7 @@ class Produit
     private ?Promotion $promotion = null;
 
 
-    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Photos::class)]
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Photos::class, orphanRemoval:true, cascade:["persist"])]
     private Collection $Photos;
 
     #[ORM\OneToMany(mappedBy: 'Produit', targetEntity: PanierProduit::class)]
