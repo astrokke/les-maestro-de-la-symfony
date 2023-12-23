@@ -199,10 +199,14 @@ class AdminCategorieController extends AbstractController
         if ($this->isCsrfTokenValid('delete' . $categorie->getId(), $request->request->get('_token'))) {
             if ($this->isCsrfTokenValid('delete' . $categorie->getId(), $request->request->get('_token'))) {
                 $categorie->setCategorieParente(null);
+                $photos = $photo->getCategorie();
+                $categorie->getPhotos($photos);
                 $entityManager->persist($categorie);
                 $entityManager->flush();
+                $categorie->removePhoto($photo);
                 $entityManager->remove($categorie);
                 $entityManager->flush();
+
             }
 
             return $this->redirectToRoute('app_categorie_list_admin', [], Response::HTTP_SEE_OTHER);
