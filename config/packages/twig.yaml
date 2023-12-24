@@ -6,4 +6,5 @@ when@test:
         strict_variables: true
        
 
-    
+    globals:
+        contact_form: '@App\Controller\ContactController::form'
