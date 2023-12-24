@@ -154,29 +154,4 @@ class CommandeController extends AbstractController
         return $this->formAdresseCommande($adresse, $request, $em, $user,  $villeRepo, true);
     }
 
-
-    #[Route('/adresse/ajax/ville/{name}', name: 'ajax_ville')]
-    public function index(VilleRepository $cityRepo, Request $request): Response
-    {
-        $string = $request->get('name');
-        $cities = $cityRepo->searchByName($string);
-        $json = [];
-        foreach ($cities as $city) {
-            /*$codePostaux = [];
-            
-            //dd($city->getCodePostal());
-            foreach($city->getCodePostal() as $codePostal)
-            {
-                $codePostaux[] = $codePostal->getLibelle();
-            }*/
-            $json[] = [
-                'id' => $city->getId(), 'ville' => $city->getNom(),
-                'codeDepartement' => $city->getDepartement()->getNom(),
-                'region' => $city->getDepartement()->getRegion()->getNom(),
-                //'code_postal' => $codePostaux
-            ];
-        }
-
-        return new JsonResponse($json, 200);
-    }
 }

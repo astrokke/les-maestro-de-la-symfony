@@ -93,17 +93,19 @@ class UserPanelController extends AbstractController
     }
 
     //Affichage Formulaire pour l'entité Adresse
-    private function formAdresse(Adresse $adresse, AdresseRepository $adresseRepo, Request $request, Users $users, VilleRepository $villeRepo, $isUpdate = false)
+    private function formAdresse( Adresse $adresse, AdresseRepository $adresseRepo, Request $request, Users $users, VilleRepository $villeRepo, $isUpdate = false)
     {
         $message = '';
 
+       
+
         if (isset($_POST['submitAdresse'])) {
-            $adresse->setNumVoie($_POST['num_voie']);
-            $adresse->setRue($_POST['rue']);
-            $adresse->setComplement($_POST['complement']);
+            $adresse->setNumVoie($request->request->get('num_voie'));
+            $adresse->setRue($request->request->get('rue'));
+            $adresse->setComplement($request->request->get('complement'));
             $users = $this->getUser();
             $adresse->setUsers($users);
-            $ville = $villeRepo->find($_POST['villeId']);
+            $ville = $villeRepo->find($request->request->get('villeId'));
             $adresse->setVille($ville);
             $adresseRepo->save($adresse, true);
 
@@ -158,18 +160,19 @@ class UserPanelController extends AbstractController
         $cities = $cityRepo->searchByName($string);
         $json = [];
         foreach ($cities as $city) {
-            /*$codePostaux = [];
+            $codePostaux = [];
             
-            //dd($city->getCodePostal());
+            
             foreach($city->getCodePostal() as $codePostal)
             {
                 $codePostaux[] = $codePostal->getLibelle();
-            }*/
+            }
             $json[] = [
-                'id' => $city->getId(), 'ville' => $city->getNom(),
+                'id' => $city->getId(), 
+                'ville' => $city->getNom(),
                 'codeDepartement' => $city->getDepartement()->getNom(),
                 'region' => $city->getDepartement()->getRegion()->getNom(),
-                //'code_postal' => $codePostaux
+                'codePostaux' => $codePostaux,
             ];
         }
 

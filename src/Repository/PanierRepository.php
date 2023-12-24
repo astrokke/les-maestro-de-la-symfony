@@ -27,12 +27,28 @@ class PanierRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('p')
             ->where('p.Users = :id')
+            //->join('p.commande','c')
+            //->andWhere('p.commande is NULL')
             ->orderBy('p.id', 'DESC')
             ->setMaxResults(1)
             ->setParameter('id',   $id)
             ->getQuery()
             ->getOneOrNullResult();
     }
+
+    public function getLastPanierCommande($userId)
+{
+    return $this->createQueryBuilder('p')
+        ->leftJoin('p.commande', 'c', 'WITH', 'c.Panier = p.id')
+        ->where('p.Users = :userId')
+        ->andWhere('c.Panier IS NULL')
+        ->orderBy('p.id', 'DESC')
+        ->setMaxResults(1)
+        ->setParameter('userId', $userId)
+        ->getQuery()
+        ->getOneOrNullResult();
+}
+
 
     //    /**
     //     * @return Panier[] Returns an array of Panier objects

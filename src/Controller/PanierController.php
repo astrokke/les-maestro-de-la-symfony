@@ -26,7 +26,10 @@ class PanierController extends AbstractController
         }
         $user = $security->getUser();
         $id = $user->getId();
-        $panier = $panierRepo->getLastPanier($id);
+        $panier = $panierRepo->getLastPanierCommande($id);
+        if($panier === null){
+            $panier = new Panier();
+        }
         $produits = [];
         $total = 0;
         foreach ($panier->getPanierProduits() as $lignePanier) {
@@ -86,7 +89,7 @@ class PanierController extends AbstractController
             return $this->redirectToRoute('app_index');
         }
         $idProduit = $produit->getId();
-        $Panier = $panierRepo->getLastPanier($security->getUser()->getId());
+        $Panier = $panierRepo->getLastPanierCommande($security->getUser()->getId());
         $idPanier = $Panier->getId();
         $produitInPanier = $panierProduitRepo->getPanierProduitbyId($produit, $Panier);
         if ($this->isCsrfTokenValid('removeToPanier' . $produit->getId(), $request->request->get('_token'))) {

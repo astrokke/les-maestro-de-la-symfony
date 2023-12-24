@@ -61,7 +61,7 @@ class ProduitController extends AbstractController
             return $this->redirectToRoute('app_produit');
         }
         
-        $panier = $panierRepo->getLastPanier($security->getUser()->getId());
+        $panier = $panierRepo->getLastPanierCommande($security->getUser()->getId());
 
         
         if (!$panier) {
@@ -81,7 +81,7 @@ class ProduitController extends AbstractController
                     $panierProduitRepo->AddProduitToPanierProduit($idProduit, $idPanier, 1);
                 }
 
-                return $this->redirectToRoute('app_show_produit', ['{id}' => $idProduit = $produit->getId()], Response::HTTP_SEE_OTHER);
+                return $this->redirectToRoute('app_show_produit', ['id' => $idProduit = $produit->getId()], Response::HTTP_SEE_OTHER);
             }
         } else {
             if ($this->isCsrfTokenValid('addToPanier' . $produit->getId(), $request->request->get('_token'))) {

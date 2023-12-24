@@ -41,7 +41,6 @@ class CommandeFormType extends AbstractType
 
 
             ])
-
             ->add('est_livre', EntityType::class, [
                 'class' => Adresse::class,
                 'choices' => $adressesUtilisateur,

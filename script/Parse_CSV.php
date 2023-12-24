@@ -104,21 +104,24 @@ for ($i = 1; $i <= count($csv); $i++) {
         }
     }
 
-    if (!in_array($codePostalValue, $codePostaux)) {
-        $villeId = $villes[$ville];
-
+    if (!array_key_exists($codePostalValue, $codePostaux)) {
         // Insérer le nouveau code postal
         $stmt = $testPDO->prepare('INSERT INTO code_postal (libelle) VALUES (?)');
         $stmt->execute([$codePostalValue]);
 
-        // Récupérer l'ID du code postal inséré
-        $codePostalId = $testPDO->lastInsertId();
+        // Ajouter le code postal à la liste pour éviter les duplicatas
+        $codePostaux[$codePostalValue] = $testPDO->lastInsertId();
+    }
+    //insertion de la relation
+    $villeId = $villes[$ville];
+    $codePostalId = $codePostaux[$codePostalValue];
 
+    $stmt = $testPDO->prepare('SELECT * FROM ville_code_postal WHERE ville_id = ? AND code_postal_id =?');
+    $stmt->execute([$villeId, $codePostalId]);
+    $existingRelation = $stmt->fetchColumn();
+    if (!$existingRelation) {
         // Insérer la relation entre la ville et le code postal dans la table intermédiaire
         $stmt = $testPDO->prepare('INSERT INTO ville_code_postal (ville_id, code_postal_id) VALUES (?, ?)');
         $stmt->execute([$villeId, $codePostalId]);
-
-        // Ajouter le code postal à la liste pour éviter les duplicatas
-        $codePostaux[] = $codePostalValue;
     }
 }
