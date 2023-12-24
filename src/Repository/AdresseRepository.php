@@ -28,6 +28,15 @@ class AdresseRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+    public function searchByName(string $name, string $trirue): ?array
+    {
+        return $this->createQueryBuilder('a')
+            ->where('a.rue like :val')
+            ->setParameter('val', '%' . $name . '%')
+            ->addOrderBy('a.rue', $trirue)
+            ->getQuery()
+            ->getResult();
+    }
     //    /**
     //     * @return Adresse[] Returns an array of Adresse objects
     //     */

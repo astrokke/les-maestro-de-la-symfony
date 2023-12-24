@@ -34,22 +34,24 @@ use Symfony\Component\Routing\Annotation\Route;
 class CommandeController extends AbstractController
 {
     #[Route('/commande', name: 'app_commande')]
-    public function NewCommande(Security $security, Request $request, EntityManagerInterface $em, EtatRepository $etatRepo, PanierRepository $panierRepo, PhotosRepository $photoRepo): Response
+    public function NewCommande(Security $security, Request $request, EntityManagerInterface $em, EtatRepository $etatRepo, PanierRepository $panierRepo, PhotosRepository $photoRepo, AdresseRepository $adresseRepo): Response
     {
         if (!$security->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $this->redirectToRoute('app_index');
         }
-
-        $commande = new Commande();
-
-        $form = $this->createForm(CommandeFormType::class, $commande);
         $user = $security->getUser();
         $id = $user->getId();
+        $commande = new Commande();
+        $adressesUtilisateur = $adresseRepo->findBy(['users' => $user]);
+        $form = $this->createForm(CommandeFormType::class, $commande, [
+            'adressesUtilisateur' => $adressesUtilisateur,
+        ]);
+
         $panier = $panierRepo->getLastPanier($id);
-        
+
         $total = 0;
         foreach ($panier->getPanierProduits() as $lignePanier) {
-            
+
             $produits[] = [
                 'id' => $lignePanier->getId(),
                 'produit' => $lignePanier->getProduit(),
@@ -58,33 +60,29 @@ class CommandeController extends AbstractController
                 'prixTTC' => $lignePanier->getProduit()->getPrixHT() + ($lignePanier->getProduit()->getPrixHT() * $lignePanier->getProduit()->getTVA()->getTauxTva() / 100),
             ];
             $total += ($lignePanier->getProduit()->getPrixHT() + ($lignePanier->getProduit()->getPrixHT() * $lignePanier->getProduit()->getTVA()->getTauxTva() / 100)) * $lignePanier->getQuantite();
-            
         }
-      
+
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
 
             $data = $form->getData();
-            $est_livre =  $form['est_livre']->getData();
-            $est_facture = $form['est_facture']->getData();
-           
             $commande->setLivraison($data->getLivraison());
             $commande->setPaiement($data->getPaiement());
             $etatUnique = $etatRepo->find(['id' => 1]);
-            $commande->setEstFacture($est_facture);
-            $commande->setEstLivre($est_livre);
+            $commande->setEstFacture($data->getEstFacture());
+            $commande->setEstLivre($data->getEstLivre());
             $commande->setEtat($etatUnique);
             $commande->setUsers($security->getUser());
             $commande->setPanier($panier);
             $commande->setDateCommande(new \DateTimeImmutable());
             $commande->setPrixTtcCommande($total);
             // Sauvegardez la commande en base de données
-            
+
             $em->persist($commande);
-         
+
             $em->flush();
-            return $this->redirectToRoute('app_index'); 
+            return $this->redirectToRoute('app_index');
         }
 
         return $this->render('commande/index.html.twig', [
@@ -95,7 +93,7 @@ class CommandeController extends AbstractController
     }
 
     //Affichage Formulaire pour l'entité Adresse
-    private function formAdresseCommande(Adresse $adresse,  Request $request, EntityManagerInterface $em,  VilleRepository $villeRepo, $isUpdate = false)
+    private function formAdresseCommande(Adresse $adresse,  Request $request, EntityManagerInterface $em, Users $users,  VilleRepository $villeRepo, $isUpdate = false)
     {
         $message = '';
 
@@ -103,10 +101,10 @@ class CommandeController extends AbstractController
             $adresse->setNumVoie($_POST['num_voie']);
             $adresse->setRue($_POST['rue']);
             $adresse->setComplement($_POST['complement']);
-            if (isset($_POST['mainAdress'])) {
+           
                 $users = $this->getUser();
-                $adresse->addUser($users);
-            }
+                $adresse->setUsers($users);
+            
             $ville = $villeRepo->find($_POST['villeId']);
             $adresse->setVille($ville);
 
@@ -144,16 +142,17 @@ class CommandeController extends AbstractController
     {
 
         $adresse = new Adresse();
-        return $this->formAdresseCommande($adresse, $request, $em, $villeRepo, false);
+        $user = $this->getUser();
+        return $this->formAdresseCommande($adresse, $request, $em, $user, $villeRepo, false);
     }
 
     //Page de modification d'adresse
-    /*#[Route('/commande/update_adresse/{id}', name: 'app_update_adresse_commande')]
-    public function updateAdresseCommande(Adresse $adresse, AdresseRepository $adresseRepo, Request $request, VilleRepository $villeRepo): Response
+    #[Route('/commande/update_adresse/{id}', name: 'app_update_adresse_commande')]
+    public function updateAdresseCommande(Adresse $adresse, AdresseRepository $adresseRepo, Request $request, EntityManagerInterface $em, VilleRepository $villeRepo): Response
     {
-
-        return $this->formAdresseCommande($adresse, $adresseRepo, $request,  $villeRepo, true);
-    }*/
+        $user = $this->getUser();
+        return $this->formAdresseCommande($adresse, $request, $em, $user,  $villeRepo, true);
+    }
 
 
     #[Route('/adresse/ajax/ville/{name}', name: 'ajax_ville')]

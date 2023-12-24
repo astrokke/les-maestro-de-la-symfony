@@ -41,7 +41,7 @@ class UserPanelController extends AbstractController
     public function userAccount(?Users $users, Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $em): Response
     {
         if ($users === null) {
-            return $this->redirectToRoute('app_admin_index');
+            return $this->redirectToRoute('app_index');
         }
 
         $form = $this->createForm(UserFormType::class, $users);
@@ -63,7 +63,19 @@ class UserPanelController extends AbstractController
             'form' => $form,
         ]);
     }
+    #[Route('/user/list_adresse', name: 'app_list_adresse')]
+    public function list(AdresseRepository $adresseRepo, Request $request): Response
+    {
+        $triRue = $request->query->get('trirue', 'asc');
+        $adresses = $adresseRepo->searchByName($request->query->get('rue', ''), $triRue);
 
+        return $this->render('user/list.html.twig', [
+            'title' => 'Liste de vos adresses',
+            'adresses' => $adresses,
+            'trirue' => $triRue,
+            'rue' => $request->query->get('rue', ''),
+        ]);
+    }
     #[Route('/user/adresse/{id}', name: 'app_show_adresse')]
     public function showAdresse(?Adresse $adresse)
     {
@@ -84,14 +96,13 @@ class UserPanelController extends AbstractController
     private function formAdresse(Adresse $adresse, AdresseRepository $adresseRepo, Request $request, Users $users, VilleRepository $villeRepo, $isUpdate = false)
     {
         $message = '';
-        
+
         if (isset($_POST['submitAdresse'])) {
             $adresse->setNumVoie($_POST['num_voie']);
             $adresse->setRue($_POST['rue']);
             $adresse->setComplement($_POST['complement']);
-            
             $users = $this->getUser();
-            $adresse->addUser($users);
+            $adresse->setUsers($users);
             $ville = $villeRepo->find($_POST['villeId']);
             $adresse->setVille($ville);
             $adresseRepo->save($adresse, true);
@@ -116,13 +127,14 @@ class UserPanelController extends AbstractController
             'title' => 'adresse',
             'message' => $message,
             'flag' => $isUpdate,
-            'adresse' => $adresse 
+            'adresse' => $adresse,
+            'users' => $users
 
         ]);
     }
 
     //Page de création d'adresse
-    #[Route('/create_adresse', name: 'app_create_adresse')]
+    #[Route('/user/create_adresse', name: 'app_create_adresse')]
     public function createAdresse(AdresseRepository $adresseRepo, Request $request, VilleRepository $villeRepo): Response
     {
         $users = $this->getUser();
@@ -131,7 +143,7 @@ class UserPanelController extends AbstractController
     }
 
     //Page de modification d'adresse
-    #[Route('/update_adresse/{id}', name: 'app_update_adresse')]
+    #[Route('/user/update_adresse/{id}', name: 'app_update_adresse')]
     public function updateAdresse(Adresse $adresse, AdresseRepository $adresseRepo, Request $request, VilleRepository $villeRepo): Response
     {
         $users = $this->getUser();

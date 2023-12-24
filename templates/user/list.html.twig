@@ -1,0 +1,47 @@
+{% extends 'base_admin.html.twig' %}
+
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block main %}
+    <h2>{{ title }}</h2>
+   
+    <h3><a href="{{ path('app_create_adresse') }}">Créer</a></h3>
+    
+    <table>
+        <tr>
+            <td>
+            Rue
+            {% if ( trirue == 'desc') %}
+                <a href="{{ path('app_list_adresse') }}?rue={{ rue }}&trirue=asc">></a>
+            {% else %}
+                <a href="{{ path('app_list_adresse') }}?rue={{ rue }}&trirue=desc"><</a>
+            {% endif %}
+            </td>
+            <td>
+            
+            </td>
+        </tr>
+    {% for item in adresses %}
+        <tr>
+            <td>{{ item.numVoie }}</td>
+            <td>{{ item.rue }}</td>
+            <td>{{ item.complement }}</td>
+            <td>{{ item.Ville.nom }}</td>
+            <td><a href="{{ path('app_show_adresse', { 'id': item.id })}}">Voir</a></td>
+            <td><a href="{{ path('app_update_adresse', { 'id': item.id })}}">Mettre à jour</a></td>
+             <td>{{ include('admin/admin_delete.html.twig', { 'id': item.id })}}</td>
+           
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="5">Aucun enregistrement</td>
+        </tr>
+    {% endfor %}
+    </table>
+    <form>
+        <input type='text' name='rue' placeholder='recherchez par le nom de la rue' value='{{ rue }}'>
+        <input type='submit' name='submit' value='rechercher'>
+    </form>
+{% endblock %}
