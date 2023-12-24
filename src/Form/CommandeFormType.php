@@ -9,6 +9,7 @@ use App\Entity\Livraison;
 use App\Entity\Paiement;
 use App\Entity\Panier;
 use App\Entity\Users;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -20,6 +21,7 @@ class CommandeFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+        $adressesUtilisateur = $options['adressesUtilisateur'];
         $builder
 
             ->add('Livraison', EntityType::class, [
@@ -29,15 +31,20 @@ class CommandeFormType extends AbstractType
             ])
             ->add('Paiement', EntityType::class, [
                 'class' => Paiement::class,
+
                 'choice_label' => 'libelle',
             ])
             ->add('est_facture', EntityType::class, [
                 'class' => Adresse::class,
+                'choices' => $adressesUtilisateur,
                 'choice_label' => 'rue',
+
+
             ])
 
             ->add('est_livre', EntityType::class, [
                 'class' => Adresse::class,
+                'choices' => $adressesUtilisateur,
                 'choice_label' => 'rue',
             ]);
     }
@@ -46,6 +53,7 @@ class CommandeFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Commande::class,
+            'adressesUtilisateur' => [],
         ]);
     }
 }

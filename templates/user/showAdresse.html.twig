@@ -15,6 +15,6 @@
     <p> Ville: {{ adresse.Ville.nom }}</p>
     <p> Département: {{adresse.Ville.departement.nom }}</p>
     <p> Region: {{adresse.Ville.departement.region.nom }}</p>
-    <a href="{{ path('app_update_adresse', { 'id' : user.Adresse.id }) }}">Mettre a jour</a>
+    <a href="{{ path('app_update_adresse', { 'id' : adresse.id }) }}">Mettre a jour</a>
 </div>
 {% endblock %}

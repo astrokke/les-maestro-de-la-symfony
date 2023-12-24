@@ -12,11 +12,11 @@
     <h5 class="card-title text-center ">Information personnelles</h5>
     </div>
   </div></a>
-{% if users.Adresse is null  %}
+{% if users is null  %}
   <a href="{{ path('app_create_adresse')}}" class="text-decoration-none">
   <div class="card" style="width: 18rem;">
   {% else %}
-  <a href="{{ path('app_show_adresse', {'id': users.Adresse.id})}}" class="text-decoration-none"><div class="card" style="width: 18rem;">
+  <a href="{{ path('app_list_adresse')}}" class="text-decoration-none"><div class="card" style="width: 18rem;">
   {% endif %}
     <div class="card-body">
     <h5 class="card-title text-center ">Adresse</h5>
