@@ -12,15 +12,19 @@
     <table>
         <tr>
             <td>
-            Rue
-            {% if ( trirue == 'desc') %}
-                <a href="{{ path('app_list_adresse') }}?rue={{ rue }}&trirue=asc">></a>
-            {% else %}
-                <a href="{{ path('app_list_adresse') }}?rue={{ rue }}&trirue=desc"><</a>
-            {% endif %}
+            Numero de voie
             </td>
             <td>
-            
+            Rue
+            </td>
+            <td>
+            Complément
+            </td>
+            <td>
+            Ville
+            </td>
+            <td>
+            Code postal
             </td>
         </tr>
     {% for item in adresses %}
@@ -29,9 +33,10 @@
             <td>{{ item.rue }}</td>
             <td>{{ item.complement }}</td>
             <td>{{ item.Ville.nom }}</td>
+            <td>{{ item.codePostal.libelle }}</td>
             <td><a href="{{ path('app_show_adresse', { 'id': item.id })}}">Voir</a></td>
             <td><a href="{{ path('app_update_adresse', { 'id': item.id })}}">Mettre à jour</a></td>
-             <td>{{ include('admin/admin_delete.html.twig', { 'id': item.id })}}</td>
+             <td>{{ include('user/delete.html.twig', { 'id': item.id })}}</td>
            
         </tr>
     {% else %}

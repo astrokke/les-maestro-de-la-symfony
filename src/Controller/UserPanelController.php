@@ -64,16 +64,30 @@ class UserPanelController extends AbstractController
         ]);
     }
     #[Route('/user/list_adresse', name: 'app_list_adresse')]
-    public function list(AdresseRepository $adresseRepo, Request $request): Response
+    public function listAdresse(AdresseRepository $adresseRepo, Request $request): Response
     {
-        $triRue = $request->query->get('trirue', 'asc');
-        $adresses = $adresseRepo->searchByName($request->query->get('rue', ''), $triRue);
+        // Récupérer l'utilisateur actuellement authentifié
+        $user = $this->getUser();
 
+        // Récupérer toutes les adresses de l'utilisateur
+        $allAdresses = $adresseRepo->findBy(['users' => $user]);
+
+        // Filtrer les adresses par nom de rue si une valeur est fournie
+        $filteredAdresses = [];
+        $rue = $request->query->get('rue', '');
+        if ($rue) {
+            foreach ($allAdresses as $adresse) {
+                if (stripos($adresse->getRue(), $rue) !== false) {
+                    $filteredAdresses[] = $adresse;
+                }
+            }
+        } else {
+            $filteredAdresses = $allAdresses;
+        }
         return $this->render('user/list.html.twig', [
             'title' => 'Liste de vos adresses',
-            'adresses' => $adresses,
-            'trirue' => $triRue,
-            'rue' => $request->query->get('rue', ''),
+            'adresses' => $filteredAdresses,
+            'rue' => $rue,
         ]);
     }
     #[Route('/user/adresse/{id}', name: 'app_show_adresse')]
@@ -91,13 +105,26 @@ class UserPanelController extends AbstractController
 
         ]);
     }
-
+    #[Route('/user/delete_adresse/{id}', name: 'app_delete_adresse', methods: ['POST'])]
+    public function deleteAdresse(
+        Adresse $adresse,
+        Security $security,
+        EntityManagerInterface $em
+    ): Response {
+        
+        if ($adresse === null) {
+            return $this->redirectToRoute('app_user');
+        }
+        $em->remove($adresse);
+        $em->flush();
+        return $this->redirectToRoute('app_list_adresse');
+    }
     //Affichage Formulaire pour l'entité Adresse
-    private function formAdresse( Adresse $adresse, AdresseRepository $adresseRepo, Request $request, Users $users, VilleRepository $villeRepo, $isUpdate = false)
+    private function formAdresse(Adresse $adresse, AdresseRepository $adresseRepo, CodePostalRepository $codePostalRepo, Request $request, Users $users, VilleRepository $villeRepo, $isUpdate = false)
     {
         $message = '';
 
-       
+
 
         if (isset($_POST['submitAdresse'])) {
             $adresse->setNumVoie($request->request->get('num_voie'));
@@ -107,17 +134,20 @@ class UserPanelController extends AbstractController
             $adresse->setUsers($users);
             $ville = $villeRepo->find($request->request->get('villeId'));
             $adresse->setVille($ville);
+            $codePostalId = $codePostalRepo->find($request->request->get('selectedPostalCodesId'));
+            $adresse->setCodePostal($codePostalId);
+
             $adresseRepo->save($adresse, true);
 
             if ($request->get('id')) {
                 $message = 'L\'adresse a bien été modifiée';
-                return $this->redirectToRoute('app_user', [
+                return $this->redirectToRoute('app_list_adresse', [
                     'message' => '2'
                 ]);
             } else {
                 $message = 'L\'adresse a bien été créée';
                 if ($this->getUser()) {
-                    return $this->redirectToRoute('app_user', [
+                    return $this->redirectToRoute('app_list_adresse', [
                         'message' => '1'
                     ]);
                 } else {
@@ -130,49 +160,51 @@ class UserPanelController extends AbstractController
             'message' => $message,
             'flag' => $isUpdate,
             'adresse' => $adresse,
-            'users' => $users
+            'users' => $users,
+
 
         ]);
     }
 
     //Page de création d'adresse
     #[Route('/user/create_adresse', name: 'app_create_adresse')]
-    public function createAdresse(AdresseRepository $adresseRepo, Request $request, VilleRepository $villeRepo): Response
+    public function createAdresse(AdresseRepository $adresseRepo, CodePostalRepository $codePostalRepo, Request $request, VilleRepository $villeRepo): Response
     {
         $users = $this->getUser();
         $adresse = new Adresse();
-        return $this->formAdresse($adresse, $adresseRepo, $request, $users, $villeRepo, false);
+        return $this->formAdresse($adresse, $adresseRepo, $codePostalRepo, $request, $users, $villeRepo, false);
     }
 
     //Page de modification d'adresse
     #[Route('/user/update_adresse/{id}', name: 'app_update_adresse')]
-    public function updateAdresse(Adresse $adresse, AdresseRepository $adresseRepo, Request $request, VilleRepository $villeRepo): Response
+    public function updateAdresse(Adresse $adresse, AdresseRepository $adresseRepo, CodePostalRepository $codePostalRepo, Request $request, VilleRepository $villeRepo): Response
     {
         $users = $this->getUser();
-        return $this->formAdresse($adresse, $adresseRepo, $request, $users,  $villeRepo, true);
+        return $this->formAdresse($adresse, $adresseRepo, $codePostalRepo, $request, $users,  $villeRepo, true);
     }
 
 
     #[Route('/adresse/ajax/ville/{name}', name: 'ajax_ville')]
-    public function index(VilleRepository $cityRepo, Request $request): Response
+    public function ajaxCity(VilleRepository $cityRepo, Request $request): Response
     {
         $string = $request->get('name');
         $cities = $cityRepo->searchByName($string);
         $json = [];
         foreach ($cities as $city) {
-            $codePostaux = [];
-            
-            
-            foreach($city->getCodePostal() as $codePostal)
-            {
-                $codePostaux[] = $codePostal->getLibelle();
+            $codesPostauxArray = [];
+
+            foreach ($city->getCodePostal() as $codePostal) {
+                $codesPostauxArray[] = [
+                    'id' => $codePostal->getId(),
+                    'libelle' => $codePostal->getLibelle()
+                ];
             }
             $json[] = [
-                'id' => $city->getId(), 
+                'id' => $city->getId(),
                 'ville' => $city->getNom(),
                 'codeDepartement' => $city->getDepartement()->getNom(),
                 'region' => $city->getDepartement()->getRegion()->getNom(),
-                'codePostaux' => $codePostaux,
+                'codePostaux' => $codesPostauxArray,
             ];
         }
 

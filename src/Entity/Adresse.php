@@ -38,6 +38,9 @@ class Adresse
     #[ORM\JoinColumn(nullable: false)]
     private ?Users $users = null;
 
+    #[ORM\ManyToOne(inversedBy: 'adresses')]
+    private ?CodePostal $codePostal = null;
+
     
 
 
@@ -172,6 +175,18 @@ class Adresse
     public function setUsers(?Users $users): static
     {
         $this->users = $users;
+
+        return $this;
+    }
+
+    public function getCodePostal(): ?CodePostal
+    {
+        return $this->codePostal;
+    }
+
+    public function setCodePostal(?CodePostal $codePostal): static
+    {
+        $this->codePostal = $codePostal;
 
         return $this;
     }
