@@ -15,8 +15,7 @@ class Panier
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\ManyToMany(targetEntity: Produit::class, mappedBy: 'Panier')]
-    private Collection $produits;
+
 
     #[ORM\OneToOne(mappedBy: 'Panier', cascade: ['persist', 'remove'])]
     private ?Commande $commande = null;
@@ -24,11 +23,14 @@ class Panier
     #[ORM\ManyToOne(inversedBy: 'paniers')]
     private ?Users $Users = null;
 
+    #[ORM\OneToMany(mappedBy: 'Panier', targetEntity: PanierProduit::class)]
+    private Collection $panierProduits;
+
 
 
     public function __construct()
     {
-        $this->produits = new ArrayCollection();
+        $this->panierProduits = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -40,29 +42,10 @@ class Panier
     /**
      * @return Collection<int, Produit>
      */
-    public function getProduits(): Collection
-    {
-        return $this->produits;
-    }
 
-    public function addProduit(Produit $produit): static
-    {
-        if (!$this->produits->contains($produit)) {
-            $this->produits->add($produit);
-            $produit->addPanier($this);
-        }
 
-        return $this;
-    }
 
-    public function removeProduit(Produit $produit): static
-    {
-        if ($this->produits->removeElement($produit)) {
-            $produit->removePanier($this);
-        }
 
-        return $this;
-    }
 
     public function getCommande(): ?Commande
     {
@@ -96,5 +79,38 @@ class Panier
         $this->Users = $Users;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, PanierProduit>
+     */
+    public function getPanierProduits(): Collection
+    {
+        return $this->panierProduits;
+    }
+
+    public function addPanierProduit(PanierProduit $panierProduit): static
+    {
+        if (!$this->panierProduits->contains($panierProduit)) {
+            $this->panierProduits->add($panierProduit);
+            $panierProduit->setPanier($this);
+        }
+
+        return $this;
+    }
+
+    public function removePanierProduit(PanierProduit $panierProduit): static
+    {
+        if ($this->panierProduits->removeElement($panierProduit)) {
+            // set the owning side to null (unless already changed)
+            if ($panierProduit->getPanier() === $this) {
+                $panierProduit->setPanier(null);
+            }
+        }
+
+        return $this;
+    }
+    public function __toString()
+    {
     }
 }

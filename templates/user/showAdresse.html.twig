@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{title}}
+{% endblock %}
+
+{% block main %}
+<div class="m-5">
+    <h2>
+        {{ title }} 
+    </h2>
+    <p> Numero de voie: {{ adresse.numVoie }}</p>
+    <p> rue: {{ adresse.rue }}</p>
+    <p> Complement: {{ adresse.complement }}</p>
+    <p> Ville: {{ adresse.Ville.nom }}</p>
+    <p> Code postal: {{adresse.codePostal.libelle}}</p>
+    <p> Département: {{adresse.Ville.departement.nom }}</p>
+    <p> Region: {{adresse.Ville.departement.region.nom }}</p>
+    <a href="{{ path('app_update_adresse', { 'id' : adresse.id }) }}">Mettre a jour</a>
+</div>
+{% endblock %}

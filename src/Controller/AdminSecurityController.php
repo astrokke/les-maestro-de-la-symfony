@@ -6,6 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Symfony\Bundle\SecurityBundle\Security;
 
 #[Route(path: 'admin/')]
 class AdminSecurityController extends AbstractController
@@ -23,7 +24,7 @@ class AdminSecurityController extends AbstractController
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render('security/index.html.twig', [
-            'username' => $lastUsername, 
+            'username' => $lastUsername,
             'error' => $error,
             'action' => '{{ path=\'app_dashboard_admin\' }}',
         ]);
@@ -36,8 +37,11 @@ class AdminSecurityController extends AbstractController
     }
 
     #[Route(path: 'dashboard', name: 'app_admin_dashboard')]
-    public function dashboard(): Response
+    public function dashboard(Security $security): Response
     {
+        if (!$security->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_index');
+        }
         return $this->render('admin/dashboard.html.twig');
     }
 }

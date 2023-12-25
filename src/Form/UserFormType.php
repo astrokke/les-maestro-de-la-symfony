@@ -2,9 +2,7 @@
 
 namespace App\Form;
 
-use App\Entity\Adresse;
 use App\Entity\Users;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -20,7 +18,8 @@ class UserFormType extends AbstractType
             ->add('nom')
             ->add('prenom')
             ->add('email')
-            ->add('password', PasswordType::class, [
+            
+            ->add('newPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
                 'mapped' => false,
@@ -43,6 +42,7 @@ class UserFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => Users::class,
+            'current_password' => null, // Définissez une valeur par défaut pour l'option current_password
         ]);
     }
 }

@@ -21,7 +21,7 @@ class LoginController extends AbstractController
             'title' => 'Connectez vous',
             'username' => $username,
             'error' => $error,
-            'action' => '{{ path=\'app_index\' }}'
+            'action' => '{{ path=\'app_index\' }}',
         ]);
     }
 

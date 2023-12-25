@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Categorie;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Bundle\SecurityBundle\Security;
 
 /**
  * @extends ServiceEntityRepository<Categorie>
@@ -43,6 +44,23 @@ class CategorieRepository extends ServiceEntityRepository
             $enfants[] = $enfant;
         }
         return $enfants;
+    }
+
+    public function searchByName(string $libelle): ?array
+    {
+        return $this->createQueryBuilder('s')
+            ->where('s.libelle like :val')
+            ->setParameter('val', '%' . $libelle . '%')
+            ->getQuery()
+            ->getResult();
+    }
+    public function getLastId()
+    {
+        return $this->createQueryBuilder('c')
+            ->setMaxResults(1)
+            ->orderBy('c.id', 'DESC')
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 
     //    /**

@@ -21,6 +21,15 @@ class DepartementRepository extends ServiceEntityRepository
         parent::__construct($registry, Departement::class);
     }
 
+    public function findByRegionId($regionId)
+    {
+        return $this->createQueryBuilder('d')
+            ->join('d.region_id', 'r')  // Supposons que votre relation avec la région s'appelle "region"
+            ->where('r.id = :regionId')
+            ->setParameter('regionId', $regionId)
+            ->getQuery()
+            ->getResult();
+    }
     //    /**
     //     * @return Departement[] Returns an array of Departement objects
     //     */

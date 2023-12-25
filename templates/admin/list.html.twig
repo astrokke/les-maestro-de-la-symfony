@@ -1,4 +1,4 @@
- extends 'base.html.twig' %}
+{% extends 'base_admin.html.twig' %}
 
 {% block title %}
     {{ title }}
@@ -9,8 +9,7 @@
     {% if is_granted('ROLE_ADMIN') %}
     <h3><a href="{{ path('app_new_admin') }}">Créer</a></h3>
     {% endif %}
-    <table>
-        <tr>
+
             <td>
             Nom
             {% if ( trinom == 'desc') %}
@@ -26,26 +25,29 @@
             {% else %}
                 <a href="{{ path('app_list_admin') }}?nom={{ nom }}&triprenom=desc&trinom={{ trinom }}"><</a>
             {% endif %}
-            </td>
-        </tr>
+            <form>
+        <input type='text' name='nom' placeholder='recherchez par le nom' value='{{ nom }}'>
+        <input type='submit' name='submit' value='rechercher'>
+    </form>
+          <div class="d-flex">
     {% for item in administrateur %}
         <tr>
-            <td>{{ item.nom }}</td>
-            <td>{{ item.prenom }}</td>
-            <td><a href="{{ path('app_show_admin', { 'id': item.id })}}">Voir</a></td>
-            {% if is_granted('ROLE_ADMIN') %}
-            <td><a href="{{ path('app_update_admin', { 'id': item.id })}}">Mettre à jour</a></td>
-             <td>{{ include('admin/delete.html.twig', { 'id': item.id })}}</td>
-            {% endif %}
-        </tr>
+            <div class="card border p-3 bg-light d-flex flex-wrap align-items-center m-2 justify-content-center" style="width: 15rem; height: 15rem;">
+                <div class="card-body d-flex align-items-center">
+                    <a href ="{{ path('app_show_admin', { 'id': item.id })}}" class="card-text text-decoration-none">
+                        <h5 class="card-title text-center">{{ item.nom }} {{ item.prenom }}</h5>
+                        <p class="card-text text-center">{{ item.username }}</p>
+                </div>
+                    </a>
+                    <a href="{{ path('app_update_admin', { 'id': item.id })}}">Mettre à jour</a>
+                    {{ include('admin/admin_delete.html.twig', { 'id': item.id })}} 
+                      </div>
+        </tr>   
     {% else %}
         <tr>
             <td colspan="5">Aucun enregistrement</td>
         </tr>
     {% endfor %}
-    </table>
-    <form>
-        <input type='text' name='nom' placeholder='recherchez par le nom' value='{{ nom }}'>
-        <input type='submit' name='submit' value='rechercher'>
-    </form>
+ 
+   
 {% endblock %}

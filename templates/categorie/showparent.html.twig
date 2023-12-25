@@ -9,17 +9,21 @@
         {{ title }} {{ cate.libelle }} 
     </h2>
     <h3> {{ cate.description }}</h3>
+   <div class="container-fluid">
+    <div class='banner'>
     {% for photo in photos %}
-    <img src='{{ asset(photo.URLPhoto) }}' alt='test' style='width: 100%;'/>
+    <img src="{{ photo.URLPhoto }}"  alt='test' class="h-100 d-inline-block" />
+    </div>
+    </div>
     {% endfor %} 
 
 <div class='card'>
-{% for enfant in enfants %}
-<a href='{{path('app_produit_categorie',{ 'id':enfant.id })}}'>{{ enfant.libelle }}</a><br>
-{{ enfant.description }}
+{% for item in enfants %}
+<a href='{{path('app_produit_categorie',{ 'id':item.id })}}'>{{ item.libelle }}</a><br>
+{{ item.description }}
 {% endfor %}
 </div>
-<a href="{{ path('app_produit_categorie',{ 'id': cate.id })}}"> Voir les produits  </a> 
+
 
         
 {% endblock %}

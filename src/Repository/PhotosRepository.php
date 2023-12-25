@@ -33,6 +33,53 @@ class PhotosRepository extends ServiceEntityRepository
         }
         return $photos;
     }
+    public function searchOnePhotoByProduit($idProduit)
+    {
+
+        return $this->createQueryBuilder('p')
+            ->where('p.produit = :id')
+            ->setParameter('id',   $idProduit)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+    public function searchPhotoByProduit($idProduit)
+    {
+
+        return $this->createQueryBuilder('p')
+            ->where('p.produit = :id')
+            ->setParameter('id',   $idProduit)
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function insertPhotoWithCategorie($id, $path)
+    {
+        $sql = "INSERT INTO `photos`(`categorie_id`, `url_photo`) VALUES ('" . $id . "','" . $path . "')";
+        $this->getEntityManager()->getConnection()
+            ->executeQuery($sql);
+    }
+    public function insertPhotoWithProduit($id, $path)
+    {
+        $sql = "INSERT INTO `photos`(`produit_id`, `url_photo`) VALUES ('" . $id . "','" . $path . "')";
+        $this->getEntityManager()->getConnection()
+            ->executeQuery($sql);
+    }
+
+    public function updatePhotoInCategorie($id, $path)
+    {
+        $sql = "UPDATE `photos` SET url_photo = '$path' WHERE categorie_id =  $id ";
+        var_dump($sql);
+        $this->getEntityManager()->getConnection()
+            ->executeQuery($sql);
+    }
+
+    public function updatePhotoInProduit($id, $path)
+    {
+        $sql = "UPDATE `photos` SET url_photo = '$path' WHERE produit_id =  $id ";
+        var_dump($sql);
+        $this->getEntityManager()->getConnection()
+            ->executeQuery($sql);
+    }
     //    /**
     //     * @return Photos[] Returns an array of Photos objects
     //     */

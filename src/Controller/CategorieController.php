@@ -59,7 +59,10 @@ class CategorieController extends AbstractController
         ]);
     }
     #[Route('/produit_categorie/{id}', name: 'app_produit_categorie')]
-    public function afficherProduitParCategorie(Categorie $categories, ProduitRepository $produitRepo, CategorieRepository $categorieRepo, PhotosRepository $photoRepo): Response
+    public function afficherProduitParCategorie(Categorie $categories, 
+    ProduitRepository $produitRepo, 
+    CategorieRepository $categorieRepo, 
+    PhotosRepository $photoRepo): Response
     {
         $categorieId = $categories->getId();
         $categorie = $categorieRepo->find($categorieId);

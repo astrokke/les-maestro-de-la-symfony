@@ -16,7 +16,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 #[Route('admin/')]
 class AdminController extends AbstractController
 {
-    #[Route('list', name: 'app_list_admin')]
+    #[Route('list_admin', name: 'app_list_admin')]
     public function list(AdminRepository $adminRepo, Request $request): Response
     {
         $trinom = $request->query->get('trinom', 'asc');
@@ -36,7 +36,7 @@ class AdminController extends AbstractController
     public function show(?Admin $admin): Response
     {
         if ($admin === null) {
-            return $this->redirectToRoute('app_admin_index');
+            return $this->redirectToRoute('app_admin_dashboard');
         }
 
         return $this->render('admin/show.html.twig', [
@@ -46,11 +46,12 @@ class AdminController extends AbstractController
     }
 
     #[Route('new', name: 'app_new_admin')]
-    public function new(Request $request,
-     EntityManagerInterface $em,
-     Security $security,
-      UserPasswordHasherInterface $adminPasswordHasher): Response
-    {
+    public function new(
+        Request $request,
+        EntityManagerInterface $em,
+        Security $security,
+        UserPasswordHasherInterface $adminPasswordHasher
+    ): Response {
         if (!$security->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('app_index');
         }
@@ -58,7 +59,7 @@ class AdminController extends AbstractController
         $form = $this->createForm(AdminFormType::class, $admin);
         
         $form->handleRequest($request);
-        if ($form->isSubmitted()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $selectedRoles = $form->get('roles')->getData();
             $admin->setRoles($selectedRoles);
             $admin->setPassword(
@@ -86,7 +87,7 @@ class AdminController extends AbstractController
         Security $security
     ) {
         if (!$security->isGranted('ROLE_ADMIN')) {
-            return $this->redirectToRoute('app_list_admin');
+            return $this->redirectToRoute('app_index');
         }
         if ($admin === null) {
             return $this->redirectToRoute('app_list_admin');
@@ -107,11 +108,12 @@ class AdminController extends AbstractController
     }
 
     #[Route('delete/{id}', name: 'app_delete_admin', methods: ['POST'])]
-    public function delete(Request $request,
-     Admin $admin,
-      EntityManagerInterface $entityManager): Response
-    {
-        if ($this->isCsrfTokenValid('delete'.$admin->getId(), $request->request->get('_token'))) {
+    public function delete(
+        Request $request,
+        Admin $admin,
+        EntityManagerInterface $entityManager
+    ): Response {
+        if ($this->isCsrfTokenValid('delete' . $admin->getId(), $request->request->get('_token'))) {
             $entityManager->remove($admin);
             $entityManager->flush();
         }

@@ -6,6 +6,7 @@ use App\Repository\ProduitRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\EntityManagerInterface;
 
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
 class Produit
@@ -24,8 +25,7 @@ class Produit
     #[ORM\Column]
     private ?float $prix_ht = null;
 
-    #[ORM\ManyToMany(targetEntity: Panier::class, inversedBy: 'produits')]
-    private Collection $Panier;
+
 
     #[ORM\ManyToOne(inversedBy: 'Produit')]
     #[ORM\JoinColumn(nullable: false)]
@@ -35,17 +35,21 @@ class Produit
     #[ORM\ManyToOne(inversedBy: 'Produit')]
     private ?Promotion $promotion = null;
 
-    #[ORM\ManyToMany(targetEntity: Categorie::class, mappedBy: 'Produit')]
-    private Collection $categories;
 
-    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Photos::class)]
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Photos::class, orphanRemoval:true, cascade:["persist"])]
     private Collection $Photos;
+
+    #[ORM\OneToMany(mappedBy: 'Produit', targetEntity: PanierProduit::class)]
+    private Collection $panierProduits;
+
+    #[ORM\ManyToOne(inversedBy: 'produits')]
+    private ?Categorie $categorie = null;
 
     public function __construct()
     {
-        $this->Panier = new ArrayCollection();
-        $this->categories = new ArrayCollection();
+
         $this->Photos = new ArrayCollection();
+        $this->panierProduits = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -72,9 +76,9 @@ class Produit
 
     /*public function __toString()
     {
-        return $this->nom.' '.$this->prenom;
+        return $this->nom . ' ' . $this->prenom;
     }
-*/
+    */
 
     public function setDescription(string $description): static
     {
@@ -98,26 +102,7 @@ class Produit
     /**
      * @return Collection<int, Panier>
      */
-    public function getPanier(): Collection
-    {
-        return $this->Panier;
-    }
 
-    public function addPanier(Panier $panier): static
-    {
-        if (!$this->Panier->contains($panier)) {
-            $this->Panier->add($panier);
-        }
-
-        return $this;
-    }
-
-    public function removePanier(Panier $panier): static
-    {
-        $this->Panier->removeElement($panier);
-
-        return $this;
-    }
 
     public function getTVA(): ?TVA
     {
@@ -148,32 +133,7 @@ class Produit
         return $this;
     }
 
-    /**
-     * @return Collection<int, Categorie>
-     */
-    public function getCategories(): Collection
-    {
-        return $this->categories;
-    }
 
-    public function addCategory(Categorie $category): static
-    {
-        if (!$this->categories->contains($category)) {
-            $this->categories->add($category);
-            $category->addProduit($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCategory(Categorie $category): static
-    {
-        if ($this->categories->removeElement($category)) {
-            $category->removeProduit($this);
-        }
-
-        return $this;
-    }
 
     /**
      * @return Collection<int, Photos>
@@ -201,6 +161,48 @@ class Produit
                 $photo->setProduit(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, PanierProduit>
+     */
+    public function getPanierProduits(): Collection
+    {
+        return $this->panierProduits;
+    }
+
+    public function addPanierProduit(PanierProduit $panierProduit): static
+    {
+        if (!$this->panierProduits->contains($panierProduit)) {
+            $this->panierProduits->add($panierProduit);
+            $panierProduit->setProduit($this);
+        }
+
+        return $this;
+    }
+
+    public function removePanierProduit(PanierProduit $panierProduit): static
+    {
+        if ($this->panierProduits->removeElement($panierProduit)) {
+            // set the owning side to null (unless already changed)
+            if ($panierProduit->getProduit() === $this) {
+                $panierProduit->setProduit(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCategorie(): ?Categorie
+    {
+        return $this->categorie;
+    }
+
+    public function setCategorie(?Categorie $categorie): static
+    {
+        $this->categorie = $categorie;
 
         return $this;
     }

@@ -15,14 +15,23 @@ class CodePostal
     #[ORM\Column]
     private ?int $id = null;
 
+   
+
     #[ORM\ManyToMany(targetEntity: Ville::class, mappedBy: 'Code_postal')]
     private Collection $villes;
+
+    #[ORM\Column(length: 10)]
+    private ?string $libelle = null;
+
+    #[ORM\OneToMany(mappedBy: 'codePostal', targetEntity: Adresse::class)]
+    private Collection $adresses;
 
 
 
     public function __construct()
     {
         $this->villes = new ArrayCollection();
+        $this->adresses = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -56,6 +65,48 @@ class CodePostal
     {
         if ($this->villes->removeElement($ville)) {
             $ville->removeCodePostal($this);
+        }
+
+        return $this;
+    }
+
+    public function getLibelle(): ?string
+    {
+        return $this->libelle;
+    }
+
+    public function setLibelle(string $libelle): static
+    {
+        $this->libelle = $libelle;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Adresse>
+     */
+    public function getAdresses(): Collection
+    {
+        return $this->adresses;
+    }
+
+    public function addAdress(Adresse $adress): static
+    {
+        if (!$this->adresses->contains($adress)) {
+            $this->adresses->add($adress);
+            $adress->setCodePostal($this);
+        }
+
+        return $this;
+    }
+
+    public function removeAdress(Adresse $adress): static
+    {
+        if ($this->adresses->removeElement($adress)) {
+            // set the owning side to null (unless already changed)
+            if ($adress->getCodePostal() === $this) {
+                $adress->setCodePostal(null);
+            }
         }
 
         return $this;
