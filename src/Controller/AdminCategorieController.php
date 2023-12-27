@@ -167,7 +167,6 @@ class AdminCategorieController extends AbstractController
                     $directory = $upload->getTargetDirectory();
                     $full_path = $directory . '/' . $file_name;
                     if (!file_exists($full_path)) {
-                    
                     } else {
                         $error = 'une erreur est survenue';
                     }
@@ -179,11 +178,11 @@ class AdminCategorieController extends AbstractController
 
                 return $this->redirectToRoute('app_categorie_list_admin');
             }
-            return $this->render('admin/new.html.twig', [
-                'title' => 'Mise à jour d\'une catégorie',
-                'form' => $form,
-            ]);
         }
+        return $this->render('admin/new.html.twig', [
+            'title' => 'Mise à jour d\'une catégorie',
+            'form' => $form,
+        ]);
     }
 
     #[Route('delete_categorie/{id}', name: 'app_delete_categorie', methods: ['POST'])]
