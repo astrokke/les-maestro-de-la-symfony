@@ -19,7 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class PanierController extends AbstractController
 {
     #[Route('/panier', name: 'app_panier')]
-    public function index(PanierRepository $panierRepo, Security $security, PhotosRepository $photos): Response
+    public function index(PanierRepository $panierRepo, EntityManagerInterface $em, Security $security, PhotosRepository $photos): Response
     {
         if (!$security->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $this->redirectToRoute('app_index');
@@ -27,8 +27,9 @@ class PanierController extends AbstractController
         $user = $security->getUser();
         $id = $user->getId();
         $panier = $panierRepo->getLastPanierCommande($id);
-        if($panier === null){
+        if (!$panier) {
             $panier = new Panier();
+            return $this->render('panier/emptyPanier.html.twig');
         }
         $produits = [];
         $total = 0;
@@ -43,10 +44,14 @@ class PanierController extends AbstractController
             ];
             $total += ($lignePanier->getProduit()->getPrixHT() + ($lignePanier->getProduit()->getPrixHT() * $lignePanier->getProduit()->getTVA()->getTauxTva() / 100)) * $lignePanier->getQuantite();
         }
+        if (empty($produits)) {
+            return $this->render('panier/emptyPanier.html.twig');
+        }
         return $this->render('panier/index.html.twig', [
             'controller_name' => 'PanierController',
             'produits' => $produits,
-            'total' => $total
+            'total' => $total,
+
 
         ]);
     }

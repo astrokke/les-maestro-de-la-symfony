@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Produit;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use App\Entity\Promotion;
@@ -126,6 +127,11 @@ class AdminPromotionController extends AbstractController
         }
         if ($promotion === null) {
             return $this->redirectToRoute('app_admin_dashboard');
+        }
+        $produits = $promotion->getProduit();
+        foreach ($produits as $produit) {
+            $produit->setPromotion(null);
+            $entityManager->persist($produit);
         }
         if ($this->isCsrfTokenValid('delete' . $promotion->getId(), $request->request->get('_token'))) {
             $entityManager->remove($promotion);

@@ -16,7 +16,7 @@ use App\Form\AdminCommandeFormType;
 class AdminCommandeController extends AbstractController
 {
     #[Route('commande', name: 'app_commande_admin')]
-    public function index( Security $security): Response
+    public function index(Security $security): Response
     {
         if (!$security->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('app_index');
@@ -26,7 +26,7 @@ class AdminCommandeController extends AbstractController
         ]);
     }
 
-    #[Route('commande_list', name: 'app_commande_list')]
+    #[Route('commande_list', name: 'app_commande_list_admin')]
     public function list(
         CommandeRepository $commandeRepo,
         Security $security,
@@ -39,7 +39,9 @@ class AdminCommandeController extends AbstractController
         }
 
         $commande = $commandeRepo->searchByName($request->query->get('id', ''));
-
+        if (empty($commande)) {
+            return $this->render('admin/emptyCommande.html.twig');
+        }
         return $this->render('admin/commande_list.html.twig', [
             'title' => 'Liste des commandes',
             'commande' => $commande,
@@ -87,7 +89,7 @@ class AdminCommandeController extends AbstractController
         }
         return $this->render('admin/commande_update.html.twig', [
             'title' => 'Mise à jour de la commande',
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 }

@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+
+{% block main %}
+    <div class="container">
+        <h1>Panier Vide</h1>
+        <p>Votre panier est actuellement vide.</p>
+        
+        <!-- Vous pouvez ajouter un bouton ou un lien pour rediriger vers la page d'accueil -->
+        <a href="{{ path('app_index') }}" class="btn btn-primary">Retour à la sélection des produits</a>
+    </div>
+{% endblock %}
