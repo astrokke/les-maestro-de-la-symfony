@@ -58,6 +58,28 @@
     {% endblock %}
     {% endblock %}
     </nav>
-        {% block main %}{% endblock %}
+        {% block main %}
+        <div id="carouselCategorie" class="carousel slide">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="../public/upload/photo_categorie/catevent.png" class="d-block w-100" alt="Instruments à vents">
+    </div>
+    <div class="carousel-item">
+      <img src="../public/upload/photo_categorie/catecordes.png" class="d-block w-100" alt="Instruments à cordes">
+    </div>
+    <div class="carousel-item">
+      <img src="../public/upload/photo_categorie/catepercu.png" class="d-block w-100" alt="Instruments à percussions">
+    </div>
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouseCategorie" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Précedent</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouseCategorie" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Suivante</span>
+  </button>
+</div>
+        {% endblock %}
     </body>
 </html>
