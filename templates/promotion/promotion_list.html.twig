@@ -15,7 +15,7 @@
              
             <td>ID: {{ item.id }}</td>
             <td>Libellé :{{ item.libelle }}</td>
-            <td>Taux de Promotion :{{ item.tauxPromotion }}%</td>
+            <td>Taux de Promotion :{{ item.tauxPromotion }}</td>
             <td>Code de Promotion :{{ item.codePromotion }}</td>
             <td><a href="{{ path('app_promotion_show', { 'id': item.id })}}">Voir</a></td>
             <td><a href="{{ path('app_update_promotion', { 'id': item.id })}}">Mettre à jour</a></td>

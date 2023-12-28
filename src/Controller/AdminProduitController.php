@@ -150,7 +150,7 @@ class AdminProduitController extends AbstractController
         }
         return $this->render('admin/produit_new.html.twig', [
             'title' => 'Mise à jour d\'un produit',
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 
@@ -165,6 +165,9 @@ class AdminProduitController extends AbstractController
         }
         if ($produit === null) {
             return $this->redirectToRoute('app_admin_dashboard');
+        }
+        foreach ($produit->getPanierProduits() as $panierProduit) {
+            $em->remove($panierProduit); // ou $em->detach($panierProduit);
         }
             $em->remove($produit);
             $em->flush();

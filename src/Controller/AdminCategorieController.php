@@ -161,20 +161,23 @@ class AdminCategorieController extends AbstractController
             $file = $form['upload_file']->getData();
             if ($file) {
                 $file_name = $upload->uploadCategorie($file);
+
                 if (null !== $file_name) // for example
                 {
                     $directory = $upload->getTargetDirectory();
                     $full_path = $directory . '/' . $file_name;
-                } else {
-                    $error = 'une erreur est survenue';
+                    if (!file_exists($full_path)) {
+                    } else {
+                        $error = 'une erreur est survenue';
+                    }
                 }
-            }
-            $photos = $photo->updatePhotoInCategorie($categorie->getId(), '/upload/photo_categorie/' . $file_name);
-            $categorie->getPhotos($photos);
-            $em->persist($categorie);
-            $em->flush();
+                $photos = $photo->updatePhotoInCategorie($categorie->getId(), '/upload/photo_produit/' . $file_name);
+                $categorie->getPhotos($photos);
+                $em->persist($categorie);
+                $em->flush();
 
-            return $this->redirectToRoute('app_categorie_list_admin');
+                return $this->redirectToRoute('app_categorie_list_admin');
+            }
         }
         return $this->render('admin/new.html.twig', [
             'title' => 'Mise à jour d\'une catégorie',
@@ -194,8 +197,15 @@ class AdminCategorieController extends AbstractController
         if ($categorie === null) {
             return $this->redirectToRoute('app_index');
         }
-            $em->remove($categorie);
-            $em->flush();
-            return $this->redirectToRoute('app_categorie_list_admin');
+        foreach ($categorie->getProduits() as $produit) {
+            $produit->setCategorie(null);
+        }
+        foreach ($categorie->getCategorieEnfant() as $cateEnfant) {
+            $cateEnfant->setCategorieParente(null);
+            $em->persist($cateEnfant);
+        }
+        $em->remove($categorie);
+        $em->flush();
+        return $this->redirectToRoute('app_categorie_list_admin');
     }
 }

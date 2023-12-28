@@ -14,9 +14,9 @@ class AdminSecurityController extends AbstractController
     #[Route(path: 'login', name: 'app_admin_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
-        // }
+         if ($this->getUser()) {
+             return $this->redirectToRoute('app_admin_dashboard');
+         }
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();

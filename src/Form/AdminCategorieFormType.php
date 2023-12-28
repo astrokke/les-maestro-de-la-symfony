@@ -10,6 +10,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\ChoiceList\ChoiceList;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File as ConstraintsFile;
@@ -20,7 +21,14 @@ class AdminCategorieFormType extends AbstractType
     {
         $builder
             ->add('libelle')
-            ->add('description')
+            ->add('description', TextareaType::class, [
+                'label' => 'Description',
+                'attr' => [
+                    'rows' => 3,
+                    'cols' => 50, // Définir le nombre de lignes
+                    'placeholder' => 'Saisissez votre description ici...', // Ajouter un placeholder si nécessaire
+                ],
+            ])
             ->add('categorie_parente', EntityType::class, [
                 'class' => Categorie::class,
                 'choice_label' => 'libelle',

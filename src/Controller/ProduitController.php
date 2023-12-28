@@ -36,6 +36,10 @@ class ProduitController extends AbstractController
             return $this->redirectToRoute('app_produit');
         }
         $prixTTC = $produit->getPrixHT() + ($produit->getPrixHT() * $produit->getTVA()->getTauxTva() / 100);
+        // Vérifiez si le produit a une promotion
+        if ($produit->getPromotion() !== null) {
+            $prixTTC = $prixTTC * $produit->getPromotion()->getTauxPromotion();
+        }
         $photos = $photoRepo->searchPhotoByProduit($produit);
         return $this->render('produit/show.html.twig', [
             'title' => 'Fiche d\'un produit',
@@ -60,16 +64,16 @@ class ProduitController extends AbstractController
         if ($produit === null) {
             return $this->redirectToRoute('app_produit');
         }
-        
+
         $panier = $panierRepo->getLastPanierCommande($security->getUser()->getId());
 
-        
         if (!$panier) {
             $panier = new Panier();
             $panier->setUsers($security->getUser());
             $em->persist($panier);
             $em->flush(); // Enregistrer le panier en base de données
         }
+
 
         $idProduit = $produit->getId();
         $Panier = $panierRepo->getLastPanier($security->getUser()->getId());

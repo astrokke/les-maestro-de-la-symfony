@@ -12,7 +12,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
-
+use Symfony\Component\Validator\Constraints\File as ConstraintsFile;
 class AdminProduitFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
@@ -36,13 +36,13 @@ class AdminProduitFormType extends AbstractType
                 'class' => Categorie::class,
                 'choice_label' => 'libelle',
             ])
-            ->add('upload_file', FileType::class, [
+            -> add('upload_file', FileType::class, [
                 'label' => false,
                 'mapped' => false, // Tell that there is no Entity to link
                 'required' => true,
                 'constraints' => [
-                    new File([
-                        'mimeTypes' => [
+                    new ConstraintsFile([
+                        'mimeTypes' => [ // We want to let upload only txt, csv or Excel files
                             'img/jpg',
                             'img/png',
                             'img/jpeg',
@@ -50,9 +50,8 @@ class AdminProduitFormType extends AbstractType
                         ],
                         'mimeTypesMessage' => "This document isn't valid.",
                     ])
-                ],
+                ]
             ]);
-
     }
 
     public function configureOptions(OptionsResolver $resolver): void

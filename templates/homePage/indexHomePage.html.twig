@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+
+{% block title %} {{ title }} {% endblock %}   
+{% block main %}
+   <div class ="promotions">
+   {% for produit in produits %}
+   <p> {{ produit.libelle}} </p>
+   {% endfor %}
+   </div> 
+
+{% endblock %}
