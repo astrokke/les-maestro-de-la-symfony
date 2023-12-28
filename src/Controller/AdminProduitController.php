@@ -169,6 +169,7 @@ class AdminProduitController extends AbstractController
         foreach ($produit->getPanierProduits() as $panierProduit) {
             $em->remove($panierProduit); // ou $em->detach($panierProduit);
         }
+        
             $em->remove($produit);
             $em->flush();
             return $this->redirectToRoute('app_produit_list_admin');

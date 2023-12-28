@@ -57,6 +57,15 @@ class ProduitRepository extends ServiceEntityRepository
             ->getOneOrNullResult();
     }
 
+    public function findTopPromoProducts(): array
+    {
+        return $this->createQueryBuilder('p')
+            ->join('p.promotion', 'pr')
+            ->orderBy('pr.Taux_promotion', 'DESC')
+            ->setMaxResults(3) // Pour limiter à 3 produits
+            ->getQuery()
+            ->getResult();
+    }
 
     //    /**
     //     * @return Produit[] Returns an array of Produit objects

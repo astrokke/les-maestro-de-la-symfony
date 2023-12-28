@@ -28,7 +28,6 @@ class PanierController extends AbstractController
         $id = $user->getId();
         $panier = $panierRepo->getLastPanierCommande($id);
         if (!$panier) {
-            $panier = new Panier();
             return $this->render('panier/emptyPanier.html.twig');
         }
         $produits = [];
@@ -121,7 +120,7 @@ class PanierController extends AbstractController
             return $this->redirectToRoute('app_index');
         }
         $idProduit = $produit->getId();
-        $Panier = $panierRepo->getLastPanier($security->getUser()->getId());
+        $Panier = $panierRepo->getLastPanierCommande($security->getUser()->getId());
         $idPanier = $Panier->getId();
         $produitInPanier = $panierProduitRepo->getPanierProduitbyId($produit, $Panier);
         if ($this->isCsrfTokenValid('addQteToPanier' . $produit->getId(), $request->request->get('_token'))) {

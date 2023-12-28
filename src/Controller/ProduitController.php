@@ -67,7 +67,7 @@ class ProduitController extends AbstractController
 
         $panier = $panierRepo->getLastPanierCommande($security->getUser()->getId());
 
-        if (!$panier) {
+        if ($panier) {
             $panier = new Panier();
             $panier->setUsers($security->getUser());
             $em->persist($panier);
@@ -76,7 +76,7 @@ class ProduitController extends AbstractController
 
 
         $idProduit = $produit->getId();
-        $Panier = $panierRepo->getLastPanier($security->getUser()->getId());
+        $Panier = $panierRepo->getLastPanierCommande($security->getUser()->getId());
         $idPanier = $Panier->getId();
         $produitInPanier = $panierProduitRepo->getPanierProduitbyId($produit, $Panier);
         if (is_null($produitInPanier)) {

@@ -2,11 +2,30 @@
 
 
 {% block title %} {{ title }} {% endblock %}   
-{% block main %}
-   <div class ="promotions">
-   {% for produit in produits %}
-   <p> {{ produit.libelle}} </p>
-   {% endfor %}
-   </div> 
 
+{% block main %}
+    <h2>{{ title }}</h2>
+    <div class="container">
+        <div class="row ">
+            {% for productData in data %}
+                <div class="col-12 col-md-3  mx-auto containerProduct mb-4 d-flex bg-light radius-10 flex-column justify-content-center  align-items-center" >
+                    {% for photo in productData.photos %}
+                        <img src='{{ photo.URLPhoto }}' alt='{{ productData.produit.libelle }}' class='w-50 m-5'/>
+                    {% endfor %} 
+                    <div class="d-flex flex-column align-items-center">
+                    <p>{{ productData.produit.libelle }}</p>
+                    <div class="d-flex">
+                    <p>{{ productData.produit.Promotion.libelle }}</p>
+                    <p>{{ productData.oldPrice }}€</p>
+                    <p>{{ productData.prixTTC }}€</p>
+                    </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-12">
+                    <p>Aucun produit trouvé.</p>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}

@@ -1,52 +1,56 @@
-{% extends 'base_admin.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}
     {{ title }}
 {% endblock %}
 
 {% block main %}
-    <h2>{{ title }}</h2>
-   
-    <h3><a href="{{ path('app_create_adresse') }}">Créer</a></h3>
-    
-    <table>
-        <tr>
-            <td>
-            Numero de voie
-            </td>
-            <td>
-            Rue
-            </td>
-            <td>
-            Complément
-            </td>
-            <td>
-            Ville
-            </td>
-            <td>
-            Code postal
-            </td>
-        </tr>
-    {% for item in adresses %}
-        <tr>
-            <td>{{ item.numVoie }}</td>
-            <td>{{ item.rue }}</td>
-            <td>{{ item.complement }}</td>
-            <td>{{ item.Ville.nom }}</td>
-            <td>{{ item.codePostal.libelle }}</td>
-            <td><a href="{{ path('app_show_adresse', { 'id': item.id })}}">Voir</a></td>
-            <td><a href="{{ path('app_update_adresse', { 'id': item.id })}}">Mettre à jour</a></td>
-             <td>{{ include('user/delete.html.twig', { 'id': item.id })}}</td>
-           
-        </tr>
-    {% else %}
-        <tr>
-            <td colspan="5">Aucun enregistrement</td>
-        </tr>
-    {% endfor %}
-    </table>
-    <form>
-        <input type='text' name='rue' placeholder='recherchez par le nom de la rue' value='{{ rue }}'>
-        <input type='submit' name='submit' value='rechercher'>
-    </form>
+    <div class="container mt-5">
+        <h2>{{ title }}</h2>
+
+        <h3><a href="{{ path('app_create_adresse') }}" class="btn btn-success">Créer</a></h3>
+
+        <div class="table-responsive">
+            <table class="table table-bordered mt-4">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Numero de voie</th>
+                        <th>Rue</th>
+                        <th>Complément</th>
+                        <th>Ville</th>
+                        <th>Code postal</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in adresses %}
+                        <tr>
+                            <td>{{ item.numVoie }}</td>
+                            <td>{{ item.rue }}</td>
+                            <td>{{ item.complement }}</td>
+                            <td>{{ item.Ville.nom }}</td>
+                            <td>{{ item.codePostal.libelle }}</td>
+                            <td>
+                                <a href="{{ path('app_show_adresse', { 'id': item.id }) }}" class="btn btn-primary btn-sm">Voir</a>
+                                <a href="{{ path('app_update_adresse', { 'id': item.id }) }}" class="btn btn-warning btn-sm">Mettre à jour</a>
+                                {{ include('user/delete.html.twig', { 'id': item.id })}}
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6">Aucun enregistrement</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <form class="mt-4">
+            <div class="form-group">
+                <label for="searchRue">Recherchez par le nom de la rue</label>
+                <input type='text' id="searchRue" class="form-control" name='rue' placeholder='Recherchez par le nom de la rue' value='{{ rue }}'>
+            </div>
+            <button type="submit" class="btn btn-primary">Rechercher</button>
+        </form>
+    </div>
 {% endblock %}
