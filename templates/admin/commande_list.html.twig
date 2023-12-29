@@ -19,7 +19,7 @@
             <td>panier n° {{ item.panier.id }}</td>
             <td>prix de la commande :{{ item.prixttccommande}} €TTC</td>
             <td><a href="{{ path('app_commande_show', { 'id': item.id })}}">Voir</a></td>
-            <td><a href="{{ path('app_update_commande', { 'id': item.id })}}">Mettre à jour</a></td>
+            <td><a href="{{ path('app_update_commande_admin', { 'id': item.id })}}">Mettre à jour</a></td>
         </tr>
     {% else %}
         <tr>
