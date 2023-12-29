@@ -58,14 +58,14 @@ class AdminCommandeController extends AbstractController
             return $this->redirectToRoute('app_index');
         }
 
-        return $this->render('admin/commande_show.html.twig', [
+        return $this->render('admin/commande_show_admin.html.twig', [
             'title' => 'Fiche de la commande',
             'commande' => $commande,
         ]);
     }
 
 
-    #[Route('update_commande/{id}', name: 'app_update_commande')]
+    #[Route('update_commande/{id}', name: 'app_update_commande_admin')]
     public function update(
         Request $request,
         EntityManagerInterface $em,
@@ -85,7 +85,7 @@ class AdminCommandeController extends AbstractController
         if ($form->isSubmitted()) {
             $em->persist($commande);
             $em->flush();
-            return $this->redirectToRoute('app_commande_list');
+            return $this->redirectToRoute('app_commande_list_admin');
         }
         return $this->render('admin/commande_update.html.twig', [
             'title' => 'Mise à jour de la commande',

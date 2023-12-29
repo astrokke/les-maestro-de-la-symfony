@@ -6,17 +6,21 @@
 
 {% block main %}
     <h2>{{ title }}</h2>
+    <div class="row">
+    <div class="d-flex justify-content-center gap-5">
     {% for item in photos %}
         <img src='{{ item.URLPhoto }}' alt='test' class='banner-item'/>
     {% endfor %} 
     <tr>
-         <td>{{ produit.libelle }}</td>
-         <td>{{ produit.description }}</td>
-         <td>{{ prixTTC }}</td>
+         <td>Nom : {{ produit.libelle }}</td><br>
+         <td>Description : {{ produit.description }}</td><br>
+         <td>Prix : {{ prixTTC }} €TTC</td><br>
          {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-         <td><td>{{ include('produit/_addToPanier.html.twig', { 'id': produit.id })}}</td></td> 
+         <td><td>{{ include('produit/_addToPanier.html.twig', { 'id': produit.id })}}</td></td><br>
          {% else %}
-         <a href='{{ path('app_register') }}'<p>Veuillez créer un compte ou vous connecter pour ajouter un produit à votre panier</p>
+         <a href='{{ path('app_register') }}'<p>Veuillez créer un compte ou vous connecter pour ajouter un produit à votre panier</p><br>
          {% endif %}
         </tr>
+        </div>
+        </div>
 {% endblock %}

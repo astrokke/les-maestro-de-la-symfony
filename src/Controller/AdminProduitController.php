@@ -101,7 +101,7 @@ class AdminProduitController extends AbstractController
             return $this->redirectToRoute('app_index');
         }
 
-        return $this->render('admin/produit_show.html.twig', [
+        return $this->render('admin/produit_show_admin.html.twig', [
             'title' => 'Fiche d\'un produit',
             'produit' => $produit,
         ]);
