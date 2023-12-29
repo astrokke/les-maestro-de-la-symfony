@@ -7,8 +7,8 @@
 {% block main %}
     <h2>{{ title }}</h2>
         <p>
-            <div class="card border p-3 bg-light d-flex flex-wrap align-items-center m-2" style="width: 15rem; height: 27rem;">
-             <img src="{% for photo in produit.photos %} {{ photo.urlPhoto }} {% endfor %} " class="card-img-top" alt="..." style="width: 12rem; height: 24rem;">
+            <div class="card border p-3 bg-light d-flex flex-wrap align-items-center m-2" style="width: 27rem; height: 27rem;">
+             <img src="{% for photo in produit.photos %} {{ photo.urlPhoto }} {% endfor %} " class="card-img-top" alt="..." style="width: 24rem; height: 24rem;">
             </div>
             <br>Nom : {{ produit.libelle }}</br>
             <br>Description de l'article : {{ produit.description }}</br>

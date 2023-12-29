@@ -5,29 +5,46 @@
 {% endblock %}
 
 {% block main %}
-    <h2>{{ title }}</h2>
-  
-    <table>
-        
+    <div class="container mt-5">
+        <h2>{{ title }}</h2>
 
-    {% for item in commande %}
-   
-        <tr>
-            <td> cde n°{{ item.id }}, </td>
-            <td>date :{{ item.datecommande?item.datecommande|date('Y-m-d H:i:s') : '' }}, </td>
-            <td>client :{{ item.users.id }} {{ item.users.nom }} {{ item.users.prenom }}, </td>
-            <td>panier n° {{ item.panier.id }}</td>
-            <td>prix de la commande :{{ item.prixttccommande}} €TTC</td>
-            <td><a href="{{ path('app_commande_show', { 'id': item.id })}}">Voir</a></td>
-        </tr>
-    {% else %}
-        <tr>
-            <td colspan="5">Aucun enregistrement</td>
-        </tr>
-    {% endfor %}
-    </table>
-    <form>
-        <input type='text' name='id' placeholder='recherchez par id' value='{{ id }}'>
-        <input type='submit' name='submit' value='rechercher'>
-    </form>
+        <div class="table-responsive">
+            <table class="table table-bordered mt-4">
+                <thead class="thead-dark">
+                    <tr>
+                        <th>Commande</th>
+                        <th>Date</th>
+                        <th>Client</th>
+                        <th>Panier</th>
+                        <th>Prix</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in commande %}
+                        <tr>
+                            <td>cde n°{{ item.id }}</td>
+                            <td>{{ item.datecommande ? item.datecommande|date('Y-m-d H:i:s') : '' }}</td>
+                            <td>{{ item.users.id }} {{ item.users.nom }} {{ item.users.prenom }}</td>
+                            <td>panier n°{{ item.panier.id }}</td>
+                            <td>{{ item.prixttccommande }} €TTC</td>
+                            <td><a href="{{ path('app_commande_show', { 'id': item.id }) }}" class="btn btn-primary btn-sm">Voir</a></td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="6">Aucun enregistrement</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <form class="mt-4">
+            <div class="form-group">
+                <label for="searchId">Recherchez par ID</label>
+                <input type='text' id="searchId" class="form-control" name='id' placeholder='Recherchez par ID' value='{{ id }}'>
+            </div>
+            <button type="submit" class="btn btn-primary">Rechercher</button>
+        </form>
+    </div>
 {% endblock %}

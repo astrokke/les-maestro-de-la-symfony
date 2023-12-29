@@ -50,6 +50,19 @@ class PanierProduitRepository extends ServiceEntityRepository
             ->executeQuery($sql);
     }
 
+    public function removeProduitFromPanier($idProduit, $idPanier)
+    {
+        return $this->createQueryBuilder('pp')
+            ->delete()
+            ->where('pp.produit = :idProduit')
+            ->andWhere('pp.panier = :idPanier')
+            ->setParameter('idProduit', $idProduit)
+            ->setParameter('idPanier', $idPanier)
+            ->getQuery();
+
+        return $qb->execute();
+    }
+
 
     //    /**
     //     * @return PanierProduit[] Returns an array of PanierProduit objects

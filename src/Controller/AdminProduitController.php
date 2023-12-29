@@ -101,7 +101,7 @@ class AdminProduitController extends AbstractController
             return $this->redirectToRoute('app_index');
         }
 
-        return $this->render('admin/produit_show.html.twig', [
+        return $this->render('admin/produit_show_admin.html.twig', [
             'title' => 'Fiche d\'un produit',
             'produit' => $produit,
         ]);
@@ -169,6 +169,7 @@ class AdminProduitController extends AbstractController
         foreach ($produit->getPanierProduits() as $panierProduit) {
             $em->remove($panierProduit); // ou $em->detach($panierProduit);
         }
+        
             $em->remove($produit);
             $em->flush();
             return $this->redirectToRoute('app_produit_list_admin');

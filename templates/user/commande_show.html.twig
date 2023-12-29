@@ -11,10 +11,24 @@
             <br>Client n° {{ commande.users.id }}, {{ commande.users.nom }} {{ commande.users.prenom }}</br>
             <br>Panier n° {{ commande.panier.id }}</br>
             <br>Date de la commande : {{ commande.datecommande?commande.datecommande|date('Y-m-d') : ''  }}</br>
-            Produits achetés :
+            <p>Produits achetés : </p>
+           
+               
+                {% for panierProduit in commande.Panier.PanierProduits %}
+                    {% for photo in panierProduit.Produit.Photos %}
+                    <img src="{{ photo.urlPhoto }}" alt="photo-produit">
+                    {% endfor %}
+                {% endfor %}
+           
+            
             <ul>
-                {% for panierProduit in commande.panier.panierProduits %}
-                    <li>{{ panierProduit.produit.libelle }} - {{ panierProduit.produit.prixHt }}€ TTC</li>
+                {% for commandeArticle in commande.ligneDeCommandes %}
+                    <li>{{ commandeArticle.nomProduit }} </li> 
+                    <li>{{ commandeArticle.nombreArticle }}</li>
+                    <li>{{ commandeArticle.prixProduit }}€ hors taxe</li>
+                    <li>{{ commandeArticle.tauxTva }} </li>
+                    <li>{{ commandeArticle.nombreArticle }} </li>
+                    <li>{{ commandeArticle.prixTotal }}€ TTC </li>
                 {% endfor %}
             </ul>
             <br>Total de la commande : {{ commande.prixttccommande }}€ TTC</br>

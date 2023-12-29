@@ -61,41 +61,34 @@ class ProduitController extends AbstractController
         if (!$security->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $this->redirectToRoute('app_index');
         }
+
         if ($produit === null) {
             return $this->redirectToRoute('app_produit');
         }
 
-        $panier = $panierRepo->getLastPanierCommande($security->getUser()->getId());
+        $user = $security->getUser();
+        $panier = $panierRepo->getLastPanierCommande($user->getId());
 
         if (!$panier) {
             $panier = new Panier();
-            $panier->setUsers($security->getUser());
+            $panier->setUsers($user);
             $em->persist($panier);
-            $em->flush(); // Enregistrer le panier en base de données
+            $em->flush();  // Enregistrer le panier en base de données
         }
 
-
         $idProduit = $produit->getId();
-        $Panier = $panierRepo->getLastPanier($security->getUser()->getId());
-        $idPanier = $Panier->getId();
-        $produitInPanier = $panierProduitRepo->getPanierProduitbyId($produit, $Panier);
-        if (is_null($produitInPanier)) {
-            if ($this->isCsrfTokenValid('addToPanier' . $produit->getId(), $request->request->get('_token'))) {
-                if ($this->isCsrfTokenValid('addToPanier' . $produit->getId(), $request->request->get('_token'))) {
-                    $panierProduitRepo->AddProduitToPanierProduit($idProduit, $idPanier, 1);
-                }
+        $idPanier = $panier->getId();
 
-                return $this->redirectToRoute('app_show_produit', ['id' => $idProduit = $produit->getId()], Response::HTTP_SEE_OTHER);
+        $produitInPanier = $panierProduitRepo->getPanierProduitbyId($produit, $panier);
+
+        if ($this->isCsrfTokenValid('addToPanier' . $produit->getId(), $request->request->get('_token'))) {
+            if (is_null($produitInPanier)) {
+                $panierProduitRepo->AddProduitToPanierProduit($idProduit, $idPanier, 1);
+            } else {
+                $qte = $produitInPanier->getQuantite() + 1;
+                $panierProduitRepo->updateQuantitéInProduiPanier($qte, $idProduit, $idPanier);
             }
-        } else {
-            if ($this->isCsrfTokenValid('addToPanier' . $produit->getId(), $request->request->get('_token'))) {
-                if ($this->isCsrfTokenValid('addToPanier' . $produit->getId(), $request->request->get('_token'))) {
-                    $qte = $produitInPanier->getQuantite();
-                    $qte++;
-                    $panierProduitRepo->updateQuantitéInProduiPanier($qte, $idProduit, $idPanier);
-                }
-                return $this->redirectToRoute('app_show_produit', ['id' => $idProduit], Response::HTTP_SEE_OTHER);
-            }
+            return $this->redirectToRoute('app_show_produit', ['id' => $idProduit], Response::HTTP_SEE_OTHER);
         }
     }
 }

@@ -171,7 +171,7 @@ class AdminCategorieController extends AbstractController
                         $error = 'une erreur est survenue';
                     }
                 }
-                $photos = $photo->updatePhotoInCategorie($categorie->getId(), '/upload/photo_produit/' . $file_name);
+                $photos = $photo->updatePhotoInCategorie($categorie->getId(), '/upload/photo_categorie/' . $file_name);
                 $categorie->getPhotos($photos);
                 $em->persist($categorie);
                 $em->flush();
