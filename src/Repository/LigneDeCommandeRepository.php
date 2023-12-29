@@ -20,6 +20,14 @@ class LigneDeCommandeRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, LigneDeCommande::class);
     }
+    public function findByIdCommande($id)
+    {
+        return $this->createQueryBuilder('c')
+            ->where('c.commande = :val')
+            ->setParameter('val', $id)
+            ->getQuery()
+            ->getResult();
+    }
 
     //    /**
     //     * @return LigneDeCommande[] Returns an array of LigneDeCommande objects

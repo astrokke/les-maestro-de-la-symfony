@@ -25,4 +25,6 @@
             <br>Etat de la commande : {{ commande.etat.libelle }}</br>
 
         </p>
+
+        <a href="{{ path('app_pdf_generator', {'id': commande.id}) }}">Télécharger le PDF</a>
 {% endblock %}
