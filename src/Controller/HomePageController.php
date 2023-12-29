@@ -34,7 +34,8 @@ class HomePageController extends AbstractController
     }
 
         return $this->render('homepage/indexHomePage.html.twig', [
-            'title' => 'Msymfony',
+            'title' => 'MSymfony',
+            'subtitle' => 'La musique, c\'est notre passion, les promotions, c\'est notre métier',
             'data' => $dataPromo,
         ]);
     }

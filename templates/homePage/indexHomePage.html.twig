@@ -2,30 +2,42 @@
 
 
 {% block title %} {{ title }} {% endblock %}   
-
 {% block main %}
-    <h2>{{ title }}</h2>
-    <div class="container">
-        <div class="row ">
-            {% for productData in data %}
-                <div class="col-12 col-md-3  mx-auto containerProduct mb-4 d-flex bg-light radius-10 flex-column justify-content-center  align-items-center" >
+<div class="row">
+<div class ="container-fluid d-flex ">
+    <div class="title col-12 col-md-6 d-flex flex-column align-items-center justify-content-center mb-5">
+        <h1 class="mr-5">Les Maestros de la Symfony</h1>
+        <h3 class="ml-5">la musique à portée de clic</h3>
+    </div>
+    <div class="img-block col-12 col-md-6">
+    <img src= "{{ asset('images/mecquidance.png') }}" alt="image acceuil" >
+    </div>
+</div>
+</div>
+    <div class="row mt-5">
+        {% for productData in data %}
+            <div class="col-12 col-md-3 mx-auto mb-4 d-flex align-items-stretch position-relative">
+                <a href="{{ path('app_show_produit', { 'id': productData.produit.id })}}" class="d-block bg-light rounded p-3 text-center text-decoration-none flex-fill">
+                    <div class="bg-warning-subtle p-2 mb-3 rounded-top text-center">
+                        Promotions
+                    </div>
                     {% for photo in productData.photos %}
-                        <img src='{{ photo.URLPhoto }}' alt='{{ productData.produit.libelle }}' class='w-50 m-5'/>
+                        <img src='{{ photo.URLPhoto }}' alt='{{ productData.produit.libelle }}' class='w-50 m-3 border border-2 border-warning-subtle'/>
                     {% endfor %} 
-                    <div class="d-flex flex-column align-items-center">
                     <p>{{ productData.produit.libelle }}</p>
-                    <div class="d-flex">
-                    <p>{{ productData.produit.Promotion.libelle }}</p>
-                    <p>{{ productData.oldPrice }}€</p>
-                    <p>{{ productData.prixTTC }}€</p>
+                    <div class="d-flex justify-content-center">
+                        <div class="position-absolute top-50 start-0">
+                            <span class="bg-primary text-white p-1 rounded">{{ productData.produit.Promotion.libelle }}</span>
+                        </div>
+                        <p>{{ productData.oldPrice }}€</p>
+                        <p>{{ productData.prixTTC }}€</p>
                     </div>
-                    </div>
-                </div>
-            {% else %}
-                <div class="col-12">
-                    <p>Aucun produit trouvé.</p>
-                </div>
-            {% endfor %}
+                </a>
+            </div>
+        {% else %}
+        <div class="d-flex w-100 text-align-center justify-content-center mt-5">
+            <p class="text-align-center"> Aucun produit en promotion </p>
         </div>
+        {% endfor %}
     </div>
 {% endblock %}
