@@ -49,7 +49,7 @@ class AdminCommandeController extends AbstractController
         ]);
     }
 
-    #[Route('commande_show/{id}', name: 'app_commande_show')]
+    #[Route('commande_show/{id}', name: 'app_commande_show_admin')]
     public function showCommande(
         ?Commande $commande,
         Security $security,

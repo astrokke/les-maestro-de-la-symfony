@@ -25,13 +25,18 @@
             {% endif %}
             </td>
         </tr>
+        <div class="d-flex flex-wrap">
     {% for item in users %}
-        <tr>
-            <td>{{ item.nom }}</td>
-            <td>{{ item.prenom }}</td>
-            <td><a href="{{ path('app_user_show_admin', { 'id': item.id })}}">Voir</a></td>
-            <td>{{ include('admin/user_delete.html.twig', { 'id': item.id })}}</td>
-        </tr>
+            <div class="card border p-3 bg-light d-flex flex-wrap align-items-center m-2 justify-content-center" style="width: 15rem; height: 15rem;">
+                <div class="card-body d-flex align-items-center">
+                    <a href ="{{ path('app_show_admin', { 'id': item.id })}}" class="card-text text-decoration-none">
+                        <h5 class="card-title text-center">{{ item.nom }} {{ item.prenom }}</h5>
+                        
+                </div>
+                    </a>
+                    <a href="{{ path('app_user_show_admin', { 'id': item.id })}}">Voir</a>
+                    {{ include('admin/user_delete.html.twig', { 'id': item.id })}} 
+                      </div>
     {% else %}
         <tr>
             <td colspan="5">Aucun enregistrement</td>

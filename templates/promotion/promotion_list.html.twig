@@ -9,7 +9,7 @@
         <h2>{{ title }}</h2>
 
         {% if is_granted('ROLE_ADMIN') %}
-            <h3><a href="{{ path('app_new_promotion') }}" class="btn btn-success">Ajouter une promotion</a></h3>
+            <h3><a href="{{ path('app_new_promotion') }}" class="btn btn-primary">Ajouter une promotion</a></h3>
         {% endif %}
 
         <div class="table-responsive">
