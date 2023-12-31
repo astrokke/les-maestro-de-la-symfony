@@ -22,7 +22,7 @@ class PanierController extends AbstractController
     public function index(PanierRepository $panierRepo, EntityManagerInterface $em, Security $security, PhotosRepository $photos): Response
     {
         if (!$security->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return $this->redirectToRoute('app_index');
+            return $this->render('panier/emptyPanier.html.twig');
         }
         $user = $security->getUser();
         $id = $user->getId();
@@ -39,9 +39,10 @@ class PanierController extends AbstractController
                 'produit' => $lignePanier->getProduit(),
                 'qte' => $lignePanier->getQuantite(),
                 'photo' => $photos->searchOnePhotoByProduit($lignePanier->getProduit()->getId()),
-                'prixTTC' => $lignePanier->getProduit()->getPrixHT() + ($lignePanier->getProduit()->getPrixHT() * $lignePanier->getProduit()->getTVA()->getTauxTva() / 100),
+                'prixTTC' => number_format($lignePanier->getProduit()->getPrixHT() + ($lignePanier->getProduit()->getPrixHT() * $lignePanier->getProduit()->getTVA()->getTauxTva() / 100),2,'.',''),
             ];
             $total += ($lignePanier->getProduit()->getPrixHT() + ($lignePanier->getProduit()->getPrixHT() * $lignePanier->getProduit()->getTVA()->getTauxTva() / 100)) * $lignePanier->getQuantite();
+            $total =number_format($total,2,'.','');
         }
         if (empty($produits)) {
             return $this->render('panier/emptyPanier.html.twig');

@@ -25,7 +25,7 @@ class Adresse
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $complement = null;
 
-    #[ORM\OneToMany(mappedBy: 'est_livré', targetEntity: Commande::class)]
+    #[ORM\OneToMany(mappedBy: 'est_livre', targetEntity: Commande::class)]
     private Collection $est_livre;
 
     #[ORM\OneToMany(mappedBy: 'est_facture', targetEntity: Commande::class)]
@@ -40,6 +40,9 @@ class Adresse
 
     #[ORM\ManyToOne(inversedBy: 'adresses')]
     private ?CodePostal $codePostal = null;
+
+    #[ORM\Column]
+    private ?bool $isActive = null;
 
     
 
@@ -187,6 +190,18 @@ class Adresse
     public function setCodePostal(?CodePostal $codePostal): static
     {
         $this->codePostal = $codePostal;
+
+        return $this;
+    }
+
+    public function isIsActive(): ?bool
+    {
+        return $this->isActive;
+    }
+
+    public function setIsActive(bool $isActive): static
+    {
+        $this->isActive = $isActive;
 
         return $this;
     }
