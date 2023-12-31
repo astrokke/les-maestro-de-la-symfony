@@ -27,19 +27,19 @@
                
                 {% for panierProduit in commande.Panier.PanierProduits %}
                     {% for photo in panierProduit.Produit.Photos %}
-                    <img src="{{ photo.urlPhoto }}" alt="photo-produit">
+                    <img src="{{ photo.urlPhoto }}" alt="photo-produit" class="card-img-top" alt="..." style="width: 20rem; height: 20rem;">
                     {% endfor %}
                 {% endfor %}
            
             
             <ul>
                 {% for commandeArticle in commande.ligneDeCommandes %}
-                    <li>{{ commandeArticle.nomProduit }} </li> 
-                    <li>{{ commandeArticle.nombreArticle }}</li>
-                    <li>{{ commandeArticle.prixProduit }}€ hors taxe</li>
-                    <li>{{ commandeArticle.tauxTva }} </li>
-                    <li>{{ commandeArticle.nombreArticle }} </li>
-                    <li>{{ commandeArticle.prixTotal }}€ TTC </li>
+                    <li>Nom : {{ commandeArticle.nomProduit }} </li> 
+                    <li>Quantité : {{ commandeArticle.nombreArticle }}</li>
+                    <li>Prix : {{ commandeArticle.prixProduit }}€ HT</li>
+                    <li>Taux de TVA : {{ commandeArticle.tauxTva }}% </li>
+                    <li>Nombre d'articles :{{ commandeArticle.nombreArticle }} </li>
+                    <li>Prix : {{ commandeArticle.prixTotal }}€ TTC </li>
                 {% endfor %}
             </ul>
             <br>Total de la commande : {{ commande.prixttccommande }}€ TTC</br>
