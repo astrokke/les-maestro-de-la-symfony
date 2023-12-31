@@ -36,9 +36,11 @@ class ProduitController extends AbstractController
             return $this->redirectToRoute('app_produit');
         }
         $prixTTC = $produit->getPrixHT() + ($produit->getPrixHT() * $produit->getTVA()->getTauxTva() / 100);
+        $prixTTC = number_format($prixTTC,2,'.','');
         // Vérifiez si le produit a une promotion
         if ($produit->getPromotion() !== null) {
             $prixTTC = $prixTTC * $produit->getPromotion()->getTauxPromotion();
+            $prixTTC = number_format($prixTTC,2,'.','');
         }
         $photos = $photoRepo->searchPhotoByProduit($produit);
         return $this->render('produit/show.html.twig', [

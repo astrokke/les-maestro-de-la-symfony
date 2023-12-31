@@ -5,6 +5,17 @@
 {% endblock %}
 
 {% block main %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        {% if app.user %}
+            <li class="breadcrumb-item"><a href="{{ path('app_user') }}">Information</a></li>
+            <li class="breadcrumb-item"><a href="{{ path('app_commande_list') }}">Liste de vos commandes</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Votre commande</li>
+        {% else %}
+            <li class="breadcrumb-item active" aria-current="page">Accueil</li>
+        {% endif %}
+    </ol>
+</nav>
     <h2>{{ title }} {{ commande.id }}</h2>
         <p>
             <br>Commande n° {{ commande.id }}</br>
