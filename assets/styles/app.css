@@ -19,17 +19,19 @@ a {
   text-decoration: none !important;
   color: #000;
 }
+.size{
+  font-size: 30px !important;
+}
 .banner {
   background-color: black;
-  height: 300px;
+  height: 462px;
   width: 100%;
 }
 .banner-item {
-  width: 20%;
+  width: 40%;
 }
-#logo {
-  position: relative;
-  right: 10vw;
+#logo{
+  width:80%;
 }
 .linav {
   text-align: center;
@@ -50,7 +52,34 @@ a {
 .deco {
   width: 3vw;
 }
+#icone a svg{ 
+  width:40px;
+  height:40px;
+  transition: transform 0.3s ease;
+}
 
+#icone a:hover svg {
+  transform: scale(1.2);
+}
+#icone-panier{
+  border-radius: 50%;
+  background-color: var(--second);
+  width: 55px;
+  height: 55px;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+#icone-panier a svg{ 
+  width:25px;
+  height:25px;
+  transition: transform 0.3s ease;
+}
+
+#icone-panier a:hover svg {
+  transform: scale(1.2);
+}
 #rondjaune {
   position: absolute;
 
@@ -67,6 +96,25 @@ a {
 
 nav {
   font-family: "Libre Bodoni", sans-serif;
+}
+
+
+.navlinks ul li a {
+  position: relative;
+}
+.navlinks ul li a::before {
+  content: "";
+  width: 0;
+  height: 2px;
+  background-color: var(--main);
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  transition: 0.5s ease;
+}
+
+.navlinks ul li a:hover::before {
+  width: 100%;
 }
 #dance {
   width: 49vw;
@@ -98,7 +146,7 @@ nav {
   line-height: normal;
 }
 a:hover {
-  color: var(--main);
+  color: black;
   text-decoration: underline;
 }
 
@@ -109,10 +157,10 @@ a:hover {
   position: relative;
   padding: 0 !important;
   background-color: #f8f9fa !important;
-  transition: background-color 0.3s ease; /* Ajoute une transition smooth de 0.3 secondes */
+  transition: transform 0.3s ease;
 }
 .main-content:hover {
-  background-color: #ebebebdd;
+  transform: scale(1.1);
 }
 .flag-promo {
   background-color: var(--second);
@@ -144,7 +192,10 @@ a:hover {
 .new-price {
   font-size: 18px;
 }
-
+.img-panier{
+  border: 2px solid var(--main);
+  padding:5px;
+}
 .vertical-line {
   width: 0;
   height: 80px;
@@ -156,8 +207,23 @@ a:hover {
 .main-content-news {
   border-radius: 20px;
   position: relative;
+  transition: transform 0.3s ease;
 }
-
+.main-content-news:hover {
+  transform: scale(1.1);
+}
+.reponsive-card-categorie{
+  transition: transform 0.3s ease;
+}
+.reponsive-card-categorie:hover {
+  transform: scale(1.1);
+}
+.user-panel{
+  transition: transform 0.3s ease;
+}
+.user-panel:hover {
+  transform: scale(1.1);
+}
 /* Afficher les images sur la version de tel */
 @media (max-width: 768px) {
   #dance {
@@ -223,10 +289,10 @@ a:hover {
     display: block;
   }
   #panier {
-    display: none;
+    display: block;
   }
   #deco {
-    display: none;
+    display: block;
   }
   #user {
     display: none;
@@ -299,7 +365,7 @@ a:hover {
   margin: 0 0 20px 10px;
 }
 .twitter {
-  margin: 0 0 20px 10px;
+  margin: 0 !important;
 }
 .fa-twitter::before {
   content: "\f099";
@@ -359,13 +425,59 @@ a:hover {
   border-radius: 10px !important;
 }
 
+
+
 /*fil d'arriane*/
 .breadcrumb {
   background-color: white !important;
   margin: 20px !important;
 }
 
+/*form commande*/
 
+
+.form-commande form{
+  padding: 20px;
+  border: 2px solid var(--main);
+  background-color:#f8f9fa;
+  border-radius: 20px;
+}
+/* Style pour le selecteur */
+.select-content select {
+  -webkit-appearance: none; 
+  -moz-appearance: none;
+  appearance: none;
+  border: 2px solid var(--second);
+  border-radius: 5px;
+  padding: 10px 30px 10px 10px; 
+  background-color: white; 
+  font-size: 16px; 
+  cursor: pointer;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+  width: 100%; 
+}
+
+
+
+/* Hover effet */
+.select-content:hover select {
+  border-color: var(--main); 
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+}
+
+/* Focus effet */
+.select-content select:focus {
+  outline: none;
+  border-color: var(--second); 
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+}
+.total-price input{
+  background-color:#f8f9fa !important;
+  border:none;
+  color:black;
+  font-size:20px;
+  font-weight: bold;
+}
 
 /*form-adresse*/
 .adresse-container{
@@ -374,6 +486,35 @@ a:hover {
   border-radius: 10px;
   padding:20px;
 }
+
+
+
+.categorie-product .old-price{
+  text-decoration: line-through;
+  color: var(--second);
+  margin-top: 0 !important;
+  margin-bottom: 1rem !important;
+  font-size: 18px
+}
+
+
+.flag-percent-product {
+  position: absolute;
+  bottom:85%;
+  right: 75%;
+  background-color: var(--second);
+  padding: 5px;
+  width: 50px;
+  text-align: center;
+  border-radius: 5px;
+}
+
+.border-card{
+  border:2px solid var(--main);
+  padding: 5px;
+  border-radius: 5px;
+}
+
 /* Afficher les images sur la version de bureau */
 @media (min-width: 769px) {
   /*navbar*/
@@ -388,7 +529,7 @@ a:hover {
 @media (max-width: 992px) {
   /*navbar*/
   #navbarSupportedContent ul li {
-    margin: 0 0 30px 0 !important;
+    margin: 0 0 35px 0 !important;
   }
   #navbarSupportedContent ul li a {
     padding: 0 !important;
@@ -410,6 +551,14 @@ a:hover {
   }
   .right-part {
     margin: 0 !important;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+  }
+  .right-part li{
+    margin: 0 0 35px 0 !important;
   }
   .social-icons {
     margin: 0 0 0 90px !important;
@@ -438,5 +587,49 @@ a:hover {
   }
   .responsive-redirect-si a {
     margin: 50px 0 0 0;
+  }
+  .main-content-nl{
+    height:auto !important;
+  }
+  .nl-content-left {
+    text-align: center;
+    padding: 20px !important;
+  }
+  .nl-content-left h2{
+    text-align: center;
+  }
+  .nl-content-right{
+    margin: 0 0 50px 0 !important;
+  }
+  .nl-content-right .block{
+    display:flex !important;
+    flex-direction: column !important;
+    align-items: center;
+    justify-content: center;
+  }
+  .nl-content-right .block input{
+    margin: 0 0 30px 0;
+  }
+  .carousel-item img{
+    height: 300px !important;
+  }
+  .responsive-img{
+    height: 300px !important;
+  }
+  .reponsive-card-categorie .card img {
+    height:300px !important;
+  }
+  .responsive-description{
+    display:flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 40px 0 0 0;
+  }
+  .responsive-panier{
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
   }
 }

@@ -1,55 +1,86 @@
-{% extends 'base_admin.html.twig' %}
+{% extends 'base.html.twig' %}
 
 {% block title %}
     {{ title }}
 {% endblock %}
 
 {% block main %}
-<nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        {% if app.user %}
-            <li class="breadcrumb-item"><a href="{{ path('app_user') }}">Information</a></li>
-            <li class="breadcrumb-item"><a href="{{ path('app_commande_list') }}">Liste de vos commandes</a></li>
-            <li class="breadcrumb-item active" aria-current="page">Votre commande</li>
-        {% else %}
-            <li class="breadcrumb-item active" aria-current="page">Accueil</li>
-        {% endif %}
-    </ol>
-</nav>
-    <h2>{{ title }} {{ commande.id }}</h2>
-        <p>
-            <br>Commande n° {{ commande.id }}</br>
-            <br>Client n° {{ commande.users.id }}, {{ commande.users.nom }} {{ commande.users.prenom }}</br>
-            <br>Panier n° {{ commande.panier.id }}</br>
-            <br>Date de la commande : {{ commande.datecommande?commande.datecommande|date('Y-m-d') : ''  }}</br>
-            <p>Produits achetés : </p>
-           
-               
-                {% for panierProduit in commande.Panier.PanierProduits %}
-                    {% for photo in panierProduit.Produit.Photos %}
-                    <img src="{{ photo.urlPhoto }}" alt="photo-produit">
-                    {% endfor %}
-                {% endfor %}
-           
+    <div class="container mt-5">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                {% if app.user %}
+                    <li class="breadcrumb-item"><a href="{{ path('app_user') }}">Information</a></li>
+                    <li class="breadcrumb-item"><a href="{{ path('app_commande_list') }}">Liste de vos commandes</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Votre commande</li>
+                {% else %}
+                    <li class="breadcrumb-item active" aria-current="page">Accueil</li>
+                {% endif %}
+            </ol>
+        </nav>
+
+        <h2 class="mb-4">{{ title }} {{ commande.id }}</h2>
+
+        <div class="row">
+            <!-- Bloc Commande -->
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Détails de la Commande</h4>
+                        <p class="card-text">
+                            <strong>Commande n°</strong> {{ commande.id }} <br>
+                            <strong>Client n°</strong> {{ commande.users.id }}, {{ commande.users.nom }} {{ commande.users.prenom }} <br>
+                            <strong>Panier n°</strong> {{ commande.panier.id }} <br>
+                            <strong>Date de la commande :</strong> {{ commande.datecommande ? commande.datecommande|date('Y-m-d') : '' }} <br>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bloc Informations Supplémentaires -->
+            <div class="col-md-6 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">Informations Supplémentaires</h4>
+                        <p class="card-text">
+                            <strong>Total de la commande :</strong> {{ commande.prixttccommande }}€ TTC <br>
+                            <strong>Adresse de livraison :</strong> {{ commande.estLivre.numVoie }} {{ commande.estLivre.rue }}, {{ commande.estLivre.ville.nom }} <br>
+                            <strong>Adresse de facturation :</strong> {{ commande.estFacture.numVoie }} {{ commande.estFacture.rue }}, {{ commande.estFacture.ville.nom }} <br>
+                            <strong>Moyen de paiement :</strong> {{ commande.paiement.libelle }} <br>
+                            <strong>Mode de livraison :</strong> {{ commande.livraison.libelle }} <br>
+                            <strong>Etat de la commande :</strong> {{ commande.etat.libelle }} <br>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+       <!-- Bloc Produits et Lignes de Commande -->
+<div class="card mb-4">
+    <div class="card-body">
+        <h4 class="card-title">Produits achetés</h4>
+
+                    
+                    
+                    <ul class="list-unstyled">
+                        {% for commandeArticle in commande.ligneDeCommandes %}
+                            
+                                <li><strong>{{ commandeArticle.nomProduit }}</strong></li>
+                                <li>Quantité : {{ commandeArticle.nombreArticle }}</li>
+                                <li>Prix unitaire : {{ commandeArticle.prixProduit }}€ hors taxe</li>
+                                <li>Taux TVA : {{ commandeArticle.tauxTva }}</li>
+                                <li>Total : {{ commandeArticle.prixTotal }}€ TTC </li>
+                            
+                        {% endfor %}
+                    </ul>
+                
             
-            <ul>
-                {% for commandeArticle in commande.ligneDeCommandes %}
-                    <li>{{ commandeArticle.nomProduit }} </li> 
-                    <li>{{ commandeArticle.nombreArticle }}</li>
-                    <li>{{ commandeArticle.prixProduit }}€ hors taxe</li>
-                    <li>{{ commandeArticle.tauxTva }} </li>
-                    <li>{{ commandeArticle.nombreArticle }} </li>
-                    <li>{{ commandeArticle.prixTotal }}€ TTC </li>
-                {% endfor %}
-            </ul>
-            <br>Total de la commande : {{ commande.prixttccommande }}€ TTC</br>
-            <br>Addresse de livraison :  {{ commande.estLivre.numVoie }}  {{ commande.estLivre.rue }},  {{ commande.estLivre.ville.nom }}</br>
-            <br>Addresse de facturation : {{ commande.estFacture.numVoie}} {{ commande.estFacture.rue}}, {{ commande.estFacture.ville.nom}}</br>
-            <br>Moyen de paiement : {{ commande.paiement.libelle }}</br>
-            <br>Mode de livraison : {{ commande.livraison.libelle }}</br>
-            <br>Etat de la commande : {{ commande.etat.libelle }}</br>
-
-        </p>
-
-        <a href="{{ path('app_pdf_generator', {'id': commande.id}) }}">Télécharger le PDF</a>
+       
+        
+    </div>
+</div>
+<a href="{{ path('app_pdf_generator', {'id': commande.id}) }}">Télécharger le PDF</a>
+                
+            </div>
+        </div>
+    </div>
 {% endblock %}

@@ -42,12 +42,16 @@ class ProduitController extends AbstractController
             $prixTTC = $prixTTC * $produit->getPromotion()->getTauxPromotion();
             $prixTTC = number_format($prixTTC,2,'.','');
         }
+        $oldPrice = $produit->getPrixHT() + ($produit->getPrixHT() * $produit->getTVA()->getTauxTva() / 100);
+        $oldPrice = number_format($oldPrice, 2, '.', '');
+
         $photos = $photoRepo->searchPhotoByProduit($produit);
         return $this->render('produit/show.html.twig', [
             'title' => 'Fiche d\'un produit',
             'produit' => $produit,
             'prixTTC' => $prixTTC,
-            'photos' => $photos
+            'photos' => $photos,
+            'oldPrice' => $oldPrice,
         ]);
     }
 
@@ -90,7 +94,9 @@ class ProduitController extends AbstractController
                 $qte = $produitInPanier->getQuantite() + 1;
                 $panierProduitRepo->updateQuantitéInProduiPanier($qte, $idProduit, $idPanier);
             }
+            $this->addFlash('nice', 'Le produit a été ajouté au panier avec succès.');
             return $this->redirectToRoute('app_show_produit', ['id' => $idProduit], Response::HTTP_SEE_OTHER);
         }
+        
     }
 }
