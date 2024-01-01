@@ -32,7 +32,7 @@
     </div>
 </div>
 </div>
-<div id="carouselCategorie" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+<div id="carouselCategorie" class="carousel slide" data-bs-ride="carousel" data-bs-interval="4000">
   <div class="carousel-inner">
     <div class="carousel-item active">
       <img src="{{ asset('upload/photo_categorie/catevent.png') }}" class="d-block h-75 w-100" alt="Instruments à vents">
@@ -80,7 +80,7 @@
                         <img src='{{ photo.URLPhoto }}' alt='{{ productData.produit.libelle }}' class='img-product p-2'/>
                     {% endfor %} 
                     <p style="font-size:20px; ">{{ productData.produit.libelle }}</p>
-                        <div class="d-flex justify-content-center mb-3">
+                        <div class="d-flex justify-content-center">
                         <p class="old-price">{{ productData.oldPrice }}€</p>
                         <p class="new-price">{{ productData.prixTTC }}€</p>
                         </div>
@@ -153,12 +153,12 @@
 <section class="newsletters-section">
     <div class="container-fluid main-content-nl bg-light ">
         <div class="row">
-            <div class="col-12 col-md-6 d-flex flex-column justify-content-center  p-5">
+            <div class="col-12 col-md-6 d-flex flex-column nl-content-left justify-content-center  p-5">
                 <h2 style="color:var(--main)";>Newsletter</h2>
                 <h5>Laissez-vous inspirer par la musique ! Suivez nos différentes actualités </h5>
             </div>
-            <div class="col-12 col-md-6 d-flex justify-content-center align-items-center mt-3">
-                <div>
+            <div class="col-12 col-md-6 d-flex justify-content-center nl-content-right align-items-center mt-3">
+                <div class="block">
                     <input type="text" style="border:1px solid var(--main);" placeholder="adresse mail" name="newsletter">
                     <button type="submit" class="button-nl ml-2" value="Abonnez-vous">Abonnez vous</button>
                 </div>

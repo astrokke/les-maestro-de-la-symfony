@@ -7,52 +7,67 @@
     {{ parent() }}
     {{ encore_entry_script_tags('adresse') }}
 {% endblock %}
-{% block main %}
-<div class="example-wrapper">
-    <h1>Mon adresse</h1>
 
+{% block main %}
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        {% if app.user %}
+            <li class="breadcrumb-item"><a href="{{ path('app_panier') }}">Votre panier</a></li>
+            <li class="breadcrumb-item"><a href="{{ path('app_list_adresse') }}">Finalisation de la commande</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Création d'adresse</li>
+        {% else %}
+            <li class="breadcrumb-item active" aria-current="page">Accueil</li>
+        {% endif %}
+    </ol>
+</nav>
+
+<div class="container adresse-container vh-100 my-5">
+    <h1 class="mb-4">Mon adresse</h1>
 
     <form method='POST' id="createAdresse">
-        <p>(<span>*</span>)Champs obligatoires</p>
+        <p class="text-muted">(<span>*</span>) Champs obligatoires</p>
 
-        <div class="form-group">
-            <label for="num_voie">Numero de voie <span>*</span></label>
-            <input type="text" class="form-control" name="num_voie" id="num_voie" required placeholder="ex: 10 rue nomDeLaRue" value = "{{ flag ? adresse.numVoie : ''}}">
+        <!-- Numero de voie -->
+        <div class="mb-4">
+            <label for="num_voie" class="form-label">Numero de voie <span>*</span></label>
+            <input type="text" class="form-control" name="num_voie" id="num_voie" required placeholder="Exemple : 10 rue nomDeLaRue" value="{{ flag ? adresse.numVoie : '' }}">
         </div>
-        <div class="form-group">
-            <label for="rue">Rue<span>*</span></label>
-            <input type="text" class="form-control" name="rue" id="rue" required placeholder="ex: 10 rue nomDeLaRue" value = "{{ flag ? adresse.rue : ''}}">
+
+        <!-- Rue -->
+        <div class="mb-4">
+            <label for="rue" class="form-label">Rue <span>*</span></label>
+            <input type="text" class="form-control" name="rue" id="rue" required placeholder="Exemple : 10 rue nomDeLaRue" value="{{ flag ? adresse.rue : '' }}">
         </div>
-        <div class="form-group">
-            <label for="complement">Complément</label>
-            <input type="textarea" class="form-control" name="complement" id="complement" placeholder="ex: Bâtiment B" value = "{{ flag ? adresse.complement : ''}}">
+
+        <!-- Complément -->
+        <div class="mb-4">
+            <label for="complement" class="form-label">Complément</label>
+            <textarea class="form-control" name="complement" id="complement" placeholder="Exemple : Bâtiment B">{{ flag ? adresse.complement : '' }}</textarea>
         </div>
-        <div class="form-group">
-            <label for="ville">Ville <span>*</span></label>
-            <input type="text" class="form-control" name="ville" id="ville" list="cityList" required placeholder="ex: Nom-De-La-Ville" value = "{{ flag ? adresse.Ville.nom : ''}}">
-            <input type="hidden" name="villeId" id="villeId" value = "{{ flag ? adresse.Ville.id : ''}}">
+
+        <!-- Ville -->
+        <div class="mb-4">
+            <label for="ville" class="form-label">Ville <span>*</span></label>
+            <input type="text" class="form-control" name="ville" id="ville" list="cityList" required placeholder="Exemple : Nom-De-La-Ville" value="{{ flag ? adresse.Ville.nom : '' }}">
+            <input type="hidden" name="villeId" id="villeId" value="{{ flag ? adresse.Ville.id : '' }}">
             <datalist id="cityList"></datalist>
-            <div class="form-group">
-            <label for="postalCodeSelect">Code Postal <span>*</span></label>
+        </div>
+
+        <!-- Code Postal -->
+        <div class="mb-5">
+            <label for="postalCodeSelect" class="form-label">Code Postal <span>*</span></label>
             <select class="form-control" name="postalCodeSelect" id="postalCodeSelect" required>
-                
-    <option value="" {% if not flag %}selected{% endif %}>Sélectionnez un code postal</option>
-    <!-- Les autres options seront ajoutées dynamiquement via JavaScript -->
-
+                <option value="" {% if not flag %}selected{% endif %}>Sélectionnez un code postal</option>
+                <!-- Les autres options seront ajoutées dynamiquement via JavaScript -->
             </select>
-            <input type="hidden" id="selectedPostalCodesId" name="selectedPostalCodesId" value = "{{ flag ? adresse.codePostal.id : ''}}">
-</div>
+            <input type="hidden" id="selectedPostalCodesId" name="selectedPostalCodesId" value="{{ flag ? adresse.codePostal.id : '' }}">
+        </div>
 
+        <!-- Bouton Soumettre -->
+        <div class="mb-5 d-flex justify-content-center">
+            <button type="submit" style="background-color:var(--second);" class="btn" name="submitAdresse" >Enregistrer</button>
+        </div>
+
+    </form>
 </div>
-    </div>
-        </div>
-        <div class="form-group">
-            <input type="submit" class="btn btn-primary" value='Enregistrer' name="submitAdresse" id="submitAdresse">
-        </div>
-    {% if message %}
-        <div>{{ message }}</div>
-    {% endif %}
-     {% if app.user %}
-    <a href="{{path('app_user')}}">Retour</a>
-    {% endif %}
-    {% endblock %}
+{% endblock %}
