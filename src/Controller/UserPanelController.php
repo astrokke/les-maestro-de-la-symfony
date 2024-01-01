@@ -47,12 +47,6 @@ class UserPanelController extends AbstractController
         $form = $this->createForm(UserFormType::class, $users);
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
-            $users->setPassword(
-                $userPasswordHasher->hashPassword(
-                    $users,
-                    $form->get('newPassword')->getData()
-                )
-            );
             $em->persist($users);
             $em->flush();
             return $this->redirectToRoute('app_user');
