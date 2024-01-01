@@ -15,6 +15,15 @@
                 {% endfor %}
             </div>
         </div>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                {% if app.user %}
+                    <li class="breadcrumb-item"><a href="{{ path('app_index') }}">Accueil</a></li>
+                {% else %}
+                    <li class="breadcrumb-item active" aria-current="page">Accueil</li>
+                {% endif %}
+            </ol>
+        </nav>
         <h2 class="ml-4 text-center">{{ title }} <span style="color:var(--main);">{{ cate.libelle }}</span></h2>
         <h4 class="ml-4 text-center">{{ cate.description }}</h4>
 
@@ -24,9 +33,9 @@
                 {% for item in enfants %}
                     <div class="col-12 col-md-4 col-lg-3 reponsive-card-categorie mb-4 mx-2">
                         <div class="card border-card bg-light h-100">
+                        <a href="{{ path('app_produit_categorie', { 'id': item.id }) }}" class="text-decoration-none">
                             <img src="{{ item.photos[0].urlPhoto }}" class="card-img-top" alt="..." style=" object-fit: cover;">
                             <div class="card-body">
-                                <a href="{{ path('app_produit_categorie', { 'id': item.id }) }}" class="text-decoration-none">
                                     <h5 class="card-title text-center" style="color:var(--main);">{{ item.libelle }}</h5>
                                     <p class="card-text text-center">{{ item.description }}</p>
                                 </a>

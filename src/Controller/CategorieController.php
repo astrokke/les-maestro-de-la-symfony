@@ -72,7 +72,7 @@ class CategorieController extends AbstractController
         $produits = $produitRepo->findProduitsByCategorieId($categorieId);
         $newsProducts = $produitRepo->searchNew();
         $photos = $photoRepo->searchPhotoByCategorie($categories);
-        
+        $categorie_parente= $categorieRepo->findParentCategoryIdByChildId($categorieId);
         $productsData = [];
         
         foreach ($produits as $produit) {
@@ -115,9 +115,11 @@ class CategorieController extends AbstractController
                 'photos' => $photosProducts,
                 
             ];
+            
         }
         return $this->render('categorie/produit_categorie.html.twig', [
             'produits' => $productsData,
+            'categorieParente' => $categorie_parente,
             'newsProducts' => $productsDataNew,
             'categorie' => $categorie,
             'photos' => $photos,

@@ -6,6 +6,20 @@
 
 {% block main %}
 <section class="m-5">
+<nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                {% if app.user %}
+                    <li class="breadcrumb-item"><a href="{{ path('app_index') }}">Accueil</a></li>
+                    {% if categorieParente %}
+                    <li class="breadcrumb-item"><a href="{{ path('app_categorie_show', { 'id': categorieParente }) }}">{{ produit.categorie.libelle }}</a></li>
+                    {% endif %}
+                    <li class="breadcrumb-item"><a href="{{ path('app_produit_categorie', { 'id': categorie }) }}">Liste des produits</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ produit.libelle }}</li>
+                {% else %}
+                    <li class="breadcrumb-item active" aria-current="page">Accueil</li>
+                {% endif %}
+            </ol>
+        </nav>
      <h2>{{ title }} : <span style="color:var(--main);">{{ produit.libelle}}</span> </h2>
       {% for message in app.flashes('nice') %}
             <div class="alert alert-success">

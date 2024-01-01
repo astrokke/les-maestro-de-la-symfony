@@ -11,7 +11,19 @@
             {% endfor %}
         </div>
     </div>
-   
+   <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                {% if app.user %}
+                    <li class="breadcrumb-item"><a href="{{ path('app_index') }}">Accueil</a></li>
+                {% if categorieParente %}
+                    <li class="breadcrumb-item"><a href="{{ path('app_categorie_show', { 'id': categorieParente }) }}">{{ categorie.libelle }}</a></li>
+                {% endif %}
+                    <li class="breadcrumb-item active" aria-current="page">Liste des produits</li>
+                {% else %}
+                    <li class="breadcrumb-item active" aria-current="page">Accueil</li>
+                {% endif %}
+            </ol>
+        </nav>
     {% if produits is null %}
         <p>Aucun produit trouvé pour cette catégorie.</p>
     {% else %}
