@@ -31,16 +31,15 @@ class ProduitController extends AbstractController
     }
 
     #[Route('/produit/{id}', name: 'app_show_produit')]
-    public function showProducts(PhotosRepository $photoRepo, ?Produit $produit, Categorie $categories,
+    public function showProducts(PhotosRepository $photoRepo, ?Produit $produit,
     CategorieRepository $categorieRepo): Response
     {
-        $categorie = $produit->getCategorie()->getId();
-        //Récupérer l'id de la catégorie parente pour le fil d'arrianne
-        $categorie_parente= $categorieRepo->findParentCategoryIdByChildId($categorie);
-
+    
         if ($produit === null) {
             return $this->redirectToRoute('app_produit');
         }
+    
+
         $prixTTC = $produit->getPrixHT() + ($produit->getPrixHT() * $produit->getTVA()->getTauxTva() / 100);
         $prixTTC = number_format($prixTTC, 2, '.', '');
         // Vérifiez si le produit a une promotion
@@ -52,7 +51,9 @@ class ProduitController extends AbstractController
         $oldPrice = number_format($oldPrice, 2, '.', '');
 
         $photos = $photoRepo->searchPhotoByProduit($produit);
-        
+        $categorie = $produit->getCategorie()->getId();
+        //Récupérer l'id de la catégorie parente pour le fil d'arrianne
+        $categorie_parente= $categorieRepo->findParentCategoryIdByChildId($categorie);
         return $this->render('produit/show.html.twig', [
             'title' => 'Fiche d\'un produit',
             'categorieParente'=> $categorie_parente,

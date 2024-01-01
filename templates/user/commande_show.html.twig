@@ -66,7 +66,10 @@
                             
                                 <li><strong>{{ commandeArticle.nomProduit }}</strong></li>
                                 <li>Quantité : {{ commandeArticle.nombreArticle }}</li>
-                                <li>Prix unitaire : {{ commandeArticle.prixProduit }}€ hors taxe</li>
+                                <li>Prix unitaire : {{ commandeArticle.prixProduit }}€ HT</li>
+                                 {% if  commandeArticle.nombreArticle > 1 %}
+                                <li>Prix total HT : {{ commandeArticle.prixProduit * commandeArticle.nombreArticle }}€ HT</li>
+                                {% endif %}
                                 <li>Taux TVA : {{ commandeArticle.tauxTva }}</li>
                                 <li>Total : {{ commandeArticle.prixTotal }}€ TTC </li>
                             
@@ -78,8 +81,9 @@
         
     </div>
 </div>
-<a href="{{ path('app_pdf_generator', {'id': commande.id}) }}">Télécharger le PDF</a>
-                
+        <div class =" d-flex justify-content-center">
+            <a href="{{ path('app_pdf_generator', {'id': commande.id}) }}" class="btn button-nl p-2  mt-3 mb-5">Télécharger le PDF</a>
+        </div>        
             </div>
         </div>
     </div>
