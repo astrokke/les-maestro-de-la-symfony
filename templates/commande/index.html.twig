@@ -10,7 +10,7 @@
         {{ form_widget(form) }}
         <label for='prix-ttc'>Total de la commande</label> 
         <input type='text' name='prix-ttc' value='{{ totalttc }} € TTC ' disabled>
-        <a href="{{ path('app_create_adresse_commande') }}">Ajouter/Choisir une adresse de livraison</a>
+        <a href="{{ path('app_create_adresse_commande') }}">Ajouter une adresse de livraison</a>
         <input type='submit' name='créer' value='valider votre commande'>
     {{ form_end(form) }}
     

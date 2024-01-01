@@ -6,10 +6,29 @@
     <link rel="icon" href="data:image/svg+xml,...">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Jost&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Jost&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Bodoni:ital@1&family=Montserrat:ital@1&family=Playpen+Sans&display=swap" rel="stylesheet"> 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Libre+Bodoni:ital@1&family=Montserrat:ital@1&family=Playpen+Sans&family=Roboto&display=swap" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css"
+      integrity="sha512-5A8nwdMOWrSz20fDsjczgUidUBR8liPYU+WymTZP1lmY9G6Oc7HlZv156XqnsgNUzTyMefFTcsFH/tnJE/+xBg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+
     {% block stylesheets %}
         {{ encore_entry_link_tags('app') }}
+    {% endblock %}
+    {% block javascript %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    
+    {{ encore_entry_script_tags('adresse') }}
     {% endblock %}
 </head>
 <body>
@@ -61,9 +80,11 @@
                                 </li>
                                 <li id='icone' class="nav-item d-flex">
                                 <!-- Profil -->
-                                <a id='user' class="nav-link" href="{{ path('app_user') }}">
+                                <a id='user' class="nav-link d-flex align-items-center" href="{{ path('app_user') }}">
                                     <img class="deco" src="{{ asset('images/User.png') }}" alt="Profil">
+                                     <span style="color:var(--main);">{{ app.user.prenom }}</span>
                                 </a>
+                               
                                 </li>
                                 <li id='icone' class="nav-item d-flex">
                                 <!-- Panier -->
@@ -80,6 +101,12 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path('app_login') }}">Connectez-vous</a>
                         </li>
+                        <li id='icone' class="nav-item d-flex">
+                                <!-- Panier -->
+                                <a id="panier" href="{{ path('app_panier') }}">
+                                    <img style="width: 4vw;" src="{{ asset('images/panier.png') }}" alt="Panier">
+                                </a>
+                            </li>
                     {% endif %}
                 </ul>
             </div>
@@ -90,22 +117,64 @@
             {% endblock %}
             {% endblock %}
     
-        {% block main %}{% endblock %}
+        {% block main %}
+        {% endblock %}
 
 
+{% block footer %}
+<footer class="bg-light">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 responsive col-md-4 m-5">
+                <h3 class="text-center ">Un problème? contactez<span style="color:var(--main);"> nous</span></h3>
+                <form class="bg-light form-contact p-5 mt-4 d-flex flex-column justify-content-around">
+                    <input type="text" style="border:2px solid var(--main);" class="mb-4" placeholder="Nom" name="name">
+                    <input type="text" style="border:2px solid var(--main);" class="mb-4" placeholder="Prénom" name="surname">
+                    <input type="text" style="border:2px solid var(--main);" class="mb-4" placeholder="adresse mail" name="mail">
+                    <input type="text" style="border:2px solid var(--main);" class="mb-4" placeholder="Téléphone" name="phone">
+                    <textarea id="story" name="story" style="border:2px solid var(--main);" placeholder="Entrer votre message..." class="mb-4" ></textarea>
+                    <div class="d-flex justify-content-center">
+                        <button type="submit" class="btn btn-primary btn-md mt-2 bg-white">Envoyez</button>
+                    </div>
+                </form>
+            </div> 
+            <div class="col-12 responsive-two col-md-3 m-5 ">
+                <div class="footer-nav w-75 mt-5 ml-5 d-flex flex-column align-items-center justify-content-center">
+                
+                    <li class="nav-item mr-5 text-center responsive-active" style="white-space: nowrap;">
+                        <a style='color: rgba(223, 190, 49, 1)!important' aria-current="page" href="{{ path('app_index') }}">Accueil</a>
+                        {{ render(controller('App\\Controller\\CategorieController::list')) }}
+                    </li>
+                    
+                </div>
+            </div>
+            <div class="col-12 col-md-3 mt-5 d-flex flex-column responsive-three align-items-center">
+                <h3 class='text-center mb-4'>Suivez <span style="color:var(--main);">nous</span></h3>
+                <div class="social-icons ms-auto ml-5 mt-3 w-50 d-flex flex-column align-items-start justify-content-center">
+                    <div class="d-flex align-items-center ">
+                        <i class="fa fa-instagram mb-3"></i>
+                        <p class="insta">MSymfony</p>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="fa fa-facebook mb-3"></i>
+                        <p class="fb">MSymfony</p>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="fa fa-whatsapp mb-3"></i>
+                        <p class="wa">+33 7 30 90 07 67</p>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <i class="fa fa-twitter mb-3"></i>
+                        <p class="twitter">MSymfony</p>
+                    </div>
+                </div>
+            </div>
 
+        </div>
+    </div>
 
+</footer>
+{% endblock %}
 </body>
-
-
-
-
-
-
-
-
-
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </html>
