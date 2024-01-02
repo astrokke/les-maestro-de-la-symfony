@@ -89,6 +89,7 @@
                 <th>Prix HT</th>
                 <th>TVA</th>
                 <th>Prix TTC</th>
+                <th>Total de la commande</th>
             </tr>
         </thead>
         <tbody>
@@ -101,7 +102,8 @@
                 <td>{{dataP.prixproduit }}  €</td>
                 {% endif %}
                 <td>{{dataP.tauxTva}} %</td>
-                <td>{{ dataP.prixtotal }} €</td>
+                <td>{{ dataP.prixproduit  + (dataP.prixproduit * dataP.tauxTva)/100}} €</td>
+                <td> {{ dataP.prixtotal }} € </td>
             </tr>
         </tbody>
     </table>

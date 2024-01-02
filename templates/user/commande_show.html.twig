@@ -66,9 +66,12 @@
                             
                                 <li><strong>{{ commandeArticle.nomProduit }}</strong></li>
                                 <li>Quantité : {{ commandeArticle.nombreArticle }}</li>
-                                <li>Prix unitaire : {{ commandeArticle.prixProduit }}€ HT</li>
+                                <li>Prix unitaire HT: {{ commandeArticle.prixProduit }}€ </li>
+                                <li>Prix Unitaire TTC : {{ commandeArticle.prixProduit + (commandeArticle.prixProduit * commandeArticle.tauxTva)/100  }}€ </li>
                                  {% if  commandeArticle.nombreArticle > 1 %}
-                                <li>Prix total HT : {{ commandeArticle.prixProduit * commandeArticle.nombreArticle }}€ HT</li>
+                                <li>Prix total HT : {{ commandeArticle.prixProduit * commandeArticle.nombreArticle }}€ </li>
+                                {% else %}
+                                <li>Prix total HT : {{ commandeArticle.prixProduit  }}€ </li>
                                 {% endif %}
                                 <li>Taux TVA : {{ commandeArticle.tauxTva }}</li>
                                 <li>Total : {{ commandeArticle.prixTotal }}€ TTC </li>
