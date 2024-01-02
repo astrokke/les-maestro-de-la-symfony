@@ -9,7 +9,7 @@
         <h2>{{ title }}</h2>
 
         {% if is_granted('ROLE_ADMIN') %}
-            <h3><a href="{{ path('app_new_promotion') }}" class="btn btn-primary">Ajouter une promotion</a></h3>
+            <h3><a href="{{ path('app_new_promotion') }}" class="btn btn-secondary">Ajouter une promotion</a></h3>
         {% endif %}
 
         <div class="table-responsive">
@@ -31,8 +31,8 @@
                             <td>{{ item.tauxPromotion }}</td>
                             <td>{{ item.codePromotion }}</td>
                             <td>
-                                <a href="{{ path('app_promotion_show', { 'id': item.id }) }}" class="btn btn-primary btn-sm">Voir</a>
-                                <a href="{{ path('app_update_promotion', { 'id': item.id }) }}" class="btn btn-warning btn-sm">Mettre à jour</a>
+                                <a href="{{ path('app_promotion_show', { 'id': item.id }) }}" class="btn btn-secondary btn-sm">Voir</a>
+                                <a href="{{ path('app_update_promotion', { 'id': item.id }) }}" class="btn btn-secondary btn-sm">Mettre à jour</a>
                                 {{ include('promotion/delete.html.twig', { 'id': item.id })}}
                             </td>
                         </tr>
@@ -50,7 +50,8 @@
                 <label for="searchLibelle">Recherchez par libellé</label>
                 <input type='text' id="searchLibelle" class="form-control" name='nom' placeholder='Recherchez par libellé' value='{{ libelle }}'>
             </div>
-            <button type="submit" class="btn btn-primary">Rechercher</button>
+            <a href="{{ path('app_admin_dashboard') }}" class="btn btn-secondary">Retour</a>
+            <button type="submit" class="btn btn-secondary">Rechercher</button>
         </form>
     </div>
 {% endblock %}

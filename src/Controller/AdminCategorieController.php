@@ -63,7 +63,7 @@ class AdminCategorieController extends AbstractController
             return $this->redirectToRoute('app_index');
         }
         if ($categorie === null) {
-            return $this->redirectToRoute('app_admin_index');
+            return $this->redirectToRoute('app_dashboard_admin');
         }
 
         return $this->render('admin/categorie_show.html.twig', [
@@ -151,7 +151,7 @@ class AdminCategorieController extends AbstractController
             return $this->redirectToRoute('app_index');
         }
         if ($categorie === null) {
-            return $this->redirectToRoute('app_index');
+            return $this->redirectToRoute('app_dashboard_admin');
         }
 
         $form = $this->createForm(AdminCategorieFormType::class, $categorie);
@@ -179,7 +179,7 @@ class AdminCategorieController extends AbstractController
                 return $this->redirectToRoute('app_categorie_list_admin');
             }
         }
-        return $this->render('admin/new.html.twig', [
+        return $this->render('admin/categorie_new.html.twig', [
             'title' => 'Mise à jour d\'une catégorie',
             'form' => $form,
         ]);
