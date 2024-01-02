@@ -29,7 +29,8 @@
         <input type='text' name='nom' placeholder='recherchez par le nom' value='{{ nom }}'>
         <input type='submit' name='submit' value='rechercher'>
     </form>
-          <div class="d-flex">
+            <div class="row">
+    <div class="d-flex justify-content-center gap-5">
     {% for item in administrateur %}
         <tr>
             <div class="card border p-3 bg-light d-flex flex-wrap align-items-center m-2 justify-content-center" style="width: 15rem; height: 15rem;">
@@ -42,12 +43,17 @@
                     <a href="{{ path('app_update_admin', { 'id': item.id })}}">Mettre à jour</a>
                     {{ include('admin/admin_delete.html.twig', { 'id': item.id })}} 
                       </div>
-        </tr>   
+        </tr> 
+        
     {% else %}
         <tr>
             <td colspan="5">Aucun enregistrement</td>
         </tr>
+        
     {% endfor %}
- 
    
+    </div>
+    </div>
+  <a href="{{ path('app_admin_dashboard') }}" class="btn btn-secondary">Retour</a>
+ 
 {% endblock %}

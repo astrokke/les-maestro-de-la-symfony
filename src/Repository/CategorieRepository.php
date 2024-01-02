@@ -31,6 +31,18 @@ class CategorieRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    public function findParentCategoryIdByChildId($childId): ?int
+    {
+        $result = $this->createQueryBuilder('c')
+        ->select('IDENTITY(c.categorie_parente) AS parentId')
+        ->where('c.id = :childId')
+        ->setParameter('childId', $childId)
+        ->getQuery()
+        ->getOneOrNullResult();
+        
+        return $result['parentId'] ?? null;
+        
+    }
 
     public function searchCategorieEnfant($categorie)
     {

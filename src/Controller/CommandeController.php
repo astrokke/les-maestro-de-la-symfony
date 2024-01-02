@@ -92,6 +92,7 @@ class CommandeController extends AbstractController
             $em->persist($commande);
 
             $em->flush();
+            $this->addFlash('success', 'Votre commande a bien été validée.');
             return $this->redirectToRoute('app_index');
         }
 

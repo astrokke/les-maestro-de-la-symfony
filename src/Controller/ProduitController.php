@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Categorie;
 use App\Entity\Panier;
 use App\Entity\Produit;
 use App\Repository\CategorieRepository;
@@ -30,24 +31,37 @@ class ProduitController extends AbstractController
     }
 
     #[Route('/produit/{id}', name: 'app_show_produit')]
-    public function showProducts(PhotosRepository $photoRepo, ?Produit $produit): Response
+    public function showProducts(PhotosRepository $photoRepo, ?Produit $produit,
+    CategorieRepository $categorieRepo): Response
     {
+    
         if ($produit === null) {
             return $this->redirectToRoute('app_produit');
         }
+    
+
         $prixTTC = $produit->getPrixHT() + ($produit->getPrixHT() * $produit->getTVA()->getTauxTva() / 100);
-        $prixTTC = number_format($prixTTC,2,'.','');
+        $prixTTC = number_format($prixTTC, 2, '.', '');
         // Vérifiez si le produit a une promotion
         if ($produit->getPromotion() !== null) {
             $prixTTC = $prixTTC * $produit->getPromotion()->getTauxPromotion();
-            $prixTTC = number_format($prixTTC,2,'.','');
+            $prixTTC = number_format($prixTTC, 2, '.', '');
         }
+        $oldPrice = $produit->getPrixHT() + ($produit->getPrixHT() * $produit->getTVA()->getTauxTva() / 100);
+        $oldPrice = number_format($oldPrice, 2, '.', '');
+
         $photos = $photoRepo->searchPhotoByProduit($produit);
+        $categorie = $produit->getCategorie()->getId();
+        //Récupérer l'id de la catégorie parente pour le fil d'arrianne
+        $categorie_parente= $categorieRepo->findParentCategoryIdByChildId($categorie);
         return $this->render('produit/show.html.twig', [
             'title' => 'Fiche d\'un produit',
+            'categorieParente'=> $categorie_parente,
+            'categorie' => $categorie,
             'produit' => $produit,
             'prixTTC' => $prixTTC,
-            'photos' => $photos
+            'photos' => $photos,
+            'oldPrice' => $oldPrice,
         ]);
     }
 
@@ -90,6 +104,7 @@ class ProduitController extends AbstractController
                 $qte = $produitInPanier->getQuantite() + 1;
                 $panierProduitRepo->updateQuantitéInProduiPanier($qte, $idProduit, $idPanier);
             }
+            $this->addFlash('nice', 'Le produit a été ajouté au panier avec succès.');
             return $this->redirectToRoute('app_show_produit', ['id' => $idProduit], Response::HTTP_SEE_OTHER);
         }
     }

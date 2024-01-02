@@ -14,7 +14,6 @@
                     <tr>
                         <th class="d-none d-md-table-cell">Commande</th>
                         <th>Date</th>
-                        <th class="d-none d-md-table-cell">Client</th>
                         <th class="d-none d-md-table-cell">Panier</th>
                         <th>Prix</th>
                         <th>Action</th>
@@ -25,7 +24,6 @@
                         <tr>
                             <td class="d-none d-md-table-cell">cde n°{{ item.id }}</td>
                             <td>{{ item.datecommande ? item.datecommande|date('Y-m-d H:i:s') : '' }}</td>
-                            <td class="d-none d-md-table-cell">{{ item.users.id }} {{ item.users.nom }} {{ item.users.prenom }}</td>
                             <td class="d-none d-md-table-cell">panier n°{{ item.panier.id }}</td>
                             <td>{{ item.prixttccommande }} €TTC</td>
                             <td><a href="{{ path('app_commande_show', { 'id': item.id }) }}" class="btn btn-primary btn-sm">Voir</a></td>

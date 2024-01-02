@@ -34,21 +34,75 @@
 
         
     </head>
-    <main>
+    <body>
     {% block header %}
     {% block nav %}
-    <nav>
-    {% if  is_granted('ROLE_ADMIN') %}
-    <a href="{{ path('app_admin_dashboard') }}">Accueil</a>
-    <a href="{{ path('app_admin_logout') }}">Déconnectez-vous</a>
-    {% else %}
-    <a href="{{ path('app_index') }}"></a>
+    <header>
+    <nav id="navbar" class="navbar navbar-expand-md bg-light navbar-light">
+        <div class="container-fluid">
 
-{% endif %}
+            <!-- Logo de la navbar -->
+            <a  class="navbar-brand text-uppercase fw-bold" href="{{ path('app_admin_dashboard') }}">
+                <img src="{{ asset('images/logo(1).png') }}" alt="Logo" style="height: 6vw!important;">
+            </a>
+
+            <!-- Bouton burger pour les petits écrans -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Contenu de la navbar -->
+            <div class="collapse navbar-collapse  " id="navbarSupportedContent">
+                <ul class="navbar-nav d-flex align-items-center justify-content-start mx-auto text-center w-100">
+                    <!-- Lien Accueil -->
+                    
+                    <li class="nav-item d-flex align-items-center ml-5 col-auto active" style="white-space: nowrap;">
+                        <a style='color: rgba(223, 190, 49, 1)!important' aria-current="page" href="{{ path('app_admin_dashboard') }}">Accueil</a>
+                        </li>
+                         
+                    <!-- Déconnexion et profil pour la version de bureau -->
+                    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                            <li class="nav-item ">
+                                <a class="nav-link" href="{{ path('app_admin_logout') }}">
+                                    <img class="deco" src="{{ asset('images/deco.png') }}" alt="Déconnexion">
+                                </a>
+                            </li>
+                    {% endif %}
+
+                    <!-- Connexion pour la version mobile -->
+                    {% if not is_granted('IS_AUTHENTICATED_FULLY') %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('app_admin_login') }}">Connectez-vous</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
            
     {% endblock %}
     {% endblock %}
-    </nav>
-        {% block main %}{% endblock %}
-    </main>
+
+        {% block main %}
+        {% endblock %}
+
+
+
+        {% block footer %}
+<footer class="bg-light">
+    <div class="container-fluid ">
+        <div class="row">
+            <div class="col-12 responsive col-md-4 m-5">
+                <div class="d-flex align-items-center">
+                    <p class="copyright">2023 les maestros</p>
+                    </div>
+            </div>
+        </div>
+    </div>
+
+</footer>
+{% endblock %}
+    </body>
 </html>
