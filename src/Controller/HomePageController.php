@@ -3,17 +3,23 @@
 namespace App\Controller;
 
 use App\Entity\Produit;
+use App\Repository\CategorieRepository;
 use App\Repository\PhotosRepository;
 use App\Repository\ProduitRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class HomePageController extends AbstractController
 {
     #[Route('/', name: 'app_index')]
-    public function index(ProduitRepository $produitRepo, PhotosRepository $photoRepo): Response
-    {
+    public function index(
+        ProduitRepository $produitRepo,
+        PhotosRepository $photoRepo,
+        CategorieRepository $cateRepo,
+        Request $request,
+    ): Response {
         $produits = $produitRepo->findTopPromoProducts();
 
         $dataPromo = [];
@@ -61,12 +67,30 @@ class HomePageController extends AbstractController
                 'oldPrice' => $oldPriceNew,
             ];
         }
+        $categories = $cate = $cateRepo->searchCategorieParente(
+            $request->query->get('libelle', ''),
+
+        );
+        foreach ($categories as $cate) {
+
+            $photoCate = $photoRepo->searchPhotoByCategorie($cate);
+            foreach ($photoCate as $photo) {
+                $photoURL = $photo->getURLPhoto();
+            }
+            $dataCate[] = [
+                'categorie' => $cate,
+                'photos' => $photoURL,
+            ];
+        }
+
+
 
         return $this->render('homepage/indexHomePage.html.twig', [
             'title' => 'MSymfony',
             'subtitle' => 'La musique, c\'est notre passion, les promotions, c\'est notre métier',
             'data' => $dataPromo,
             'dataNew' => $dataNewProduct,
+            'dataCate' => $dataCate
         ]);
     }
 }
