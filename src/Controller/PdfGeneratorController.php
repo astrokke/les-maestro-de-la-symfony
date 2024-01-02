@@ -33,6 +33,7 @@ class PdfGeneratorController extends AbstractController
                 'dataCommande' => $dataCommande,
                 'adresseLivraison' => $adresseLivraison,
                 'adresseFacturation' => $adresseFacturation,
+                'logoUrl' =>  $this->imageToBase64($this->getParameter('kernel.project_dir') . '/public/img/logo.png'),
             ]);
 
             $options = new Options();
@@ -51,5 +52,14 @@ class PdfGeneratorController extends AbstractController
                 'Content-Type' => 'application/pdf',
             ]);
         }
+    }
+
+    private function imageToBase64($path)
+    {
+        $path = $path;
+        $type = pathinfo($path, PATHINFO_EXTENSION);
+        $data = file_get_contents($path);
+        $base64 = 'data:image/' . $type . ';base64,' . base64_encode($data);
+        return $base64;
     }
 }

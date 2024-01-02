@@ -42,6 +42,10 @@
 </style>
 
 {% block main %}
+<div class='d-flex'>
+<div>
+<img src= "{{ logoUrl }}" alt='logo' style='width: 300px;'>
+</div>
 {% for dataC in dataCommande %}
     {# Acheteur #}
     <div class="destC">
@@ -55,7 +59,7 @@
         <h3>Adresse de Facturation</h3>
         <p>{{ adresseFacturation.NumVoie }}  {{ adresseFacturation.rue }} {{ adresseLivraison.Ville.nom }} {{ adresseLivraison.Ville.departement.nom }} {{ adresseLivraison.Ville.departement.region.nom }}</p>
     </div> 
-
+</div>
     <h1>Devis | Commande n°{{dataC.id}}</h1>
 
     {# Produit #}
