@@ -23,7 +23,7 @@
                     {% for item in commande %}
                         <tr>
                             <td class="d-none d-md-table-cell">cde n°{{ item.id }}</td>
-                            <td>{{ item.datecommande ? item.datecommande|date('Y-m-d H:i:s') : '' }}</td>
+                            <td>{{ item.datecommande ? item.datecommande|date('Y-m-d ') : '' }}</td>
                             <td class="d-none d-md-table-cell">panier n°{{ item.panier.id }}</td>
                             <td>{{ item.prixttccommande }} €TTC</td>
                             <td><a href="{{ path('app_commande_show', { 'id': item.id }) }}" class="btn button-nl p-1 btn-sm">Voir</a></td>
