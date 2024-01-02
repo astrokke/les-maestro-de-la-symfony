@@ -26,7 +26,7 @@
                             <td>{{ item.datecommande ? item.datecommande|date('Y-m-d H:i:s') : '' }}</td>
                             <td class="d-none d-md-table-cell">panier n°{{ item.panier.id }}</td>
                             <td>{{ item.prixttccommande }} €TTC</td>
-                            <td><a href="{{ path('app_commande_show', { 'id': item.id }) }}" class="btn btn-primary btn-sm">Voir</a></td>
+                            <td><a href="{{ path('app_commande_show', { 'id': item.id }) }}" class="btn button-nl p-1 btn-sm">Voir</a></td>
                         </tr>
                     {% else %}
                         <tr>
@@ -45,7 +45,7 @@
             {% if app.user %}
                 <a href="{{ path('app_user') }}" class="btn btn-secondary">Retour</a>
             {% endif %}
-            <button type="submit" class="btn btn-primary">Rechercher</button>
+            <button type="submit" class="btn button-nl p-2">Rechercher</button>
         </form>
     </div>
 {% endblock %}
