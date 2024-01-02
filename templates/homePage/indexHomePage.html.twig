@@ -18,7 +18,7 @@
 }
 
 .carousel-item {
-    transition: opacity 0.6s ease !important;
+    transition: opacity 0.4s ease-in-out !important;
 }
 </style>
 <div class="row">
@@ -32,7 +32,7 @@
     </div>
 </div>
 </div>
-<div id="carouselCategorie" class="carousel slide" data-bs-ride="carousel" data-bs-interval="2000">
+<div id="carouselCategorie" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
   <div class="carousel-inner">
     {# <div class="carousel-item active">
       <img src="{{ asset('upload/photo_categorie/catevent.png') }}" class="d-block h-75 w-100" alt="Instruments à vents">
@@ -47,11 +47,17 @@
       <img src="{{ asset('upload/photo_categorie/cateaccessoires.png') }}" class="d-block h-75 w-100" alt="Accessoires">
     </div>
   </div> #}
-  {% for cate in dataCate %}
-  <div class="carousel-item active">
+
+{% set isFirst = true %}
+{% for cate in dataCate %}
+  
+  <div class="carousel-item {% if isFirst %}active{% endif %}">
       <a href='{{ path('app_categorie_show', { 'id': cate.categorie.id })}}'><img src="{{ cate.photos }}" class="d-block h-75 w-100" alt="{{ cate.categorie.libelle }}"/></a>
     </div>
-  {% endfor %}
+    
+  {% set isFirst = false %}
+{% endfor %}
+
 </div>
 
   <button class="carousel-control-prev" type="button" data-bs-target="#carouselCategorie" data-bs-slide="prev">
