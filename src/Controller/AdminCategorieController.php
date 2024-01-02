@@ -21,8 +21,11 @@ class AdminCategorieController extends AbstractController
 {
 
     #[Route('categorie', name: 'app_categorie')]
-    public function index(CategorieRepository $caterepo): Response
+    public function index(CategorieRepository $caterepo, Security $security): Response
     {
+        if (!$security->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_index');
+        }
         $categories = $caterepo->findAll();
         return $this->render('admin/index.html.twig', [
             'controller_name' => 'CategorieController',
@@ -36,9 +39,13 @@ class AdminCategorieController extends AbstractController
         Categorie $categories,
         ProduitRepository $produitRepo,
         CategorieRepository $categorieRepo,
-        PhotosRepository $photorepo
+        PhotosRepository $photorepo,
+        Security $security
     ): Response {
 
+        if (!$security->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('app_index');
+        }
         $categorieId = $categories->getId();
         $categorie = $categorieRepo->find($categorieId);
         $produits = $produitRepo->findProduitsByCategorieId($categorieId);

@@ -23,7 +23,7 @@ class AdminSecurityController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('security/index.html.twig', [
+        return $this->render('login/index.html.twig', [
             'username' => $lastUsername,
             'error' => $error,
             'action' => '{{ path=\'app_dashboard_admin\' }}',
