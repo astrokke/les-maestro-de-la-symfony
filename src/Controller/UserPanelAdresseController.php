@@ -150,16 +150,12 @@ class UserPanelAdresseController extends AbstractController
             $adresseRepo->save($adresse, true);
 
             if ($request->get('id')) {
-                $message = 'L\'adresse a bien été modifiée';
-                return $this->redirectToRoute('app_list_adresse', [
-                    'message' => '2'
-                ]);
+                $this->addFlash("succes","l\'adresse a bien été modifiée");
+                return $this->redirectToRoute('app_list_adresse');
             } else {
-                $message = 'L\'adresse a bien été créée';
+                $this->addFlash("succes",'L\'adresse a bien été créée');
                 if ($this->getUser()) {
-                    return $this->redirectToRoute('app_list_adresse', [
-                        'message' => '1'
-                    ]);
+                    return $this->redirectToRoute('app_list_adresse');
                 } else {
                     return $this->redirectToRoute('app_login');
                 }

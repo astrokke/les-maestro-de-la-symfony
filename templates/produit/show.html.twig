@@ -5,22 +5,79 @@
 {% endblock %}
 
 {% block main %}
-    <h2>{{ title }}</h2>
-    <div class="row">
-    <div class="d-flex justify-content-center gap-5">
-    {% for item in photos %}
-        <img src='{{ item.URLPhoto }}' alt='test' class='banner-item'/>
-    {% endfor %} 
-    <tr>
-         <td>Nom : {{ produit.libelle }}</td><br>
-         <td>Description : {{ produit.description }}</td><br>
-         <td>Prix : {{ prixTTC }} €TTC</td><br>
-         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-         <td><td>{{ include('produit/_addToPanier.html.twig', { 'id': produit.id })}}</td></td><br>
-         {% else %}
-         <a href='{{ path('app_register') }}'<p>Veuillez créer un compte ou vous connecter pour ajouter un produit à votre panier</p><br>
-         {% endif %}
-        </tr>
+<section class="m-5">
+<nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                {% if app.user %}
+                    <li class="breadcrumb-item"><a href="{{ path('app_index') }}">Accueil</a></li>
+                    {% if categorieParente %}
+                    <li class="breadcrumb-item"><a href="{{ path('app_categorie_show', { 'id': categorieParente }) }}">{{ produit.categorie.libelle }}</a></li>
+                    {% endif %}
+                    <li class="breadcrumb-item"><a href="{{ path('app_produit_categorie', { 'id': categorie }) }}">Liste des produits</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">{{ produit.libelle }}</li>
+                {% else %}
+                    <li class="breadcrumb-item active" aria-current="page">Accueil</li>
+                {% endif %}
+            </ol>
+        </nav>
+     <h2>{{ title }} : <span style="color:var(--main);">{{ produit.libelle}}</span> </h2>
+      {% for message in app.flashes('nice') %}
+            <div class="alert alert-success">
+                {{ message }}
+            </div>
+        {% endfor %}
+    <div class="row mt-5">
+        <!-- Image à gauche -->
+               
+
+        <div class="col-md-6">
+            <div class="d-flex justify-content-center flex-wrap"> 
+                
+                
+                {% for item in photos %}
+                    <img src='{{ item.URLPhoto }}' alt='test' class='banner-item img-product position-relative p-2 m-2'/>
+                {% endfor %} 
+                {% if produit.Promotion is not empty %}
+                <div class="flag-percent-product">
+                    <span>{{ produit.Promotion.libelle }}</span>
+                </div>
+                {% endif %}
+            </div>
         </div>
+        
+        <!-- Informations à droite -->
+        <div class="col-md-6 d-flex flex-column responsive-description justify-content-center">
+            <div class="d-flex flex-column justify-content-center mb-5">
+                <div class="mb-3">
+                    <strong>Nom :</strong> {{ produit.libelle }}
+                </div>
+                <div class="mb-3">
+                    <strong>Description :</strong> {{ produit.description }}
+                </div>
+                {% if produit.Promotion is empty %}
+                <div class="mb-3">
+                    <strong>Prix :</strong> {{ prixTTC }} €TTC
+                </div>
+                {% else %}
+                <div class="mb-3 ">
+                    <strong>Ancien Prix :</strong> {{ oldPrice }} €TTC
+                </div>
+                <div class="mb-3 ">
+                    <strong> Nouveaux Prix :</strong> {{ prixTTC }} €TTC
+                </div>
+                {% endif %}
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                    {{ include('produit/_addToPanier.html.twig', { 'id': produit.id })}}
+                {% else %}
+                    <div>
+                        <a href='{{ path('app_register') }}' class="">Veuillez créer un compte ou vous connecter pour ajouter un produit à votre panier</a>
+                    </div>
+                {% endif %}
+                <p style="color:green;">En stock</p>
+                <li class="nav-item"> livraison gratuite</li>
+                <li class="nav-item"> garantie 3 ans</li>
+            </div>
         </div>
+    </div>
+    </section>
 {% endblock %}

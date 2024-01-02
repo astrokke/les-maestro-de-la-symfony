@@ -65,12 +65,8 @@
 
         <!-- Bouton Soumettre -->
         <div class="mb-5 d-flex justify-content-center">
-            <button type="submit" style="background-color:var(--second);" class="btn">Enregistrer</button>
+            <button type="submit" style="background-color:var(--second);" class="btn" name="submitAdresse">Enregistrer</button>
         </div>
-
-        {% if message %}
-        <div class="alert alert-info">{{ message }}</div>
-        {% endif %}
     </form>
 </div>
 {% endblock %}

@@ -1,0 +1,91 @@
+
+
+<style>
+    h1 {
+        font-size: 18px;
+        text-align: center;
+        color: #DFBE31;
+    }
+    h2 {
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    p {
+        font-size : 13px;
+    }
+
+    table {
+        border: solid 1px black;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 80px;
+    }
+
+    th{
+        border: solid 1px black;
+    }
+
+    td{
+        border: solid 1px black;
+    }
+
+    .destC {
+        text-align: right;
+        padding-bottom: 80px;
+    }
+
+    .date {
+        text-align: right;
+        padding-right: 30px;
+    }
+</style>
+
+{% block main %}
+{% for dataC in dataCommande %}
+    {# Acheteur #}
+    <div class="destC">
+        <h2>Client<h2>
+        <p>{{ dataC.users.prenom }} {{ dataC.users.nom}}</p>
+         {# Adresse de livraison #}
+        <h3>Adresse de Livraison</h3>
+        <p>{{ adresseLivraison.NumVoie }}  {{ adresseLivraison.rue }}  {{ adresseLivraison.Ville.nom }} {{ adresseLivraison.Ville.departement.nom }} {{ adresseLivraison.Ville.departement.region.nom }} </p>
+
+        {# Adresse de facturation #}
+        <h3>Adresse de Facturation</h3>
+        <p>{{ adresseFacturation.NumVoie }}  {{ adresseFacturation.rue }} {{ adresseLivraison.Ville.nom }} {{ adresseLivraison.Ville.departement.nom }} {{ adresseLivraison.Ville.departement.region.nom }}</p>
+    </div> 
+
+    <h1>Devis | Commande n°{{dataC.id}}</h1>
+
+    {# Produit #}
+    {% for dataP in dataProduit %}
+    <table>
+        <thead>
+            <tr>
+                <th>Produit</th>
+                <th>Quantité</th>
+                <th>Prix HT</th>
+                <th>TVA</th>
+                <th>Prix TTC</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{dataP.nomProduit}}</td>
+                <td>{{dataP.nombreArticle}}</td>
+                {% if dataP.nombreArticle > 1%}
+                <td>{{dataP.prixproduit * dataP.nombreArticle}}  €</td>
+                {% else %}
+                <td>{{dataP.prixproduit }}  €</td>
+                {% endif %}
+                <td>{{dataP.tauxTva}} %</td>
+                <td>{{ dataP.prixtotal }} €</td>
+            </tr>
+        </tbody>
+    </table>
+{% endfor %}
+    
+   
+    {% endfor %}
+{% endblock %}
