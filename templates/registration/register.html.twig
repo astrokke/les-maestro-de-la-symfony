@@ -25,7 +25,7 @@
 
                 <div class="form-group">
                     {{ form_row(registrationForm.plainPassword, {
-                        'attr': {'class': 'form-control', 'placeholder': 'Password'},
+                        'attr': {'class': 'form-control'},
                         'label': 'Password'
                     }) }}
                 </div>
@@ -37,6 +37,7 @@
                 <div class="form-group text-center">
                     <button type="submit" class="button-nl">Register</button>
                 </div>
+                {{ form_rest(registrationForm) }}
             </form>
 
             <div class="text-center mt-3">
