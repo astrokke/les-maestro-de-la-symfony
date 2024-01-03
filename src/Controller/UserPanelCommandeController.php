@@ -42,14 +42,18 @@ class UserPanelCommandeController extends AbstractController
             return $this->redirectToRoute('app_index');
         }
 
-        $commande = $commandeRepo->searchByName($request->query->get('id', ''));
-        
+        $user = $this->getUser();
+        $commandes = $commandeRepo->findBy(['users' => $user->getId()]);
+
+        if (empty($commandes)) {
+            return $this->render('user/emptyCommande.html.twig');
+        }
         if (empty($commande)) {
             return $this->render('user/emptyCommande.html.twig');
         }
         return $this->render('user/commande_list.html.twig', [
             'title' => 'Liste des commandes',
-            'commande' => $commande,
+            'commande' => $commandes,
             'id' => $request->query->get('id', ''),
         ]);
     }
