@@ -67,7 +67,10 @@
     {# Acheteur #}
     <div class="destC">
         <h2>Client<h2>
-        <p>{{ dataC.users.prenom }} {{ dataC.users.nom}}</p>
+        {% for dataLc in dataProduit %}
+        <p>{{ dataLc.prenomUtilisateur }} {{ dataLc.nomUtilisateur}}</p>
+        <p> {{ dataLc.emailUtilisateur}} </p>
+        {% endfor %}
          {# Adresse de livraison #}
         <h3>Adresse de Livraison</h3>
         <p>{{ adresseLivraison.NumVoie }}  {{ adresseLivraison.rue }}  {{ adresseLivraison.Ville.nom }} {{ adresseLivraison.Ville.departement.nom }} {{ adresseLivraison.Ville.departement.region.nom }} </p>
