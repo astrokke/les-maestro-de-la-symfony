@@ -88,6 +88,13 @@ class CommandeController extends AbstractController
                 $ligneCommande->setTauxTva($lignePanier->getProduit()->getTVA()->getTauxTva());
                 $ligneCommande->setNombreArticle($lignePanier->getQuantite());
                 $ligneCommande->setPrixTotal($total);
+
+                $utilisateur = $commande->getUsers();
+                if($utilisateur){
+                    $ligneCommande->setNomUtilisateur($utilisateur->getNom());
+                    $ligneCommande->setPrenomUtilisateur($utilisateur->getPrenom());
+                    $ligneCommande->setEmailUtilisateur($utilisateur->getEmail());
+                }
                 $em->persist($ligneCommande);
             }
             $em->persist($commande);

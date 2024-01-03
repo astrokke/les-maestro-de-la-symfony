@@ -32,6 +32,15 @@ class LigneDeCommande
     #[ORM\JoinColumn(nullable: false)]
     private ?Commande $commande = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $nom_utilisateur = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $prenom_utilisateur = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $email_utilisateur = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -105,6 +114,42 @@ class LigneDeCommande
     public function setCommande(?Commande $commande): static
     {
         $this->commande = $commande;
+
+        return $this;
+    }
+
+    public function getNomUtilisateur(): ?string
+    {
+        return $this->nom_utilisateur;
+    }
+
+    public function setNomUtilisateur(string $nom_utilisateur): static
+    {
+        $this->nom_utilisateur = $nom_utilisateur;
+
+        return $this;
+    }
+
+    public function getPrenomUtilisateur(): ?string
+    {
+        return $this->prenom_utilisateur;
+    }
+
+    public function setPrenomUtilisateur(string $prenom_utilisateur): static
+    {
+        $this->prenom_utilisateur = $prenom_utilisateur;
+
+        return $this;
+    }
+
+    public function getEmailUtilisateur(): ?string
+    {
+        return $this->email_utilisateur;
+    }
+
+    public function setEmailUtilisateur(string $email_utilisateur): static
+    {
+        $this->email_utilisateur = $email_utilisateur;
 
         return $this;
     }

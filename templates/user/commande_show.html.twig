@@ -42,6 +42,11 @@
                     <div class="card-body">
                         <h4 class="card-title">Informations Supplémentaires</h4>
                         <p class="card-text">
+                            {% for commandeInfo in commande.ligneDeCommandes %}
+                            <strong>Nom :</strong> {{ commandeInfo.nomUtilisateur }} <br>
+                            <strong>Prenom :</strong> {{ commandeInfo.prenomUtilisateur }} <br>
+                            <strong>Email :</strong> {{ commandeInfo.emailUtilisateur }} <br>
+                            {% endfor %}
                             <strong>Total de la commande :</strong> {{ commande.prixttccommande }}€ TTC <br>
                             <strong>Adresse de livraison :</strong> {{ commande.estLivre.numVoie }} {{ commande.estLivre.rue }}, {{ commande.estLivre.ville.nom }} <br>
                             <strong>Adresse de facturation :</strong> {{ commande.estFacture.numVoie }} {{ commande.estFacture.rue }}, {{ commande.estFacture.ville.nom }} <br>
